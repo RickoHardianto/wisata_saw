@@ -51,4 +51,10 @@ class CategoryController extends Controller
 
         return new ApiResource(true, 'Data Kategori Berhasil Di Update!', $category);
     }
+
+    public function destroy(Category $category){
+        $category->delete();
+
+        return new ApiResource(true, 'Data Kategori Berhasil Di Hapus!', $category);
+    }
 }

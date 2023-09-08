@@ -3,14 +3,44 @@
 php artisan make:resource ApiResource
 
 ## membuat model
-php artisan make:model <name> -m
+- untuk create model
+php artisan make:model Category -m
+setelah membuat model , lalu tambahkan column pada file migrate
 
-1. model Category
 
-## migrate
-untuk migrate
+php artisan make:model Region -m
+setelah membuat model , lalu tambahkan column pada file migrate
+
+php artisan make:model Role -m
+setelah membuat model , lalu tambahkan column pada file migrate
+
+php artisan make:model Profile -m
+setelah membuat model , lalu tambahkan column pada file migrate
+
+
+- untuk migrate
 php artisan migrate
+
 
 ## membuat Controller 
 1. Controller Category
 php artisan make:controller Api/CategoryController
+php artisan make:controller Api/RegionController
+php artisan make:controller Api/RoleController
+php artisan make:controller Api/ProfileController
+php artisan make:controller Api/DestinationController
+php artisan make:controller Api/RatingController
+php artisan make:controller Api/DesKatController
+php artisan make:controller Api/JamBukaController
+php artisan make:controller Api/Controller
+
+
+install gitbash sek 
+
+cara clone 
+1. pergi ke terminal / git bash 
+link clone 
+https://github.com/MuhammadWildanf/Tourist_Destinations.git
+
+lek iki gae ndownload 
+https://github.com/MuhammadWildanf/Tourist_Destinations

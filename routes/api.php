@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::apiResource('/categories', App\Http\Controllers\Api\CategoryController::class);
+Route::apiResource('/regions', App\Http\Controllers\Api\RegionController::class);
+Route::apiResource('/roles', App\Http\Controllers\Api\RoleController::class);
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
