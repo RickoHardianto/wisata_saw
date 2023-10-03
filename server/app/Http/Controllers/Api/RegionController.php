@@ -13,9 +13,12 @@ class RegionController extends Controller
 {
    
     public function index(){
-        $region = Region::latest()->paginate(5);
-
-        return new ApiResource(true, 'List Data Region', $region);
+        $region = Region::latest()->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'List data Region',
+            'data' => $region
+        ], 200);
     }
 
     public function store(Request $request){

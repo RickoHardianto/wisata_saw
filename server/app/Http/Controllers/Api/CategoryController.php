@@ -11,9 +11,12 @@ class CategoryController extends Controller
 {
     
     public function index(){
-        $category = Category::latest()->paginate(5);
-
-        return new ApiResource(true, 'List Data Kategori', $category);
+        $category = Category::latest()->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'List data Kategori',
+            'data' => $category
+        ], 200);
     }
 
     public function store(Request $request){

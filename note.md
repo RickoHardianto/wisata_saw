@@ -6,7 +6,7 @@ php artisan make:resource ApiResource
 - untuk create model
 php artisan make:model Category -m
 setelah membuat model , lalu tambahkan column pada file migrate
-
+php artisan make:model Destination -mcr
 
 php artisan make:model Region -m
 setelah membuat model , lalu tambahkan column pada file migrate
@@ -44,3 +44,16 @@ https://github.com/MuhammadWildanf/Tourist_Destinations.git
 
 lek iki gae ndownload 
 https://github.com/MuhammadWildanf/Tourist_Destinations
+
+
+destinantion 
+wilayahId
+usahaId
+categoryId
+
+
+php artisan migrate:reset
+
+php artisan migrate
+
+php artisan db:seed

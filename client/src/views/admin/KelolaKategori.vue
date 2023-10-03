@@ -10,13 +10,13 @@ export default {
     TopbarComponent,
   },
   computed: {
-    ...mapState(useUserStore, ["regions"]),
+    ...mapState(useUserStore, ["categories"]),
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchRegions"]),
+    ...mapActions(useUserStore, ["fetchCategories"]),
   },
   created() {
-    this.fetchRegions();
+    this.fetchCategories();
   },
 };
 </script>
@@ -35,12 +35,11 @@ export default {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Kelola Wilayah</h1>
-
+          <h1 class="h3 mb-4 text-gray-800">Kelola Kategori</h1>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Data Wilayah</h6>
+              <h6 class="m-0 font-weight-bold text-primary">Data Kategori</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -53,25 +52,22 @@ export default {
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
-                      <th>Kategori</th>
-                      <th>action</th>
+                      <th>Nama Kategori</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Kategori</th>
-                      <th>action</th>
-                    </tr>
+                    <th style="width: 10px">#</th>
+                    <th>Nama Kategori</th>
+                    <th>Action</th>
                   </tfoot>
                   <tbody>
                     <tr
-                      v-for="(region, index) in regions"
-                      key="region.id"
-                      :region="region"
+                      v-for="(category, index) in categories"
+                      key="category.id"
                     >
                       <td>{{ index + 1 }}</td>
-                      <td>{{ region.region }}</td>
+                      <td>{{ category.category }}</td>
                       <td>-</td>
                     </tr>
                   </tbody>

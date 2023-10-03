@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+
 use App\Models\Business;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,14 +10,19 @@ use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
 {
-    
-    public function index(){
-        $business = Business::latest()->paginate(5);
 
-        return new ApiResource(true, 'List Data business', $business);
+    public function index()
+    {
+        $business = Business::latest()->get();
+        return response()->json([
+            'success' => true,
+            'message' => 'List data Business',
+            'data' => $business
+        ], 200);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'business'     => 'required',
@@ -34,7 +40,8 @@ class BusinessController extends Controller
         return new ApiResource(true, 'Data business Berhasil Di tambhakan!', $business);
     }
 
-    public function update(Request $request, Business $business){
+    public function update(Request $request, Business $business)
+    {
 
         $validator = Validator::make($request->all(), [
             'business'     => 'required',
@@ -51,7 +58,8 @@ class BusinessController extends Controller
         return new ApiResource(true, 'Data business Berhasil Di Update!', $business);
     }
 
-    public function destroy(Business $business){
+    public function destroy(Business $business)
+    {
         $business->delete();
 
         return new ApiResource(true, 'Data business Berhasil Di Hapus!', $business);

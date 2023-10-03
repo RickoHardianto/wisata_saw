@@ -1,13 +1,23 @@
 <script>
-import SidebarComponent from '../../components/admin/SidebarComponent.vue';
-import TopbarComponent from '../../components/admin/TopbarComponent.vue';
-
+import SidebarComponent from "../../components/admin/SidebarComponent.vue";
+import TopbarComponent from "../../components/admin/TopbarComponent.vue";
+import { mapActions, mapState } from "pinia";
+import { useUserStore } from "../../stores/wisata";
 
 export default {
   components: {
     SidebarComponent,
-    TopbarComponent
-},
+    TopbarComponent,
+  },
+  computed: {
+    ...mapState(useUserStore, ["destinations"]),
+  },
+  methods: {
+    ...mapActions(useUserStore, ["fetchDestination"]),
+  },
+  created() {
+    this.fetchDestination();
+  },
 };
 </script>
 
@@ -26,9 +36,54 @@ export default {
         <div class="container-fluid">
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">Kelola Tempat Wisata</h1>
-
-        
-
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary">
+                Data Tempat Wisata
+              </h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table
+                  class="table table-bordered"
+                  id="dataTable"
+                  width="100%"
+                  cellspacing="0"
+                >
+                  <thead>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Nama Wisata</th>
+                      <th>Kategori Wisata</th>
+                      <th>Alamat</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tfoot>
+                    <th style="width: 10px">#</th>
+                    <th>Nama Wisata</th>
+                    <th>Kategori Wisata</th>
+                    <th>Alamat</th>
+                    <th>Action</th>
+                  </tfoot>
+                  <tbody>
+                    <tr
+                      v-for="(destination, index) in destinations"
+                      key="destination.id"
+                      :destination="destination"
+                    >
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ destination.wisata }}</td>
+                      <td>Alam</td>
+                      <td>{{ destination.address }}</td>
+                      <td>-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- /.container-fluid -->

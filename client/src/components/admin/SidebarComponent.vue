@@ -58,6 +58,9 @@ export default {};
             <router-link to="/user" class="collapse-item"
               >Management User</router-link
             >
+            <router-link to="/kelola-kategori" class="collapse-item"
+              >Kelola Kategori</router-link
+            >
             <router-link to="/kelola-tempat-wisata" class="collapse-item"
               >Kelola Tempat Wisata</router-link
             >

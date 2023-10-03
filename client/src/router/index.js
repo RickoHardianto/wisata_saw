@@ -4,6 +4,7 @@ import LandingView from "../views/landingView.vue";
 import LoginView from "../views/admin/login.vue";
 import DashboardView from "../views/DashboardView.vue";
 import UserView from "../views/admin/user.vue";
+import kelolaKategori from "../views/admin/KelolaKategori.vue";
 import kelolaTEmpatWisata from "../views/admin/KelolaTempat.vue";
 import tempatWisata from "../views/admin/KelolaTempatUsaha.vue";
 import manajemenWilayah from "../views/admin/KelolaWilayah.vue";
@@ -30,6 +31,10 @@ const router = createRouter({
     {
       path: "/user",
       component: UserView,
+    },
+    {
+      path: "/kelola-kategori",
+      component: kelolaKategori,
     },
     {
       path: "/kelola-tempat-wisata",
