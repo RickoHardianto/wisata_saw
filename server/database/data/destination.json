@@ -1,0 +1,41 @@
+[
+    {
+        "wisata":"Pantai",
+        "price" : 15,
+        "openTime": "09:00:00",
+        "closeTime": "18:00:00",
+        "access"   :"mobil",
+        "address"  : "sumbermanjing wetan",
+        "numberPhone"  : "08121212121",
+        "img"  : "https://akcdn.detik.net.id/community/media/visual/2021/02/04/dev-pelestarian-pantai-di-malang-ini-patut-ditiru.jpeg?w=600&q=90",
+        "region_id" : 1,
+        "business_id" : 1,
+        "category_id" : 1
+    },
+    {
+        "wisata":"Pantai Sendiki",
+        "price" : 15,
+        "openTime": "09:00:00",
+        "closeTime": "18:00:00",
+        "access"   :"motor",
+        "address"  : "sumbermanjing wetan",
+        "numberPhone"  : "08121212121",
+        "img"  : "https://akcdn.detik.net.id/community/media/visual/2021/02/04/dev-pelestarian-pantai-di-malang-ini-patut-ditiru-1.jpeg?w=600&q=90",
+        "region_id" : 1,
+        "business_id" : 1,
+        "category_id" : 1
+    },
+    {
+        "wisata":"Batu",
+        "price" : 0,
+        "openTime": "09:00:00",
+        "closeTime": "23:00:00",
+        "access"   :"motor",
+        "address"  : "Kota Batu",
+        "numberPhone"  : "08121212121",
+        "img"  : "https://akcdn.detik.net.id/community/media/visual/2021/02/04/dev-pelestarian-pantai-di-malang-ini-patut-ditiru-1.jpeg?w=600&q=90",
+        "region_id" : 1,
+        "business_id" : 1,
+        "category_id" : 2
+    }
+]
