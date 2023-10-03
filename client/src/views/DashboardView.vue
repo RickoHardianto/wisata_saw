@@ -1,13 +1,11 @@
 <script>
-import SidebarComponent from '../../components/admin/SidebarComponent.vue';
-import TopbarComponent from '../../components/admin/TopbarComponent.vue';
-
-
+import SidebarComponent from "../components/admin/SidebarComponent.vue";
+import TopbarComponent from "../components/admin/TopbarComponent.vue";
 export default {
   components: {
+    TopbarComponent,
     SidebarComponent,
-    TopbarComponent
-},
+  },
 };
 </script>
 
@@ -25,10 +23,7 @@ export default {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">User</h1>
-
-        
-
+          <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
         </div>
 
         <!-- /.container-fluid -->
