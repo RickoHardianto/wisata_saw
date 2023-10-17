@@ -28,6 +28,7 @@ class DestinationSeeder extends Seeder
                 "address" => $obj->address,
                 "numberPhone" => $obj->numberPhone,
                 "img" => $obj->img,
+                "user_id" => $obj->user_id,
                 "region_id" => $obj->region_id,
                 "business_id" => $obj->business_id,
                 "category_id" => $obj->category_id

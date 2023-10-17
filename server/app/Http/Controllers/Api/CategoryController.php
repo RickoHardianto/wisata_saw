@@ -33,8 +33,11 @@ class CategoryController extends Controller
             'category' => $request->category
         ]);
 
-        // return response 
-        return new ApiResource(true, 'Data Kategori Berhasil Di tambhakan!', $category);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Kategori Berhasil Di tambhakan!',
+            'data' => $category
+        ], 200);
     }
 
     public function update(Request $request, Category $category){
@@ -51,12 +54,20 @@ class CategoryController extends Controller
             'category' => $request->category
         ]);
 
-        return new ApiResource(true, 'Data Kategori Berhasil Di Update!', $category);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Kategori Berhasil Di Update!',
+            'data' => $category
+        ], 200);
     }
 
     public function destroy(Category $category){
         $category->delete();
 
-        return new ApiResource(true, 'Data Kategori Berhasil Di Hapus!', $category);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Kategori Berhasil Di Hapus!',
+            'data' => $category
+        ], 200);
     }
 }

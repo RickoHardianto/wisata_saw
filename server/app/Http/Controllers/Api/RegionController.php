@@ -14,11 +14,14 @@ class RegionController extends Controller
    
     public function index(){
         $region = Region::latest()->get();
-        return response()->json([
-            'success' => true,
-            'message' => 'List data Region',
-            'data' => $region
-        ], 200);
+
+        return new ApiResource(true, 'List data Region', $region);
+
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'List data Region',
+        //     'data' => $region
+        // ], 200);
     }
 
     public function store(Request $request){

@@ -36,8 +36,11 @@ class BusinessController extends Controller
             'business' => $request->business
         ]);
 
-        // return response 
-        return new ApiResource(true, 'Data business Berhasil Di tambhakan!', $business);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data business Berhasil Di tambhakan!',
+            'data' => $business
+        ], 200);
     }
 
     public function update(Request $request, Business $business)
@@ -55,13 +58,21 @@ class BusinessController extends Controller
             'business' => $request->business
         ]);
 
-        return new ApiResource(true, 'Data business Berhasil Di Update!', $business);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data business Berhasil Di Update!',
+            'data' => $business
+        ], 200);
     }
 
     public function destroy(Business $business)
     {
         $business->delete();
 
-        return new ApiResource(true, 'Data business Berhasil Di Hapus!', $business);
+        return response()->json([
+            'success' => true,
+            'message' => 'Data business Berhasil Di Hapus!',
+            'data' => $business
+        ], 200);
     }
 }
