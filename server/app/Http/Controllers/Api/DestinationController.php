@@ -15,9 +15,12 @@ class DestinationController extends Controller
 
     public function index(Request $request)
     {
-        $destination = Destination::when($request->search, function($query, $search){
-            $query->where('wisata','like','%'.$search.'%');
-        })->paginate(2);
+        // $destination = Destination::when($request->search, function($query, $search){
+        //     $query->where('wisata','like','%'.$search.'%');
+        // });
+
+        $destination = Destination::latest()->get();
+
 
         $data = PostResource::collection($destination)->resource;
 
