@@ -1,10 +1,48 @@
 <script>
 import SidebarComponent from "../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../components/admin/TopbarComponent.vue";
+import axios from 'axios'
 export default {
   components: {
     TopbarComponent,
     SidebarComponent,
+  },
+  data() {
+        return {
+            //state loggedIn with localStorage
+            loggedIn: localStorage.getItem('loggedIn'),
+            //state token
+            token: localStorage.getItem('token'),
+            //state user logged In
+            user: []
+        }
+    },
+  created() {
+    axios
+      .get("http://localhost:8000/api/user", {
+        headers: { Authorization: "Bearer " + this.token },
+      })
+      .then((response) => {
+        console.log(response);
+        this.user = response.data; // assign response to state user
+      });
+  },
+  methods: {
+    logout() {
+      axios.get("http://localhost:8000/api/logout").then(() => {
+        //remove localStorage
+        localStorage.removeItem("loggedIn");
+
+        //redirect
+        return this.$router.push({ name: "login" });
+      });
+    },
+  },
+  //check user logged in or not
+  mounted() {
+    if (!this.loggedIn) {
+      return this.$router.push({ name: "login" });
+    }
   },
 };
 </script>
@@ -68,7 +106,7 @@ export default {
           <button class="btn btn-secondary" type="button" data-dismiss="modal">
             Cancel
           </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
+          <a @click="logout" class="btn btn-primary">Logout</a>
         </div>
       </div>
     </div>

@@ -26,6 +26,7 @@ php artisan migrate
 ## membuat Controller 
 1. Controller Category
 php artisan make:controller Api/CategoryController
+php artisan make:controller Api/LoginController
 php artisan make:controller Api/RegionController
 php artisan make:controller Api/RoleController
 php artisan make:controller Api/ProfileController

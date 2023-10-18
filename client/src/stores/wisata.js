@@ -10,27 +10,40 @@ export const useUserStore = defineStore("user", {
     regions: [],
     businesses: [],
     dataInput: [],
-    authUser: null
+    loggedIn: localStorage.getItem("loggedIn") === "true",
+    token: localStorage.getItem("token") || "",
+    loginFailed: null,
   }),
   getters: {},
   actions: {
-    async getToken(){
-      axios.get('/sanctum/csrf-cookie')
+    async getToken() {
+      axios.get("/sanctum/csrf-cookie");
     },
-    async getUser(){
-     const data =  axios.get('/api/user')
-     this.authUser = data.data
+    async getUser() {
+      const data = axios.get("/api/user");
+      this.authUser = data.data;
     },
     async loginHandler(dataInput) {
       try {
-        this.getToken()
-        const { data } = await axios({
+        this.getToken();
+        const { response } = await axios({
           method: "POST",
-          url: "/login",
+          url: "http://localhost:8000/api/login",
           data: dataInput,
         });
-        console.log(data, "<<<");
-        this.router.push("/");
+
+        if (response.data.success) {
+          this.loggedIn = true;
+          this.token = response.data.token;
+          // Set localStorage
+          localStorage.setItem("loggedIn", "true");
+          localStorage.setItem("token", response.data.token);
+          this.router.push("/admin");
+        } else {
+          // Set state login failed
+          this.loginFailed = true;
+        }
+        console.log(response, "<<<");
       } catch (error) {
         console.log(error);
       }
@@ -48,13 +61,15 @@ export const useUserStore = defineStore("user", {
         console.log(error);
       }
     },
-    async fetchById(id){
+    async fetchById(id) {
       try {
-        let {data} = await axios.get("http://localhost:8000/api/destination/" + id)
-        this.destination = data.data
-    } catch (error) {
+        let { data } = await axios.get(
+          "http://localhost:8000/api/destination/" + id
+        );
+        this.destination = data.data;
+      } catch (error) {
         console.log(error);
-    }
+      }
     },
     async fetchCategories() {
       try {
