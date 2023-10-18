@@ -5,12 +5,36 @@ import axios from "axios";
 export const useUserStore = defineStore("user", {
   state: () => ({
     destinations: [],
+    destination: {},
     categories: [],
     regions: [],
     businesses: [],
+    dataInput: [],
+    authUser: null
   }),
   getters: {},
   actions: {
+    async getToken(){
+      axios.get('/sanctum/csrf-cookie')
+    },
+    async getUser(){
+     const data =  axios.get('/api/user')
+     this.authUser = data.data
+    },
+    async loginHandler(dataInput) {
+      try {
+        this.getToken()
+        const { data } = await axios({
+          method: "POST",
+          url: "/login",
+          data: dataInput,
+        });
+        console.log(data, "<<<");
+        this.router.push("/");
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async fetchDestination() {
       try {
         const { data } = await axios({
@@ -23,6 +47,14 @@ export const useUserStore = defineStore("user", {
       } catch (error) {
         console.log(error);
       }
+    },
+    async fetchById(id){
+      try {
+        let {data} = await axios.get("http://localhost:8000/api/destination/" + id)
+        this.destination = data.data
+    } catch (error) {
+        console.log(error);
+    }
     },
     async fetchCategories() {
       try {

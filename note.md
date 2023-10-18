@@ -1,6 +1,7 @@
 ## membuat respon formatter
 
 php artisan make:resource ApiResource
+php artisan make:resource PostResource
 
 ## membuat model
 - untuk create model

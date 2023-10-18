@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import LandingView from "../views/landingView.vue";
+import DetailwisataView from "../views/DetailwisataView.vue";
+
 
 import LoginView from "../views/admin/login.vue";
 import DashboardView from "../views/DashboardView.vue";
@@ -19,8 +21,18 @@ const router = createRouter({
       component: LandingView,
     },
     {
+      path: "/detail/:id",
+      name: "detail",
+      component: DetailwisataView,
+    },
+    {
       path: "/login",
       name: "login",
+      component: LoginView,
+    },
+    {
+      path: "/register",
+      name: "register",
       component: LoginView,
     },
     {

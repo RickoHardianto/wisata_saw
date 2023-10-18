@@ -31,6 +31,15 @@ class DestinationController extends Controller
         ], 200);
     }
 
+    public function show(Destination $destination){
+        return response()->json([
+            'success' => true,
+            'message' => 'List data Destination',
+            'data' => $destination
+        ], 200
+        );
+    }
+
     public function store(Request $request)
     {
 
@@ -52,7 +61,7 @@ class DestinationController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        $userid = Auth::user()->id;
+        // $userid = Auth::user()->id;
 
         $destination = Destination::create([
             'wisata'     => $request->wisata,
@@ -66,7 +75,7 @@ class DestinationController extends Controller
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id,
-            'user_id'     => $userid,
+            // 'user_id'     => $userid,
         ]);
 
         // return response 

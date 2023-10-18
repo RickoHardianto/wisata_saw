@@ -1,33 +1,17 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "../stores/wisata";
-import CardComponent from "../components/landing/CardComponent.vue";
-import {ref, onMounted} from 'vue'
-import axios from "axios";
-
-
-const user = ref()
-
-onMounted(async () =>{
-  const data = await axios.get('/api/user')
-  console.log(data);
-  user.data = data.data
-})
 
 export default {
   computed: {
-    ...mapState(useUserStore, ["destinations"]),
-    ...mapState(useUserStore, ["authUser"]),
+    ...mapState(useUserStore, ["destination"]),
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchDestination"]),
-    ...mapActions(useUserStore, ["getUser"]),
+    ...mapActions(useUserStore, ["fetchById"]),
   },
   created() {
-    this.fetchDestination();
-    this.getUser();
+    this.fetchById(this.$route.params.id);
   },
-  components: { CardComponent },
 };
 </script>
 
@@ -50,13 +34,22 @@ export default {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="login">Login</router-link>
+            <router-link class="nav-link active" aria-current="page" to="login"
+              >Login</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="register">Register</router-link>
+            <router-link
+              class="nav-link active"
+              aria-current="page"
+              to="register"
+              >Register</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="#">Logout</router-link>
+            <router-link class="nav-link active" aria-current="page" to="#"
+              >Logout</router-link
+            >
           </li>
         </ul>
       </div>
@@ -74,28 +67,26 @@ export default {
   <!-- Section-->
   <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
+        <h1 class="text-center mb-5">{{ destination.wisata }}</h1>
       <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+        class="justify-content-center"
       >
-        <CardComponent
-          v-for="destination in destinations"
-          key="destination.id"
-          :destination="destination"
+        <img
+          :src="destination.img"
+          class="mb-5"
         />
+        <p> Harga Tiket Masuk : {{ destination.price }}.000</p>
+        <p> Jam Buka : {{ destination.openTime }}</p>
+        <p> Jam Tutup : {{ destination.closeTime }}</p>
+        <p> Access Kendaraan : {{ destination.access }}</p>
+        <p> Alamat : {{ destination.address }}</p>
       </div>
     </div>
   </section>
-  <!-- Footer-->
-  <footer class="py-5 bg-hefo">
-    <div class="container">
-      <p class="m-0 text-center text-white">
-        Copyright &copy; Your Website 2023
-      </p>
-    </div>
-  </footer>
 </template>
 <style>
 .bg-hefo {
-  background-color: #86B817;
+  background-color: #86b817;
 }
 </style>
+
