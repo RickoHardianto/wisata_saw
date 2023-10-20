@@ -10,12 +10,12 @@ export default {};
       id="accordionSidebar"
     >
       <!-- Sidebar - Brand -->
-      <a
+      <router-link
         class="sidebar-brand d-flex align-items-center justify-content-center"
-        href="index.html"
+        to="/admin"
       >
         <div class="sidebar-brand-text mx-3">Destinasi Wisata</div>
-      </a>
+      </router-link>
 
       <!-- Divider -->
       <hr class="sidebar-divider my-0" />

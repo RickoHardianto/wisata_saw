@@ -1,8 +1,8 @@
 <script>
-import SidebarComponent from "../../components/admin/SidebarComponent.vue";
-import TopbarComponent from "../../components/admin/TopbarComponent.vue";
+import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
+import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
 import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../stores/wisata";
+import { useUserStore } from "../../../stores/wisata";
 
 export default {
   components: {
@@ -39,9 +39,9 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">
-                Data Tempat Wisata
-              </h6>
+              <button class="btn btn-primary btn-sm">
+                Tambah Tempat Wisata
+              </button>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -77,7 +77,11 @@ export default {
                       <td>{{ destination.wisata }}</td>
                       <td>Alam</td>
                       <td>{{ destination.address }}</td>
-                      <td>-</td>
+                      <td>
+                        <button class="btn btn-sm btn-info m-1"><i class="fa fa-eye"></i></button>
+                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
+                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

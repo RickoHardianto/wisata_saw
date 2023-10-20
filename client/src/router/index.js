@@ -5,11 +5,14 @@ import DetailwisataView from "../views/DetailwisataView.vue";
 
 import LoginView from "../views/admin/login.vue";
 import DashboardView from "../views/DashboardView.vue";
-import UserView from "../views/admin/user.vue";
-import kelolaKategori from "../views/admin/KelolaKategori.vue";
-import kelolaTEmpatWisata from "../views/admin/KelolaTempat.vue";
-import tempatWisata from "../views/admin/KelolaTempatUsaha.vue";
-import manajemenWilayah from "../views/admin/KelolaWilayah.vue";
+import UserView from "../views/admin/user/user.vue";
+import kelolaKategori from "../views/admin/category/KelolaKategori.vue";
+import kelolaTEmpatWisata from "../views/admin/destinasi/KelolaTempat.vue";
+
+import tempatWisata from "../views/admin/bisnis/KelolaTempatUsaha.vue";
+import formTempatWisata from "../views/admin/bisnis/formTempatUsaha.vue";
+
+import manajemenWilayah from "../views/admin/wilayah/KelolaWilayah.vue";
 import rekomendasiWIsata from "../views/admin/RekomendasiWisata.vue";
 
 const router = createRouter({
@@ -55,6 +58,10 @@ const router = createRouter({
     {
       path: "/tempat-wisata-&-usaha",
       component: tempatWisata,
+    },
+    {
+      path: "/form-tempat-wisata-&-usaha",
+      component: formTempatWisata,
     },
     {
       path: "/manajemen-wilayah",

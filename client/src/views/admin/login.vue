@@ -19,93 +19,86 @@ export default{
 }
 </script> -->
 
-
 <script>
-    import axios from 'axios'
+import axios from "axios";
 
-    export default {
-        name: 'Login',
+export default {
+  name: "Login",
 
-        data() {
-            return {
-                //state loggedIn with localStorage
-                loggedIn: localStorage.getItem('loggedIn'),
-                //state token
-                token: localStorage.getItem('token'),
-                //state user
-                user: [],
-                //state validation
-                validation: [],
-                //state login failed
-                loginFailed: null
-            }
-        },
-        methods: {
+  data() {
+    return {
+      //state loggedIn with localStorage
+      loggedIn: localStorage.getItem("loggedIn"),
+      //state token
+      token: localStorage.getItem("token"),
+      //state user
+      user: [],
+      //state validation
+      validation: [],
+      //state login failed
+      loginFailed: null,
+    };
+  },
+  methods: {
+    login() {
+      if (this.user.email && this.user.password) {
+        axios
+          .get("http://localhost:8000/sanctum/csrf-cookie")
+          .then((response) => {
+            //debug cookie
+            console.log(response);
 
-            login() {
-                if (this.user.email && this.user.password) {
-                    axios.get('http://localhost:8000/sanctum/csrf-cookie')
-                        .then(response => {
+            axios
+              .post("http://localhost:8000/api/login", {
+                email: this.user.email,
+                password: this.user.password,
+              })
+              .then((res) => {
+                //debug user login
+                console.log(res);
 
-                            //debug cookie
-                            console.log(response)
+                if (res.data.success) {
+                  //set localStorage
+                  localStorage.setItem("loggedIn", "true");
 
-                            axios.post('http://localhost:8000/api/login', {
-                                email: this.user.email,
-                                password: this.user.password
-                            }).then(res => {
+                  //set localStorage Token
+                  localStorage.setItem("token", res.data.token);
 
-                                //debug user login
-                                console.log(res)
+                  //change state
+                  this.loggedIn = true;
 
-                                if (res.data.success) {
-
-                                    //set localStorage
-                                    localStorage.setItem("loggedIn", "true")
-
-                                    //set localStorage Token
-                                    localStorage.setItem("token", res.data.token)
-
-                                    //change state
-                                    this.loggedIn = true
-
-                                    //redirect dashboard
-                                    return this.$router.push({ name: 'admin' })
-
-                                } else {
-
-                                    //set state login failed
-                                    this.loginFailed = true
-
-                                }
-
-                            }).catch(error => {
-                                console.log(error)
-                            })
-
-                        })
+                  //redirect dashboard
+                  return this.$router.push({ name: "admin" });
+                } else {
+                  //set state login failed
+                  this.loginFailed = true;
                 }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          });
+      }
 
-                this.validation = []
+      this.validation = [];
 
-                if (!this.user.email) {
-                    this.validation.email = true
-                }
+      if (!this.user.email) {
+        this.validation.email = true;
+      }
 
-                if (!this.user.password) {
-                    this.validation.password = true
-                }
+      if (!this.user.password) {
+        this.validation.password = true;
+      }
+    },
+  },
 
-            }
-        },
-
-        //check user already logged in
-        mounted() {
-            if (this.loggedIn) {
-                return this.$router.push({ name: 'dashboard' })
-            }
-        }
+  //check user already logged in
+  mounted() {
+    if (this.loggedIn) {
+      return this.$router.push({ name: "dashboard" });
     }
+  },
+};
 </script>
 
 <template>
@@ -120,7 +113,6 @@ export default{
             <div class="form-group">
               <input
                 type="email"
-                
                 class="form-control form-control-user"
                 id="exampleInputEmail"
                 aria-describedby="emailHelp"

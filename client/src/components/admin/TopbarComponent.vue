@@ -1,6 +1,44 @@
 <script>
+import axios from 'axios'
+
 export default{
-    
+  data() {
+        return {
+            //state loggedIn with localStorage
+            loggedIn: localStorage.getItem('loggedIn'),
+            //state token
+            token: localStorage.getItem('token'),
+            //state user logged In
+            user: []
+        }
+    },
+  created() {
+    axios
+      .get("http://localhost:8000/api/user", {
+        headers: { Authorization: "Bearer " + this.token },
+      })
+      .then((response) => {
+        console.log(response);
+        this.user = response.data; // assign response to state user
+      });
+  },
+  methods: {
+    logout() {
+      axios.get("http://localhost:8000/api/logout").then(() => {
+        //remove localStorage
+        localStorage.removeItem("loggedIn");
+
+        //redirect
+        return this.$router.push({ name: "login" });
+      });
+    },
+  },
+  //check user logged in or not
+  mounted() {
+    if (!this.loggedIn) {
+      return this.$router.push({ name: "login" });
+    }
+  },
 }
 </script>
 
@@ -71,23 +109,14 @@ export default{
             aria-expanded="false"
           >
             <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-              >Douglas McGee</span
+              >{{user.name}}</span
             >
-            <img
-              class="img-profile rounded-circle"
-              src="img/undraw_profile.svg"
-            />
           </a>
           <!-- Dropdown - User Information -->
           <div
             class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
             aria-labelledby="userDropdown"
           >
-            <a class="dropdown-item" href="#">
-              <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-              Profile
-            </a>
-            <div class="dropdown-divider"></div>
             <a
               class="dropdown-item"
               href="#"
@@ -102,5 +131,40 @@ export default{
       </ul>
     </nav>
     <!-- End of Topbar -->
+  </div>
+
+  <!-- Logout Modal-->
+  <div
+    class="modal fade"
+    id="logoutModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <button
+            class="close"
+            type="button"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Select "Logout" below if you are ready to end your current session.
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">
+            Cancel
+          </button>
+          <a @click.prevent="logout" class="btn btn-primary">Logout</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>

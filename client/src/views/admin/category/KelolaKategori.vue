@@ -1,8 +1,8 @@
 <script>
-import SidebarComponent from "../../components/admin/SidebarComponent.vue";
-import TopbarComponent from "../../components/admin/TopbarComponent.vue";
+import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
+import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
 import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../stores/wisata";
+import { useUserStore } from "../../../stores/wisata";
 
 export default {
   components: {
@@ -10,13 +10,13 @@ export default {
     TopbarComponent,
   },
   computed: {
-    ...mapState(useUserStore, ["regions"]),
+    ...mapState(useUserStore, ["categories"]),
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchRegions"]),
+    ...mapActions(useUserStore, ["fetchCategories"]),
   },
   created() {
-    this.fetchRegions();
+    this.fetchCategories();
   },
 };
 </script>
@@ -35,12 +35,11 @@ export default {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Kelola Wilayah</h1>
-
+          <h1 class="h3 mb-4 text-gray-800">Kelola Kategori</h1>
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Data Wilayah</h6>
+              <button class="btn btn-primary btn-sm">Tambah Kategori</button>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -53,26 +52,26 @@ export default {
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
-                      <th>Kategori</th>
-                      <th>action</th>
+                      <th>Nama Kategori</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
-                    <tr>
-                      <th style="width: 10px">#</th>
-                      <th>Kategori</th>
-                      <th>action</th>
-                    </tr>
+                    <th style="width: 10px">#</th>
+                    <th>Nama Kategori</th>
+                    <th>Action</th>
                   </tfoot>
                   <tbody>
                     <tr
-                      v-for="(region, index) in regions"
-                      key="region.id"
-                      :region="region"
+                      v-for="(category, index) in categories"
+                      key="category.id"
                     >
                       <td>{{ index + 1 }}</td>
-                      <td>{{ region.region }}</td>
-                      <td>-</td>
+                      <td>{{ category.category }}</td>
+                      <td>
+                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
+                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
