@@ -20,6 +20,14 @@ class BusinessController extends Controller
             'data' => $business
         ], 200);
     }
+    public function show(Business $business){
+        return response()->json([
+            'success' => true,
+            'message' => 'List data Destination',
+            'data' => $business
+        ], 200
+        );
+    }
 
     public function store(Request $request)
     {
