@@ -1,5 +1,45 @@
 <script>
-export default {};
+import axios from 'axios'
+
+export default {
+  data() {
+        return {
+            //state loggedIn with localStorage
+            loggedIn: localStorage.getItem('loggedIn'),
+            //state token
+            token: localStorage.getItem('token'),
+            //state user logged In
+            user: []
+        }
+    },
+  created() {
+    axios
+      .get("http://localhost:8000/api/user", {
+        headers: { Authorization: "Bearer " + this.token },
+      })
+      .then((response) => {
+        console.log(response);
+        this.user = response.data; // assign response to state user
+      });
+  },
+  methods: {
+    logout() {
+      axios.get("http://localhost:8000/api/logout").then(() => {
+        //remove localStorage
+        localStorage.removeItem("loggedIn");
+
+        //redirect
+        return this.$router.push({ name: "login" });
+      });
+    },
+  },
+  //check user logged in or not
+  mounted() {
+    if (!this.loggedIn) {
+      return this.$router.push({ name: "login" });
+    }
+  },
+};
 </script>
 
 <template>
@@ -110,6 +150,12 @@ export default {};
             <a class="collapse-item" href="#">All Comment</a>
           </div>
         </div>
+      </li>
+      <li class="nav-item">
+        <a @click.prevent="logout" class="nav-link">
+          <i class="fas fa-fw fa-arrow-left"></i>
+          <span>Logout</span></a
+        >
       </li>
       <!-- Divider -->
       <hr class="sidebar-divider" />
