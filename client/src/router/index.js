@@ -14,6 +14,7 @@ import editKategori from "../views/admin/category/edit.vue";
 import kelolaTEmpatWisata from "../views/admin/destinasi/KelolaTempat.vue";
 import createkelolaTEmpatWisata from "../views/admin/destinasi/create.vue";
 import updatekelolaTEmpatWisata from "../views/admin/destinasi/edit.vue";
+import detailkelolaTEmpatWisata from "../views/admin/destinasi/detail.vue";
 
 import tempatWisata from "../views/admin/bisnis/KelolaTempatUsaha.vue";
 import createTempatWisata from "../views/admin/bisnis/create.vue";
@@ -80,6 +81,10 @@ const router = createRouter({
     {
       path: "/kelola-tempat-wisata/:id",
       component: updatekelolaTEmpatWisata,
+    },
+    {
+      path: "/kelola-tempat-wisata/:id/detail",
+      component: detailkelolaTEmpatWisata,
     },
     {
       path: "/tempat-wisata-&-usaha",

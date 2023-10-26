@@ -42,7 +42,7 @@ export default {
       axios
         .get("http://localhost:8000/api/regions")
         .then((res) => {
-          this.regions = res.data.data.map((item) => item.region);
+          this.regions = res.data.data
         })
         .catch(function (error) {
           console.log(error);
@@ -52,7 +52,7 @@ export default {
       axios
         .get("http://localhost:8000/api/business/")
         .then((res) => {
-          this.businesses = res.data.data.map((item) => item.business);
+          this.businesses = res.data.data
         })
         .catch(function (error) {
           console.log(error);
@@ -62,7 +62,7 @@ export default {
       axios
         .get("http://localhost:8000/api/categories/")
         .then((res) => {
-          this.categories = res.data.data.map((item) => item.category);
+          this.categories = res.data.data
         })
         .catch(function (error) {
           console.log(error);
@@ -181,39 +181,17 @@ export default {
                 />
               </div>
               <div class="mb-3">
-                <label for="">Region</label>
-                <input
-                  type="number"
-                  v-model="model.formInput.region_id"
-                  class="form-control"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="">Bisnis & Wisata</label>
-                <input
-                  type="text"
-                  v-model="model.formInput.business_id"
-                  class="form-control"
-                />
-              </div>
-              <div class="mb-3">
-                <label for="">Kategori</label>
-                <input
-                  type="text"
-                  v-model="model.formInput.category_id"
-                  class="form-control"
-                />
-              </div>
-              <!-- <div class="mb-3">
                 <label for="">Wilayah</label>
                 <select
                   class="form-select"
                   name="region_id"
                   v-model="model.formInput.region_id"
                 >
-                  <option selected>Open this select menu</option>
+                  <option disable value="" selected>
+                    Open this select menu
+                  </option>
                   <option v-for="region in regions" :value="region.id">
-                    {{ region }}
+                    {{ region.region }}
                   </option>
                 </select>
               </div>
@@ -224,9 +202,11 @@ export default {
                   name="business_id"
                   v-model="model.formInput.business_id"
                 >
-                  <option selected>Open this select menu</option>
+                  <option disable value="" selected>
+                    Open this select menu
+                  </option>
                   <option v-for="business in businesses" :value="business.id">
-                    {{ business }}
+                    {{ business.business }}
                   </option>
                 </select>
               </div>
@@ -237,12 +217,14 @@ export default {
                   name="category_id"
                   v-model="model.formInput.category_id"
                 >
-                  <option selected>Open this select menu</option>
+                  <option disable value="" selected>
+                    Open this select menu
+                  </option>
                   <option v-for="category in categories" :value="category.id">
-                    {{ category }}
+                    {{ category.category }}
                   </option>
                 </select>
-              </div> -->
+              </div>
 
               <div class="mb-3">
                 <button

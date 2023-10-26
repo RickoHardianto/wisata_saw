@@ -101,11 +101,17 @@ export default {
                       <td>{{ index + 1 }}</td>
                       <td>{{ destination.wisata }}</td>
                       <td>
-                        <button class="btn btn-sm btn-info m-1">
-                          <i class="fa fa-eye"></i>
-                        </button>
                         <router-link
-                        :to="{path: '/kelola-tempat-wisata/'+ destination.id}"
+                          :to="{
+                            path: '/kelola-tempat-wisata/' + destination.id +'/detail',
+                          }"
+                          class="btn btn-sm btn-info m-1"
+                          ><i class="fa fa-eye"></i
+                        ></router-link>
+                        <router-link
+                          :to="{
+                            path: '/kelola-tempat-wisata/' + destination.id,
+                          }"
                           class="btn btn-sm btn-warning m-1"
                           ><i class="fa fa-pen"></i
                         ></router-link>
