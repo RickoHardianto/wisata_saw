@@ -1,21 +1,48 @@
 <script>
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
-import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../../stores/wisata";
+import { ref } from "vue";
+import axios from "axios";
+
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
-  computed: {
-    ...mapState(useUserStore, ["businesses"]),
+  name: "Business",
+  data() {
+    return {
+      businesses: [],
+    };
+  },
+  mounted() {
+    this.fetchBusiness();
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchBusiness"]),
-  },
-  created() {
-    this.fetchBusiness();
+    async fetchBusiness() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/business",
+        });
+
+        console.log(data);
+        this.businesses = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteBusiness(id){
+      console.log(id);
+      axios.delete(`http://localhost:8000/api/business/${id}`)
+      .then(res => {
+        console.log(res);
+        this.fetchBusiness()
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    } 
   },
 };
 </script>
@@ -40,7 +67,7 @@ export default {
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <router-link
-                to="/form-tempat-wisata-&-usaha"
+                to="/tempat-wisata-&-usaha/create"
                 class="btn btn-primary btn-sm"
               >
                 Tambah Tempat Wisata & Usaha
@@ -71,14 +98,24 @@ export default {
                   <tbody>
                     <tr
                       v-for="(business, index) in businesses"
-                      key="business.id"
+                      :key="business.id"
                       :business="business"
                     >
                       <td>{{ index + 1 }}</td>
                       <td>{{ business.business }}</td>
                       <td>
-                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                        <router-link
+                          :to="{path: '/tempat-wisata-&-usaha/'+ business.id}"
+                          class="btn btn-warning btn-sm"
+                        >
+                        <i class="fa fa-pen"></i>
+                        </router-link>
+                        <button
+                          @click="deleteBusiness(business.id)"
+                          class="btn btn-sm btn-danger m-1"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>

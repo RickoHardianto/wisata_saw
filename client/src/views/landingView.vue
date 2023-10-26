@@ -5,27 +5,15 @@ import CardComponent from "../components/landing/CardComponent.vue";
 import {ref, onMounted} from 'vue'
 import axios from "axios";
 
-
-const user = ref()
-
-onMounted(async () =>{
-  const data = await axios.get('/api/user')
-  console.log(data);
-  user.data = data.data
-})
-
 export default {
   computed: {
     ...mapState(useUserStore, ["destinations"]),
-    ...mapState(useUserStore, ["authUser"]),
   },
   methods: {
     ...mapActions(useUserStore, ["fetchDestination"]),
-    ...mapActions(useUserStore, ["getUser"]),
   },
   created() {
     this.fetchDestination();
-    this.getUser();
   },
   components: { CardComponent },
 };

@@ -12,11 +12,16 @@ class CategoryController extends Controller
     
     public function index(){
         $category = Category::latest()->get();
+        return response()->json(['data' => $category]);
+    }
+
+    public function show(Category $category){
         return response()->json([
             'success' => true,
-            'message' => 'List data Kategori',
+            'message' => 'List data Category',
             'data' => $category
-        ], 200);
+        ], 200
+        );
     }
 
     public function store(Request $request){

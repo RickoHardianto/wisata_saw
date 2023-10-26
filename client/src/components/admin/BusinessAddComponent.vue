@@ -1,21 +1,32 @@
 <script>
-import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
-import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
+import SidebarComponent from "../../components/admin/SidebarComponent.vue";
+import TopbarComponent from "../../components/admin/TopbarComponent.vue";
 import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../../stores/wisata";
+import { useUserStore } from "../../stores/wisata";
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
+  data() {
+    return {
+      dataInput: {
+        business: "",
+      },
+    };
+  },
+
   computed: {
     ...mapState(useUserStore, ["businesses"]),
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchBusiness"]),
+    ...mapActions(useUserStore, ["formBusiness"]),
+    form() {
+      this.formBusiness(this.dataInput);
+    },
   },
   created() {
-    this.fetchBusiness();
+    this.formBusiness();
   },
 };
 </script>
@@ -41,7 +52,7 @@ export default {
               <h4>Tambah Tempat Wisata & Usaha</h4>
             </div>
             <div class="card-body">
-              <form action="" method="post">
+              <form @submit.prevent="form">
                 <div class="input-group mb-3">
                   <input
                     type="text"
@@ -49,10 +60,11 @@ export default {
                     placeholder="Nama Kategori"
                     aria-label="Nama Kategori"
                     aria-describedby="button-addon2"
+                    v-model="dataInput.business"
                   />
                   <button
                     class="btn btn-outline-success"
-                    type="button"
+                    type="submit"
                     id="button-addon2"
                   >
                     Tambah
@@ -61,8 +73,6 @@ export default {
               </form>
             </div>
           </div>
-
-          
         </div>
 
         <!-- /.container-fluid -->

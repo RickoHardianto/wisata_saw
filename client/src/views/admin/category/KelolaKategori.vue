@@ -1,22 +1,48 @@
 <script>
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
-import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../../stores/wisata";
+import { ref } from "vue";
+import axios from "axios";
 
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
-  computed: {
-    ...mapState(useUserStore, ["categories"]),
+  name: "category",
+  data() {
+    return {
+      categories: [],
+    };
+  },
+  mounted() {
+    this.fetchCategory();
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchCategories"]),
-  },
-  created() {
-    this.fetchCategories();
+    async fetchCategory() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/categories",
+        });
+
+        console.log(data);
+        this.categories = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteCategory(id){
+      console.log(id);
+      axios.delete(`http://localhost:8000/api/categories/${id}`)
+      .then(res => {
+        console.log(res);
+        this.fetchCategory()
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    } 
   },
 };
 </script>
@@ -39,7 +65,12 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <button class="btn btn-primary btn-sm">Tambah Kategori</button>
+              <router-link
+                to="/kelola-kategori/create"
+                class="btn btn-primary btn-sm"
+              >
+                Tambah Kategori
+              </router-link>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -69,8 +100,18 @@ export default {
                       <td>{{ index + 1 }}</td>
                       <td>{{ category.category }}</td>
                       <td>
-                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                        <router-link
+                        :to="{path: '/kelola-kategori/'+ category.id}"
+                          class="btn btn-warning btn-sm"
+                        >
+                        <i class="fa fa-pen"></i>
+                        </router-link>
+                        <button
+                          class="btn btn-sm btn-danger m-1"
+                          @click="deleteCategory(category.id)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -92,39 +133,4 @@ export default {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div
-    class="modal fade"
-    id="logoutModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button
-            class="close"
-            type="button"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Select "Logout" below if you are ready to end your current session.
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            Cancel
-          </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>

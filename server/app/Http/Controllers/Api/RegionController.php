@@ -24,6 +24,15 @@ class RegionController extends Controller
         // ], 200);
     }
 
+    public function show(Region $region){
+        return response()->json([
+            'success' => true,
+            'message' => 'List data region',
+            'data' => $region
+        ], 200
+        );
+    }
+
     public function store(Request $request){
 
         $validator = Validator::make($request->all(), [

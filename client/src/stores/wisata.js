@@ -110,5 +110,20 @@ export const useUserStore = defineStore("user", {
         console.log(error);
       }
     },
+    async formBusiness(dataInput) {
+      try {
+        const { data } = await axios({
+          method: "POST",
+          url: "http://localhost:8000/api/business",
+          data:dataInput
+        });
+
+        console.log(data);
+        // this.businesses = data.data;
+        this.router.push('/tempat-wisata-&-usaha')
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
 });

@@ -1,23 +1,49 @@
 <script>
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
-import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../../stores/wisata";
+import axios from "axios";
 
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
-  computed: {
-    ...mapState(useUserStore, ["regions"]),
+  name: "category",
+  data() {
+    return {
+      regions: [],
+    };
+  },
+  mounted() {
+    this.fetchRegion();
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchRegions"]),
+    async fetchRegion() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/regions",
+        });
+
+        console.log(data);
+        this.regions = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteCategory(id){
+      console.log(id);
+      axios.delete(`http://localhost:8000/api/regions/${id}`)
+      .then(res => {
+        console.log(res);
+        this.fetchRegion()
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    } 
   },
-  created() {
-    this.fetchRegions();
-  },
+ 
 };
 </script>
 
@@ -40,9 +66,12 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <button class="btn btn-primary btn-sm">
-                Tambah Data Wilayah
-              </button>
+              <router-link
+                to="/manajemen-wilayah/create"
+                class="btn btn-primary btn-sm"
+              >
+                Tambah Wilayah
+              </router-link>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -75,8 +104,18 @@ export default {
                       <td>{{ index + 1 }}</td>
                       <td>{{ region.region }}</td>
                       <td>
-                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                        <router-link
+                        :to="{path: '/manajemen-wilayah/'+ region.id}"
+                          class="btn btn-warning btn-sm"
+                        >
+                        <i class="fa fa-pen"></i>
+                        </router-link>
+                        <button
+                          class="btn btn-sm btn-danger m-1"
+                          @click="deleteCategory(region.id)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>

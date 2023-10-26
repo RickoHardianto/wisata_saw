@@ -1,22 +1,48 @@
 <script>
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
-import { mapActions, mapState } from "pinia";
-import { useUserStore } from "../../../stores/wisata";
+import axios from "axios";
 
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
-  computed: {
-    ...mapState(useUserStore, ["destinations"]),
+  name: "Destinations",
+  data() {
+    return {
+      destinations: [],
+    };
+  },
+  mounted() {
+    this.fetchDestinations();
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchDestination"]),
-  },
-  created() {
-    this.fetchDestination();
+    async fetchDestinations() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/destination",
+        });
+
+        console.log(data);
+        this.destinations = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteDestination(id) {
+      console.log(id);
+      axios
+        .delete(`http://localhost:8000/api/destination/${id}`)
+        .then((res) => {
+          console.log(res);
+          this.fetchDestinations();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -39,9 +65,12 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <button class="btn btn-primary btn-sm">
+              <router-link
+                to="/kelola-tempat-wisata/create"
+                class="btn btn-primary btn-sm"
+              >
                 Tambah Tempat Wisata
-              </button>
+              </router-link>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -55,16 +84,12 @@ export default {
                     <tr>
                       <th style="width: 10px">#</th>
                       <th>Nama Wisata</th>
-                      <th>Kategori Wisata</th>
-                      <th>Alamat</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <th style="width: 10px">#</th>
                     <th>Nama Wisata</th>
-                    <th>Kategori Wisata</th>
-                    <th>Alamat</th>
                     <th>Action</th>
                   </tfoot>
                   <tbody>
@@ -75,12 +100,21 @@ export default {
                     >
                       <td>{{ index + 1 }}</td>
                       <td>{{ destination.wisata }}</td>
-                      <td>Alam</td>
-                      <td>{{ destination.address }}</td>
                       <td>
-                        <button class="btn btn-sm btn-info m-1"><i class="fa fa-eye"></i></button>
-                        <button class="btn btn-sm btn-warning m-1"><i class="fa fa-pen"></i></button>
-                        <button class="btn btn-sm btn-danger m-1"><i class="fa fa-trash"></i></button>
+                        <button class="btn btn-sm btn-info m-1">
+                          <i class="fa fa-eye"></i>
+                        </button>
+                        <router-link
+                        :to="{path: '/kelola-tempat-wisata/'+ destination.id}"
+                          class="btn btn-sm btn-warning m-1"
+                          ><i class="fa fa-pen"></i
+                        ></router-link>
+                        <button
+                          @click="deleteDestination(destination.id)"
+                          class="btn btn-sm btn-danger m-1"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>

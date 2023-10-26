@@ -1,3 +1,4 @@
+
 <script>
 import SidebarComponent from '../../components/admin/SidebarComponent.vue';
 import TopbarComponent from '../../components/admin/TopbarComponent.vue';
@@ -26,9 +27,7 @@ export default {
         <div class="container-fluid">
           <!-- Page Heading -->
           <h1 class="h3 mb-4 text-gray-800">Rekomendasi Wisata</h1>
-
-        
-
+          
         </div>
 
         <!-- /.container-fluid -->
