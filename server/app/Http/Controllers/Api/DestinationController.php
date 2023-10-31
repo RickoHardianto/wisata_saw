@@ -51,11 +51,13 @@ class DestinationController extends Controller
             'access'     => 'required',
             'address'     => 'required',
             'numberPhone'     => 'required',
-            'img'     => 'required',
+            'img'     => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'region_id'     => 'required',
             'business_id'     => 'required',
             'category_id'     => 'required'
         ]);
+
+        $img_path = $request->file('img')->store('img', 'public');
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
@@ -71,7 +73,7 @@ class DestinationController extends Controller
             'access'     => $request->access,
             'address'     => $request->address,
             'numberPhone'     => $request->numberPhone,
-            'img'     => $request->img,
+            'img'     => $img_path,
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id,

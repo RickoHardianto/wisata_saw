@@ -12,4 +12,9 @@ class Region extends Model
     protected $fillable = [
         'region'
     ];
+
+    public function destination()
+        {
+        return $this->belongsTo(Destination::class);
+        }
 }

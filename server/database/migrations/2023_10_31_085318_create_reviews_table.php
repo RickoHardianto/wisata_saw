@@ -13,12 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->string('slug');
-            $table->string('image');
+            $table->unsignedBigInteger('destination_id');
+            $table->unsignedBigInteger('customer_id');
+            $table->integer('rating');
+            $table->text('review');
             $table->timestamps();
+            $table->foreign('destination_id')->references('id')->on('destinations');
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('reviews');
     }
 };

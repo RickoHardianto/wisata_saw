@@ -12,4 +12,9 @@ class Business extends Model
     protected $fillable = [
         'business'
     ];
+
+    public function destination()
+    {
+        return $this->belongsTo(Destination::class);
+    }
 }

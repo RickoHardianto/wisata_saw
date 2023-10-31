@@ -5,21 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Review extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'category', 'slug', 'image'
+        'rating', 'review', 'destination_id', 'customer_id'
     ];
 
     public function destination()
     {
-        return $this->hasMany(Destination::class);
+        return $this->belongsTo(Destination::class);
     }
 
-    public function getImageAttribute($image)
+    public function customer()
     {
-        return asset('storage/categories/' . $image);
+        return $this->belongsTo(Customer::class);
     }
 }

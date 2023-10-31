@@ -42,7 +42,7 @@ export default {
       axios
         .get("http://localhost:8000/api/regions")
         .then((res) => {
-          this.regions = res.data.data
+          this.regions = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -52,7 +52,7 @@ export default {
       axios
         .get("http://localhost:8000/api/business/")
         .then((res) => {
-          this.businesses = res.data.data
+          this.businesses = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -62,7 +62,7 @@ export default {
       axios
         .get("http://localhost:8000/api/categories/")
         .then((res) => {
-          this.categories = res.data.data
+          this.categories = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -175,8 +175,8 @@ export default {
               <div class="mb-3">
                 <label for="">Image</label>
                 <input
-                  type="text"
-                  v-model="model.formInput.img"
+                  type="file"
+                  ref="img"
                   class="form-control"
                 />
               </div>
