@@ -26,8 +26,10 @@ class DestinationSeeder extends Seeder
                 "closeTime" => $obj->closeTime,
                 "access" => $obj->access,
                 "address" => $obj->address,
+                "kecamatan" => $obj->address,
                 "numberPhone" => $obj->numberPhone,
                 "img" => $obj->img,
+                "img_lokasi" => $obj->img_lokasi,
                 "region_id" => $obj->region_id,
                 "business_id" => $obj->business_id,
                 "category_id" => $obj->category_id

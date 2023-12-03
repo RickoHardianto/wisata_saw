@@ -67,19 +67,25 @@ export default {
   <!-- Section-->
   <section class="py-5">
     <div class="container px-4 px-lg-5 mt-5">
-        <h1 class="text-center mb-5">{{ destination.wisata }}</h1>
-      <div
-        class="justify-content-center"
-      >
-        <img
-          :src="destination.img"
-          class="mb-5"
-        />
-        <p> Harga Tiket Masuk : {{ destination.price }}.000</p>
-        <p> Jam Buka : {{ destination.openTime }}</p>
-        <p> Jam Tutup : {{ destination.closeTime }}</p>
-        <p> Access Kendaraan : {{ destination.access }}</p>
-        <p> Alamat : {{ destination.address }}</p>
+      <h1 class="text-center mb-5" style="color: black">
+        {{ destination.wisata }}
+      </h1>
+      <div class="justify-content-center">
+        <div class="d-flex justify-content-center align-items-center mb-5">
+          <img :src="`http://localhost:8000/storage/${destination.img}`" />
+        </div>
+        <p>Harga Tiket Masuk : {{ destination.price }}.000</p>
+        <p>Jam Buka : {{ destination.openTime }}</p>
+        <p>Jam Tutup : {{ destination.closeTime }}</p>
+        <p v-if="Array.isArray(destination.access)">
+          Access Kendaraan: {{ JSON.parse(destination.access).join(", ") }}
+        </p>
+        <p v-else>Access Kendaraan: {{ destination.access }}</p>
+        <p>Alamat : {{ destination.address }}</p>
+        <p>Kecamatan : {{ destination.kecamatan }}</p>
+      </div>
+      <div class="d-flex justify-content-center align-items-center">
+        <img :src="`http://localhost:8000/storage/${destination.img_lokasi}`" />
       </div>
     </div>
   </section>
@@ -89,4 +95,3 @@ export default {
   background-color: #86b817;
 }
 </style>
-

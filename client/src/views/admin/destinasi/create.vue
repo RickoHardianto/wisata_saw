@@ -18,10 +18,12 @@ export default {
           price: "",
           openTime: "",
           closeTime: "",
-          access: "",
+          access: [],
           address: "",
+          kecamatan: "",
           numberPhone: "",
-          img: "",
+          img: null,
+          img_lokasi: null,
           region_id: "",
           business_id: "",
           category_id: "",
@@ -68,9 +70,30 @@ export default {
           console.log(error);
         });
     },
+    handleImgUpload(event) {
+      this.model.formInput.img = event.target.files[0];
+    },
+
+    handleLokasiUpload(event) {
+      this.model.formInput.img_lokasi = event.target.files[0];
+    },
     save() {
+      let formData = new FormData();
+      formData.append('img', this.model.formInput.img);
+      formData.append('img_lokasi', this.model.formInput.img_lokasi);
+      formData.append('wisata', this.model.formInput.wisata);
+      formData.append('price', this.model.formInput.price);
+      formData.append('openTime', this.model.formInput.openTime);
+      formData.append('closeTime', this.model.formInput.closeTime);
+      formData.append('access', JSON.stringify(this.model.formInput.access));
+      formData.append('address', this.model.formInput.address);
+      formData.append('kecamatan', this.model.formInput.kecamatan);
+      formData.append('numberPhone', this.model.formInput.numberPhone);
+      formData.append('region_id', this.model.formInput.region_id);
+      formData.append('business_id', this.model.formInput.business_id);
+      formData.append('category_id', this.model.formInput.category_id);
       axios
-        .post("http://localhost:8000/api/destination", this.model.formInput)
+        .post("http://localhost:8000/api/destination", formData)
         .then((res) => {
           console.log(res);
           this.model.formInput = {
@@ -78,10 +101,12 @@ export default {
             price: "",
             openTime: "",
             closeTime: "",
-            access: "",
+            access: [],
             address: "",
+            kecamatan: "",
             numberPhone: "",
-            img: "",
+            img: null,
+            img_lokasi: null,
             region_id: "",
             business_id: "",
             category_id: "",
@@ -89,7 +114,7 @@ export default {
           return this.$router.push("/kelola-tempat-wisata");
         })
         .catch(function (error) {
-          console.log(error);
+          console.log(error.message);
         });
     },
   },
@@ -149,18 +174,26 @@ export default {
                 />
               </div>
               <div class="mb-3">
-                <label for="">Access Kendaraan</label>
-                <input
-                  type="text"
-                  v-model="model.formInput.access"
-                  class="form-control"
-                />
+                <p>Access Kendaraan</p>
+                <input type="checkbox" v-model="model.formInput.access" value="Kendaraan Roda 4" checked>
+                <label for="mobil">Kendaraan Roda 4</label>
+                <br><br>
+                <input type="checkbox" v-model="model.formInput.access" value="Kendaraan Roda 2" checked>
+                <label for="motor">Kendaraan Roda 2</label>
               </div>
               <div class="mb-3">
                 <label for="">Alamat</label>
                 <input
                   type="text"
                   v-model="model.formInput.address"
+                  class="form-control"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="">Kecamatan</label>
+                <input
+                  type="text"
+                  v-model="model.formInput.kecamatan"
                   class="form-control"
                 />
               </div>
@@ -176,8 +209,19 @@ export default {
                 <label for="">Image</label>
                 <input
                   type="file"
-                  ref="img"
+                  id="img"
                   class="form-control"
+                  @change="handleImgUpload"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="">Lokasi Maps</label>
+                <input
+                  type="file"
+                  id="img_lokasi"
+                  class="form-control"
+                  @change="handleLokasiUpload"
+
                 />
               </div>
               <div class="mb-3">

@@ -8,12 +8,12 @@ export default {
   <div class="col mb-5">
     <div class="card h-100">
       <!-- Product image-->
-      <img :src="destination.image" class="card-img-top" />
+      <img :src="`http://localhost:8000/storage/${destination.img}`" class="card-img-top" />
       <!-- Product details-->
       <div class="card-body p-4">
         <div class="text-center">
           <!-- Product name-->
-          <h5 class="fw-bolder">{{ destination.title }}</h5>
+          <h5 class="fw-bolder">{{ destination.wisata }}</h5>
           <!-- Product price-->
           HTM {{ destination.price }}
         </div>

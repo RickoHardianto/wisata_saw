@@ -11,15 +11,16 @@ class Destination extends Model
 
 
     protected $fillable = [
-        "title",
+        "wisata",
         "price",
-        "slug",
         "openTime",
         "closeTime",
         "access",
         "address",
+        "kecamatan",
         "numberPhone",
-        "image",
+        "img",
+        "img_lokasi",
         "region_id",
         "business_id",
         "category_id"

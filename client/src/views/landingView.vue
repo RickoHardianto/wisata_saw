@@ -2,18 +2,38 @@
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "../stores/wisata";
 import CardComponent from "../components/landing/CardComponent.vue";
-import {ref, onMounted} from 'vue'
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
 export default {
+  data() {
+    return {
+      selectedCategory: "",
+    };
+  },
   computed: {
-    ...mapState(useUserStore, ["destinations"]),
+    ...mapState(useUserStore, ["destinations", "categories"]),
+    filteredDestinations() {
+      if (this.selectedCategory === "") {
+        return this.destinations;
+      } else {
+        return this.destinations.filter(
+          (destination) => destination.category_id === this.selectedCategory
+        );
+      }
+    },
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchDestination"]),
+    ...mapActions(useUserStore, ["fetchDestination", "fetchCategories"]),
+    filterDestinations() {
+      this.fetchDestination({
+        filter: { category: this.selectedCategory },
+      });
+    },
   },
   created() {
     this.fetchDestination();
+    this.fetchCategories();
   },
   components: { CardComponent },
 };
@@ -38,13 +58,22 @@ export default {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
-            <router-link  class="nav-link active" aria-current="page" to="login">Login</router-link>
+            <router-link class="nav-link active" aria-current="page" to="login"
+              >Login</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="register">Register</router-link>
+            <router-link
+              class="nav-link active"
+              aria-current="page"
+              to="register"
+              >Register</router-link
+            >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="#">Logout</router-link>
+            <router-link class="nav-link active" aria-current="page" to="#"
+              >Logout</router-link
+            >
           </li>
         </ul>
       </div>
@@ -61,12 +90,33 @@ export default {
   </header>
   <!-- Section-->
   <section class="py-5">
+    <div class="container">
+      <div class="col-md-2">
+        <div class="row">
+          <h4>Kategori</h4>
+          <select
+            class="form-select"
+            v-model="selectedCategory"
+            @change="filterDestinations"
+          > 
+            <option value="" selected>Pilih kategori</option>
+            <option
+              v-for="category in categories"
+              :key="category.id"
+              :value="category.id"
+            >
+              {{ category.category }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
     <div class="container px-4 px-lg-5 mt-5">
       <div
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
         <CardComponent
-          v-for="destination in destinations"
+          v-for="destination in filteredDestinations"
           key="destination.id"
           :destination="destination"
         />
@@ -84,6 +134,6 @@ export default {
 </template>
 <style>
 .bg-hefo {
-  background-color: #86B817;
+  background-color: #86b817;
 }
 </style>

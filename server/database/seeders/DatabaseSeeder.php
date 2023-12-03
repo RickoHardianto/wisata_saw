@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // $this->call(CategorySeeder::class);
-        // $this->call(BusinessSeeder::class);
-        // $this->call(RegionSeeder::class);
-        // $this->call(DestinationSeeder::class);
+        \App\Models\User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+        ]);
+        $this->call(CategorySeeder::class);
+        $this->call(BusinessSeeder::class);
+        $this->call(RegionSeeder::class);
+        $this->call(DestinationSeeder::class);
     }
 }
