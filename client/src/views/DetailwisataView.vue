@@ -8,6 +8,22 @@ export default {
   },
   methods: {
     ...mapActions(useUserStore, ["fetchById"]),
+    displayAccess() {
+      if (Array.isArray(this.destination.access)) {
+        return this.destination.access.join(", ");
+      } else if (typeof this.destination.access === 'string') {
+        try {
+          const accessArray = JSON.parse(this.destination.access);
+          if (Array.isArray(accessArray)) {
+            return accessArray.join(", ");
+          }
+        } catch (error) {
+          // Handle JSON parsing error, if any
+          console.error("Error parsing 'access' JSON string:", error);
+        }
+      }
+      return this.destination.access;
+    },
   },
   created() {
     this.fetchById(this.$route.params.id);
@@ -77,10 +93,7 @@ export default {
         <p>Harga Tiket Masuk : {{ destination.price }}.000</p>
         <p>Jam Buka : {{ destination.openTime }}</p>
         <p>Jam Tutup : {{ destination.closeTime }}</p>
-        <p v-if="Array.isArray(destination.access)">
-          Access Kendaraan: {{ JSON.parse(destination.access).join(", ") }}
-        </p>
-        <p v-else>Access Kendaraan: {{ destination.access }}</p>
+        <p>Access Kendaraan: {{ displayAccess() }}</p>
         <p>Alamat : {{ destination.address }}</p>
         <p>Kecamatan : {{ destination.kecamatan }}</p>
       </div>
