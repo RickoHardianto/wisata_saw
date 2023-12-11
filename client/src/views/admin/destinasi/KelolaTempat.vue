@@ -31,6 +31,21 @@ export default {
         console.log(error);
       }
     },
+    async setStatus(id, status) {
+      try {
+        const { data } = await axios.patch(
+          `http://localhost:8000/api/destination/${id}/status`,
+          {
+            status: status,
+          }
+        );
+
+        console.log(data);
+        this.fetchDestinations(); //
+      } catch (error) {
+        console.log(error);
+      }
+    },
     deleteDestination(id) {
       console.log(id);
       axios
@@ -104,9 +119,30 @@ export default {
                       <td>{{ destination.wisata }}</td>
                       <td>{{ destination.status }}</td>
                       <td>
+                        <select
+                          @change="
+                            setStatus(destination.id, $event.target.value)
+                          "
+                        >
+                          <option
+                            :value="'Validasi'"
+                            :selected="destination.status === 'Validasi'"
+                          >
+                            Validasi
+                          </option>
+                          <option
+                            :value="'Blm Validasi'"
+                            :selected="destination.status === 'Blm Validasi'"
+                          >
+                            Blm Validasi
+                          </option>
+                        </select>
                         <router-link
                           :to="{
-                            path: '/kelola-tempat-wisata/' + destination.id +'/detail',
+                            path:
+                              '/kelola-tempat-wisata/' +
+                              destination.id +
+                              '/detail',
                           }"
                           class="btn btn-sm btn-info m-1"
                           ><i class="fa fa-eye"></i
