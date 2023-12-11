@@ -23,7 +23,8 @@ class Destination extends Model
         "img_lokasi",
         "region_id",
         "business_id",
-        "category_id"
+        "category_id",
+        "status"
     ];
 
     public function user()

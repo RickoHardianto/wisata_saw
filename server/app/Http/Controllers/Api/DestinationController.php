@@ -81,6 +81,7 @@ class DestinationController extends Controller
             'numberPhone'     => $request->numberPhone,
             'img'     => $imgPath,
             'img_lokasi'     => $imgLokasiPath,
+            'status'     => 'Blm Validasi',
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id,
@@ -134,12 +135,43 @@ class DestinationController extends Controller
             'numberPhone'     => $request->numberPhone,
             'img'     => $imgPath,
             'img_lokasi'     => $imgLokasiPath,
+            'status'     => $request->status,
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id
         ]);
 
         return new ApiResource(true, 'Data destination Berhasil Di Update!', $destination);
+    }
+
+    public function updateStatus($destination){
+        try {
+            $status = request('status');
+    
+            if (!in_array($status, ['Validasi', 'Blm Validasi'])) {
+                throw new \Exception("Status not found", 400);
+            }
+    
+            $product = Destination::find($destination);
+    
+            if (!$product) {
+                throw new \Exception("404 Data Not Found", 404);
+            }
+    
+            $product->status = $status;
+            $product->save();
+    
+            return response()->json([
+                'message' => "Product $product->name with id $product->id has been updated from $product->status to $status",
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => [
+                    'name' => 'Error',
+                    'message' => $e->getMessage(),
+                ],
+            ], $e->getCode());
+        }
     }
 
     public function destroy(Destination $destination)

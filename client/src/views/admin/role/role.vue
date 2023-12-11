@@ -8,43 +8,47 @@ export default {
     SidebarComponent,
     TopbarComponent,
   },
-  name: "Destinations",
+  name: "role",
   data() {
     return {
-      destinations: [],
+      roles: [],
     };
   },
   mounted() {
-    this.fetchDestinations();
+    this.fetchRole();
   },
   methods: {
-    async fetchDestinations() {
+    async fetchRole() {
       try {
         const { data } = await axios({
           method: "GET",
-          url: "http://localhost:8000/api/destination",
+          url: "http://localhost:8000/api/roles",
+          headers:{
+            
+          }
         });
 
         console.log(data);
-        this.destinations = data.data;
+        this.roles = data.data;
       } catch (error) {
         console.log(error);
       }
     },
-    deleteDestination(id) {
+    deleteRole(id){
       console.log(id);
-      axios
-        .delete(`http://localhost:8000/api/destination/${id}`)
-        .then((res) => {
-          console.log(res);
-          this.fetchDestinations();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+      axios.delete(`http://localhost:8000/api/roles/${id}`)
+      .then(res => {
+        console.log(res);
+        this.fetchRole()
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    } 
   },
 };
+
+
 </script>
 
 <template>
@@ -61,15 +65,16 @@ export default {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Kelola Tempat Wisata</h1>
+          <h1 class="h3 mb-4 text-gray-800">User Role</h1>
+
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <router-link
-                to="/kelola-tempat-wisata/create"
+                to="/role/create"
                 class="btn btn-primary btn-sm"
               >
-                Tambah Tempat Wisata
+                Tambah Role
               </router-link>
             </div>
             <div class="card-body">
@@ -83,44 +88,32 @@ export default {
                   <thead>
                     <tr>
                       <th style="width: 10px">#</th>
-                      <th>Nama Wisata</th>
-                      <th>Status</th>
+                      <th>Nama Role</th>
                       <th>Action</th>
                     </tr>
                   </thead>
                   <tfoot>
-                    <th style="width: 10px">#</th>
-                    <th>Nama Wisata</th>
-                    <th>Status</th>
-                    <th>Action</th>
+                    <tr>
+                      <th style="width: 10px">#</th>
+                      <th>Nama Role</th>
+                      <th>Action</th>
+                    </tr>
                   </tfoot>
                   <tbody>
-                    <tr
-                      v-for="(destination, index) in destinations"
-                      key="destination.id"
-                      :destination="destination"
-                    >
+                    <tr v-for="(role, index) in roles"
+                      key="role.id">
                       <td>{{ index + 1 }}</td>
-                      <td>{{ destination.wisata }}</td>
-                      <td>{{ destination.status }}</td>
+                      <td>{{ role.name }}</td>
                       <td>
                         <router-link
-                          :to="{
-                            path: '/kelola-tempat-wisata/' + destination.id +'/detail',
-                          }"
-                          class="btn btn-sm btn-info m-1"
-                          ><i class="fa fa-eye"></i
-                        ></router-link>
-                        <router-link
-                          :to="{
-                            path: '/kelola-tempat-wisata/' + destination.id,
-                          }"
-                          class="btn btn-sm btn-warning m-1"
-                          ><i class="fa fa-pen"></i
-                        ></router-link>
+                        :to="{path: '/role/'+ role.id}"
+                          class="btn btn-warning btn-sm"
+                        >
+                        <i class="fa fa-pen"></i>
+                        </router-link>
                         <button
-                          @click="deleteDestination(destination.id)"
                           class="btn btn-sm btn-danger m-1"
+                          @click="deleteRole(role.id)"
                         >
                           <i class="fa fa-trash"></i>
                         </button>

@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('numberPhone');
             $table->string('img');
             $table->string('img_lokasi');
+            $table->string('status')->nullable();
             $table->unsignedBigInteger('region_id');
             $table->unsignedBigInteger('business_id');
             $table->unsignedBigInteger('category_id');

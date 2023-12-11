@@ -15,10 +15,10 @@ export default {
     ...mapState(useUserStore, ["destinations", "categories"]),
     filteredDestinations() {
       if (this.selectedCategory === "") {
-        return this.destinations;
+        return this.destinations.filter(destination => destination.status === 'Validasi');
       } else {
         return this.destinations.filter(
-          (destination) => destination.category_id === this.selectedCategory
+          destination => destination.category_id === this.selectedCategory && destination.status === 'Validasi'
         );
       }
     },
@@ -55,7 +55,7 @@ export default {
       >
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
             <router-link class="nav-link active" aria-current="page" to="login"
@@ -76,7 +76,7 @@ export default {
             >
           </li>
         </ul>
-      </div>
+      </div> -->
     </div>
   </nav>
   <!-- Header-->
@@ -99,7 +99,7 @@ export default {
             v-model="selectedCategory"
             @change="filterDestinations"
           > 
-            <option value="" selected>Pilih kategori</option>
+            <option value="" selected>All Category</option>
             <option
               v-for="category in categories"
               :key="category.id"

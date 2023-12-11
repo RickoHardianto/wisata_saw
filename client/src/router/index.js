@@ -7,6 +7,11 @@ import LoginView from "../views/admin/login.vue";
 import DashboardView from "../views/DashboardView.vue";
 import UserView from "../views/admin/user/user.vue";
 
+
+import RoleView from "../views/admin/role/role.vue";
+import createRole from "../views/admin/role/create.vue";
+import editRole from "../views/admin/role/edit.vue";
+
 import kelolaKategori from "../views/admin/category/KelolaKategori.vue";
 import createKategori from "../views/admin/category/create.vue";
 import editKategori from "../views/admin/category/edit.vue";
@@ -57,6 +62,18 @@ const router = createRouter({
     {
       path: "/user",
       component: UserView,
+    },
+    {
+      path: "/role",
+      component: RoleView,
+    },
+    {
+      path: "/role/create",
+      component: createRole,
+    },
+    {
+      path: "/role/:id",
+      component: editRole,
     },
     {
       path: "/kelola-kategori",

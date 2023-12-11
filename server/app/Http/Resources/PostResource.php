@@ -26,11 +26,12 @@ class PostResource extends JsonResource
             'numberPhone' => $this->numberPhone,
             'img' => $this->img,
             'img_location' => $this->img,
+            'status' => $this->status,
             'region_id' => $this->region_id,
             'business_id' => $this->business_id,
             'category_id' => $this->category_id,
-            // 'user_id' => $this->user_id,
-            // 'user' => $this->user,
+            'user_id' => $this->user_id,
+            'user' => $this->user,
             
         ];
     }

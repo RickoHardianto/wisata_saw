@@ -18,7 +18,7 @@ export default {
         headers: { Authorization: "Bearer " + this.token },
       })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.user = response.data; // assign response to state user
       });
   },
@@ -80,24 +80,22 @@ export default {
           class="nav-link collapsed"
           href="#"
           data-toggle="collapse"
-          data-target="#collapseTwo"
+          data-target="#collapseOne"
           aria-expanded="true"
-          aria-controls="collapseTwo"
+          aria-controls="collapseOne"
         >
           <i class="fas fa-fw fa-cog"></i>
-          <span>Management</span>
+          <span>Setting</span>
         </a>
         <div
-          id="collapseTwo"
+          id="collapseOne"
           class="collapse"
           aria-labelledby="headingTwo"
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Custom Management:</h6>
-            <router-link to="/user" class="collapse-item"
-              >Management User</router-link
-            >
+            
             <router-link to="/kelola-kategori" class="collapse-item"
               >Kelola Kategori</router-link
             >
@@ -112,6 +110,36 @@ export default {
             >
             <router-link to="/rekomendasi-wisata" class="collapse-item" href="#"
               >Rekomendasi Wisata</router-link
+            >
+          </div>
+        </div>
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link collapsed"
+          href="#"
+          data-toggle="collapse"
+          data-target="#collapseTwo"
+          aria-expanded="true"
+          aria-controls="collapseTwo"
+        >
+          <i class="fas fa-fw fa-cog"></i>
+          <span>User</span>
+        </a>
+        <div
+          id="collapseTwo"
+          class="collapse"
+          aria-labelledby="headingTwo"
+          data-parent="#accordionSidebar"
+        >
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Setting User:</h6>
+            <router-link to="/user" class="collapse-item"
+              >Management User</router-link
+            >
+            <router-link to="/role" class="collapse-item"
+              >Role User</router-link
             >
           </div>
         </div>
