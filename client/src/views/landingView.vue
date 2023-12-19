@@ -95,7 +95,7 @@ export default {
         <div class="row">
           <h4>Kategori</h4>
           <select
-            class="form-select"
+            class="form-control"
             v-model="selectedCategory"
             @change="filterDestinations"
           > 
@@ -111,17 +111,24 @@ export default {
         </div>
       </div>
     </div>
-    <div class="container px-4 px-lg-5 mt-5">
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <CardComponent
-          v-for="destination in filteredDestinations"
-          key="destination.id"
-          :destination="destination"
-        />
-      </div>
+    <div class="container px-4 px-lg-5 mt-5" v-if="filteredDestinations.length > 0">
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+    >
+      <CardComponent
+        v-for="destination in filteredDestinations"
+        :key="destination.id"
+        :destination="destination"
+      />
     </div>
+  </div>
+  <div class="container px-4 px-lg-5 mt-5" v-else>
+    <div
+      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+    >
+    <h4>Tidak ada destinasi yang tersedia.</h4>
+    </div>
+  </div>
   </section>
   <!-- Footer-->
   <footer class="py-5 bg-hefo">
