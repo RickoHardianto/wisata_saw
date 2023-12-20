@@ -118,8 +118,10 @@ export default {
                       <td>{{ index + 1 }}</td>
                       <td>{{ destination.wisata }}</td>
                       <td>{{ destination.status }}</td>
-                      <td>
-                        <select
+                      <td class="d-flex align-items-center">
+                        <div class="col-md-4">
+                          <select
+                        class="form-select"
                           @change="
                             setStatus(destination.id, $event.target.value)
                           "
@@ -137,7 +139,9 @@ export default {
                             Blm Validasi
                           </option>
                         </select>
-                        <router-link
+                        </div>
+                        <div class="d-flex">
+                          <router-link
                           :to="{
                             path:
                               '/kelola-tempat-wisata/' +
@@ -160,6 +164,7 @@ export default {
                         >
                           <i class="fa fa-trash"></i>
                         </button>
+                        </div>
                       </td>
                     </tr>
                   </tbody>
