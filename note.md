@@ -41,6 +41,8 @@ php artisan make:controller Api/RatingController
 php artisan make:controller Api/DesKatController
 php artisan make:controller Api/JamBukaController
 php artisan make:controller Api/Controller
+php artisan make:controller Api/ReviewController
+
 
 
 install gitbash sek 

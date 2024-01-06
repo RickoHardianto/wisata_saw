@@ -12,10 +12,11 @@ export default {
   name: "BusinessEdit",
   data() {
     return {
-      destinationId: '',
+      destinationId: "",
       model: {
         formInput: {
           wisata: "",
+          deskripsi: "",
           price: "",
           openTime: "",
           closeTime: "",
@@ -34,7 +35,7 @@ export default {
     };
   },
   mounted() {
-    this.destinationId = this.$route.params.id
+    this.destinationId = this.$route.params.id;
     this.fetchDestination(this.$route.params.id);
     this.getBusines();
     this.getCategory();
@@ -45,7 +46,7 @@ export default {
       axios
         .get("http://localhost:8000/api/regions")
         .then((res) => {
-          this.regions = res.data.data
+          this.regions = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -55,7 +56,7 @@ export default {
       axios
         .get("http://localhost:8000/api/business/")
         .then((res) => {
-          this.businesses = res.data.data
+          this.businesses = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
@@ -65,35 +66,39 @@ export default {
       axios
         .get("http://localhost:8000/api/categories/")
         .then((res) => {
-          this.categories = res.data.data
+          this.categories = res.data.data;
         })
         .catch(function (error) {
           console.log(error);
         });
     },
-    fetchDestination(id){
-        axios.get(`http://localhost:8000/api/destination/${id}`)
-        .then(res => {
-        //  console.log(res.data.data);
+    fetchDestination(id) {
+      axios
+        .get(`http://localhost:8000/api/destination/${id}`)
+        .then((res) => {
+          //  console.log(res.data.data);
 
-         this.model.formInput = res.data.data
+          this.model.formInput = res.data.data;
         })
-        .catch(function(error){
-            console.log(error);
-        })
-
+        .catch(function (error) {
+          console.log(error);
+        });
     },
-    update(){
-        axios.put(`http://localhost:8000/api/destination/${this.destinationId}`, this.model.formInput)
-        .then(res => {
-            console.log(res.data);
-            alert(res.data.message)
-            return this.$router.push('/kelola-tempat-wisata');
+    update() {
+      axios
+        .put(
+          `http://localhost:8000/api/destination/${this.destinationId}`,
+          this.model.formInput
+        )
+        .then((res) => {
+          console.log(res.data);
+          alert(res.data.message);
+          return this.$router.push("/kelola-tempat-wisata");
         })
-        .catch(function(error){
-           console.log(error);
-        })
-    }
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
   },
 };
 </script>
@@ -127,6 +132,14 @@ export default {
                 />
               </div>
               <div class="mb-3">
+                <label for="">Deskripsi Wisata</label>
+                <textarea
+                  type="text"
+                  v-model="model.formInput.deskripsi"
+                  class="form-control"
+                ></textarea>
+              </div>
+              <div class="mb-3">
                 <label for="">Harga Tiket Masuk</label>
                 <input
                   type="text"
@@ -135,20 +148,32 @@ export default {
                 />
               </div>
               <div class="mb-3">
-                <label for="">Jam Buka</label>
+                <label for="">Jumlah Penginapan</label>
                 <input
-                  type="time"
-                  v-model="model.formInput.openTime"
+                  type="text"
+                  v-model="model.formInput.penginapan"
                   class="form-control"
                 />
               </div>
               <div class="mb-3">
-                <label for="">Jam Tutup</label>
-                <input
-                  type="time"
-                  v-model="model.formInput.closeTime"
-                  class="form-control"
-                />
+                <div class="row">
+                  <div class="col-6">
+                    <label for="">Jam Buka</label>
+                    <input
+                      type="time"
+                      v-model="model.formInput.openTime"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">Jam Tutup</label>
+                    <input
+                      type="time"
+                      v-model="model.formInput.closeTime"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="mb-3">
                 <label for="">Access Kendaraan</label>
@@ -182,60 +207,69 @@ export default {
                   class="form-control"
                 />
               </div>
-              <div class="mb-3">
-                <label for="">Wilayah</label>
-                <select
-                  class="form-select"
-                  name="region_id"
-                  v-model="model.formInput.region_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="region in regions" :value="region.id">
-                    {{ region.region }}
-                  </option>
-                </select>
+              <div class="mb-5">
+                <div class="row">
+                  <div class="col-4">
+                    <label for="">Wilayah</label>
+                    <select
+                      class="form-select"
+                      name="region_id"
+                      v-model="model.formInput.region_id"
+                    >
+                      <option disable value="" selected>
+                        Open this select menu
+                      </option>
+                      <option v-for="region in regions" :value="region.id">
+                        {{ region.region }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <label for="">Bisnis & Usaha</label>
+                    <select
+                      class="form-select"
+                      name="business_id"
+                      v-model="model.formInput.business_id"
+                    >
+                      <option disable value="" selected>
+                        Open this select menu
+                      </option>
+                      <option
+                        v-for="business in businesses"
+                        :value="business.id"
+                      >
+                        {{ business.business }}
+                      </option>
+                    </select>
+                  </div>
+                  <div class="col-4">
+                    <label for="">Kategori</label>
+                    <select
+                      class="form-select"
+                      name="category_id"
+                      v-model="model.formInput.category_id"
+                    >
+                      <option disable value="" selected>
+                        Open this select menu
+                      </option>
+                      <option
+                        v-for="category in categories"
+                        :value="category.id"
+                      >
+                        {{ category.category }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="mb-3">
-                <label for="">Bisnis & Usaha</label>
-                <select
-                  class="form-select"
-                  name="business_id"
-                  v-model="model.formInput.business_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="business in businesses" :value="business.id">
-                    {{ business.business }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="">Kategori</label>
-                <select
-                  class="form-select"
-                  name="category_id"
-                  v-model="model.formInput.category_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="category in categories" :value="category.id">
-                    {{ category.category }}
-                  </option>
-                </select>
-              </div>
-              
 
-              <div class="mb-3">
+              <div class="mb-4">
                 <button
                   type="submit"
                   @click="update"
-                  class="btn btn-primary btn-sm"
+                  class="btn btn-warning btn-sm"
                 >
-                update
+                  UPDATE
                 </button>
               </div>
             </div>

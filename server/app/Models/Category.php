@@ -15,7 +15,7 @@ class Category extends Model
 
     public function destination()
     {
-        return $this->hasMany(Destination::class);
+        return $this->hasMany(Destination::class , 'category_id' , 'id');
     }
 
     public function getImageAttribute($image)

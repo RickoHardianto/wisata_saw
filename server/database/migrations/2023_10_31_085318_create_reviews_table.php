@@ -16,12 +16,11 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('destination_id');
-            $table->unsignedBigInteger('customer_id');
+            $table->text('nama');
             $table->integer('rating');
             $table->text('review');
             $table->timestamps();
             $table->foreign('destination_id')->references('id')->on('destinations');
-            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 

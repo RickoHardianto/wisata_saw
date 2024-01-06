@@ -1,24 +1,3 @@
-<!-- <script>
-import {mapActions} from 'pinia'
-import {useUserStore} from '../../stores/wisata'
-export default{
-  data() {
-    return {
-      dataInput: {
-        email: "",
-        password: "",
-      },
-    };
-  }, 
-  methods:{
-    ...mapActions(useUserStore,['loginHandler']),
-    login(){
-      this.loginHandler(this.dataInput)
-    }
-  }
-}
-</script> -->
-
 <script>
 import axios from "axios";
 
@@ -46,8 +25,7 @@ export default {
           .get("http://localhost:8000/sanctum/csrf-cookie")
           .then((response) => {
             //debug cookie
-            console.log(response);
-
+            // console.log(response);
             axios
               .post("http://localhost:8000/api/login", {
                 email: this.user.email,
@@ -55,7 +33,8 @@ export default {
               })
               .then((res) => {
                 //debug user login
-                console.log(res);
+                console.log(res.data.message);
+                Toastify({text: 'berhasil login', duration: 3000}).showToast();
 
                 if (res.data.success) {
                   //set localStorage
@@ -76,6 +55,8 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
+            Toastify({text: 'login gagal', duration: 3000, style: { background: "red" }}).showToast();
+
               });
           });
       }

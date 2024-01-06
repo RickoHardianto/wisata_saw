@@ -1,5 +1,11 @@
 <script>
+import StarRating from "vue-star-rating";
+
+
 export default {
+  components: {
+    StarRating,
+  },
   props: ["destination"],
 };
 </script>
@@ -17,6 +23,9 @@ export default {
           <!-- Product price-->
           HTM {{ destination.price }}
         </div>
+        <hr>
+        <StarRating :rating="parseFloat(destination.reviews_avg_rating)" :increment="0.5" :star-size="20" :read-only="true" :show-rating="false" :inline="true"></StarRating> 
+                  (<strong>{{ destination.reviews_count }}</strong> ulasan)
       </div>
       <!-- Product actions-->
       <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">

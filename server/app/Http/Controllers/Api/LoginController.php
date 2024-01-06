@@ -10,36 +10,47 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     public function index(Request $request){
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $user= User::where('email', $request->email)->first();
-        
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+    
+            $user = User::where('email', $request->email)->first();
+    
             if (!$user || !Hash::check($request->password, $user->password)) {
                 return response([
-                    'success'   => false,
+                    'success' => false,
                     'message' => ['These credentials do not match our records.']
                 ], 404);
             }
-        
+    
             $token = $user->createToken('ApiToken')->plainTextToken;
-        
+    
             $response = [
-                'success'   => true,
-                'user'      => $user,
-                'token'     => $token
+                'success' => true,
+                'user' => $user,
+                'token' => $token,
+                'message' => 'Berhasil Login'
             ];
-        
-        return response($response, 201);
+    
+            return response($response, 201);
+        } catch (\Exception $e) {
+            // Tangani pengecualian di sini
+            return response([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+            ], 500);
+        }
     }
+    
 
     public function logout()
     {
         auth()->logout();
         return response()->json([
-            'success'    => true
+            'success'    => true,
+            'message'    => 'Berhasil Logout'
         ], 200);
     }
 }

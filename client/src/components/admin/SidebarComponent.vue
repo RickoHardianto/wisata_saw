@@ -85,7 +85,7 @@ export default {
           aria-controls="collapseOne"
         >
           <i class="fas fa-fw fa-cog"></i>
-          <span>Setting</span>
+          <span>Destination Management</span>
         </a>
         <div
           id="collapseOne"

@@ -12,7 +12,9 @@ class Destination extends Model
 
     protected $fillable = [
         "wisata",
+        "deskripsi",
         "price",
+        "penginapan",
         "openTime",
         "closeTime",
         "access",
@@ -34,7 +36,7 @@ class Destination extends Model
 
     public function category()
     {
-        return $this->hasMany(Category::class);
+        return $this->belongsTo(Category::class , 'category_id' , 'id');
     }
 
     public function business()

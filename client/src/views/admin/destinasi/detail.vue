@@ -16,13 +16,16 @@ export default {
       model: {
         formInput: {
           wisata: "",
+          deskripsi: "",
           price: "",
+          penginapan: "",
           openTime: "",
           closeTime: "",
-          access: "",
+          access: [],
           address: "",
           numberPhone: "",
-          img: "",
+          img: null,
+          img_lokasi: null,
           region_id: "",
           business_id: "",
           category_id: "",
@@ -117,10 +120,28 @@ export default {
                 />
               </div>
               <div class="mb-3">
+                <label for="">Deskripsi Wisata</label>
+                <input
+                  type="text"
+                  v-model="model.formInput.deskripsi"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
                 <label for="">Harga Tiket Masuk</label>
                 <input
                   type="text"
                   v-model="model.formInput.price"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="">Jumlah Penginapan</label>
+                <input
+                  type="text"
+                  v-model="model.formInput.penginapan"
                   class="form-control"
                   readonly
                 />

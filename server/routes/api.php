@@ -26,6 +26,7 @@ Route::resource('/destination', App\Http\Controllers\Api\DestinationController::
 Route::resource('/roles',App\Http\Controllers\Api\RoleController::class);
 
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);
+Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'store']);
 
 
 

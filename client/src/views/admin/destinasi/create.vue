@@ -15,7 +15,9 @@ export default {
       model: {
         formInput: {
           wisata: "",
+          deskripsi: "",
           price: "",
+          penginapan: "",
           openTime: "",
           closeTime: "",
           access: [],
@@ -79,26 +81,30 @@ export default {
     },
     save() {
       let formData = new FormData();
-      formData.append('img', this.model.formInput.img);
-      formData.append('img_lokasi', this.model.formInput.img_lokasi);
-      formData.append('wisata', this.model.formInput.wisata);
-      formData.append('price', this.model.formInput.price);
-      formData.append('openTime', this.model.formInput.openTime);
-      formData.append('closeTime', this.model.formInput.closeTime);
-      formData.append('access', JSON.stringify(this.model.formInput.access));
-      formData.append('address', this.model.formInput.address);
-      formData.append('kecamatan', this.model.formInput.kecamatan);
-      formData.append('numberPhone', this.model.formInput.numberPhone);
-      formData.append('region_id', this.model.formInput.region_id);
-      formData.append('business_id', this.model.formInput.business_id);
-      formData.append('category_id', this.model.formInput.category_id);
+      formData.append("img", this.model.formInput.img);
+      formData.append("img_lokasi", this.model.formInput.img_lokasi);
+      formData.append("wisata", this.model.formInput.wisata);
+      formData.append("deskripsi", this.model.formInput.deskripsi);
+      formData.append("price", this.model.formInput.price);
+      formData.append("penginapan", this.model.formInput.penginapan);
+      formData.append("openTime", this.model.formInput.openTime);
+      formData.append("closeTime", this.model.formInput.closeTime);
+      formData.append("access", JSON.stringify(this.model.formInput.access));
+      formData.append("address", this.model.formInput.address);
+      formData.append("kecamatan", this.model.formInput.kecamatan);
+      formData.append("numberPhone", this.model.formInput.numberPhone);
+      formData.append("region_id", this.model.formInput.region_id);
+      formData.append("business_id", this.model.formInput.business_id);
+      formData.append("category_id", this.model.formInput.category_id);
       axios
         .post("http://localhost:8000/api/destination", formData)
         .then((res) => {
           console.log(res);
           this.model.formInput = {
             wisata: "",
+            deskripsi: "",
             price: "",
+            penginapan: "",
             openTime: "",
             closeTime: "",
             access: [],
@@ -150,6 +156,14 @@ export default {
                 />
               </div>
               <div class="mb-3">
+                <label for="">Deskripsi Wisata</label>
+                <textarea
+                  type="text"
+                  v-model="model.formInput.deskripsi"
+                  class="form-control"
+                ></textarea>
+              </div>
+              <div class="mb-3">
                 <label for="">Harga Tiket Masuk</label>
                 <input
                   type="text"
@@ -158,27 +172,49 @@ export default {
                 />
               </div>
               <div class="mb-3">
-                <label for="">Jam Buka</label>
+                <label for="">Jumlah Penginapan</label>
                 <input
-                  type="time"
-                  v-model="model.formInput.openTime"
+                  type="text"
+                  v-model="model.formInput.penginapan"
                   class="form-control"
                 />
               </div>
               <div class="mb-3">
-                <label for="">Jam Tutup</label>
-                <input
-                  type="time"
-                  v-model="model.formInput.closeTime"
-                  class="form-control"
-                />
+                <div class="row">
+                  <div class="col-6">
+                    <label for="">Jam Buka</label>
+                    <input
+                      type="time"
+                      v-model="model.formInput.openTime"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="col-6">
+                    <label for="">Jam Tutup</label>
+                    <input
+                      type="time"
+                      v-model="model.formInput.closeTime"
+                      class="form-control"
+                    />
+                  </div>
+                </div>
               </div>
               <div class="mb-3">
                 <p>Access Kendaraan</p>
-                <input type="checkbox" v-model="model.formInput.access" value="Kendaraan Roda 4" checked>
+                <input
+                  type="checkbox"
+                  v-model="model.formInput.access"
+                  value="Kendaraan Roda 4"
+                  checked
+                />
                 <label for="mobil">Kendaraan Roda 4</label>
-                <br><br>
-                <input type="checkbox" v-model="model.formInput.access" value="Kendaraan Roda 2" checked>
+                <br /><br />
+                <input
+                  type="checkbox"
+                  v-model="model.formInput.access"
+                  value="Kendaraan Roda 2"
+                  checked
+                />
                 <label for="motor">Kendaraan Roda 2</label>
               </div>
               <div class="mb-3">
@@ -202,6 +238,7 @@ export default {
                 <input
                   type="text"
                   v-model="model.formInput.numberPhone"
+                  placeholder="ex:0891212121221"
                   class="form-control"
                 />
               </div>
@@ -221,53 +258,68 @@ export default {
                   id="img_lokasi"
                   class="form-control"
                   @change="handleLokasiUpload"
-
                 />
               </div>
-              <div class="mb-3">
-                <label for="">Wilayah</label>
-                <select
-                  class="form-select"
-                  name="region_id"
-                  v-model="model.formInput.region_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="region in regions" :value="region.id">
-                    {{ region.region }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="">Bisnis & Usaha</label>
-                <select
-                  class="form-select"
-                  name="business_id"
-                  v-model="model.formInput.business_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="business in businesses" :value="business.id">
-                    {{ business.business }}
-                  </option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label for="">Kategori</label>
-                <select
-                  class="form-select"
-                  name="category_id"
-                  v-model="model.formInput.category_id"
-                >
-                  <option disable value="" selected>
-                    Open this select menu
-                  </option>
-                  <option v-for="category in categories" :value="category.id">
-                    {{ category.category }}
-                  </option>
-                </select>
+              <div class="mb-5">
+                <div class="row">
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="">Wilayah</label>
+                      <select
+                        class="form-select"
+                        name="region_id"
+                        v-model="model.formInput.region_id"
+                      >
+                        <option disable value="" selected>
+                          Open this select menu
+                        </option>
+                        <option v-for="region in regions" :value="region.id">
+                          {{ region.region }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="">Bisnis & Usaha</label>
+                      <select
+                        class="form-select"
+                        name="business_id"
+                        v-model="model.formInput.business_id"
+                      >
+                        <option disable value="" selected>
+                          Open this select menu
+                        </option>
+                        <option
+                          v-for="business in businesses"
+                          :value="business.id"
+                        >
+                          {{ business.business }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="mb-3">
+                      <label for="">Kategori</label>
+                      <select
+                        class="form-select"
+                        name="category_id"
+                        v-model="model.formInput.category_id"
+                      >
+                        <option disable value="" selected>
+                          Open this select menu
+                        </option>
+                        <option
+                          v-for="category in categories"
+                          :value="category.id"
+                        >
+                          {{ category.category }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div class="mb-3">

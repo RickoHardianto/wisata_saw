@@ -16,26 +16,28 @@ class DestinationController extends Controller
 
     public function index(Request $request)
     {
-        $destination = Destination::latest()->get();
-        $data = PostResource::collection($destination)->resource;
-
-        return  response()->json([
-            'success' => true,
-            'message' => 'List data Destination',
-            'data' => $data
-        ], 200);
+        $destination = Destination::with('category')
+        ->withAvg('reviews','rating')
+        ->withCount('reviews')
+        ->latest()->get();
+        
+        return new ApiResource(true, 'List Data Destination', $destination);
     }
 
-    public function show(Destination $destination)
+    public function show()
     {
-        return response()->json(
-            [
-                'success' => true,
-                'message' => 'List data Destination',
-                'data' => $destination
-            ],
-            200
-        );
+
+        $destination = Destination::with('category')
+        //count and average
+        ->withAvg('reviews', 'rating')
+        ->withCount('reviews')->first();
+        
+        if($destination) {
+            //return success with Api Resource
+            return new ApiResource(true, 'Detail Data Destinasi!', $destination);
+        }
+        
+        return new ApiResource(true, 'Detail Data Destination Tidak Ditemukan!', null);
     }
 
     public function store(Request $request)
@@ -43,7 +45,9 @@ class DestinationController extends Controller
 
         $validator = Validator::make($request->all(), [
             'wisata'     => 'required',
+            'deskripsi'     => 'required',
             'price'     => 'required',
+            'penginapan'     => 'required',
             'openTime'     => 'required',
             'closeTime'     => 'required',
             'access'     => 'required',
@@ -57,8 +61,6 @@ class DestinationController extends Controller
             'category_id'     => 'required'
         ]);
 
-        // $img_path = $request->file('img')->store('img', 'public');
-
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
@@ -67,11 +69,12 @@ class DestinationController extends Controller
         $imgLokasiPath = $request->file('img_lokasi')->store('images', 'public');
 
         // $userid = Auth::user()->id;
-        // $accessString = implode(',', $request->access);
         $access = is_array($request->access) ? json_encode($request->access) : $request->access;
 
         $destination = Destination::create([
             'wisata'     => $request->wisata,
+            'deskripsi'     => $request->deskripsi,
+            'penginapan'     => $request->penginapan,
             'price'     => $request->price,
             'openTime'     => $request->openTime,
             'closeTime'     => $request->closeTime,
@@ -88,8 +91,13 @@ class DestinationController extends Controller
             // 'user_id'     => $userid,
         ]);
 
-        // return response 
-        return new ApiResource(true, 'Data destination Berhasil Di tambhakan!', $destination);
+        if ($destination) {
+
+            // return response 
+            return new ApiResource(true, 'Data destination Berhasil Di tambhakan!', $destination);
+        }
+
+        return new ApiResource(false, 'Data destination Gagal Di tambhakan!', null);
     }
 
     public function update(Request $request, Destination $destination)
@@ -97,6 +105,8 @@ class DestinationController extends Controller
 
         $validator = Validator::make($request->all(), [
             'wisata'     => 'required',
+            'deskripsi'     => 'required',
+            'penginapan'     => 'required',
             'price'     => 'required',
             'openTime'     => 'required',
             'closeTime'     => 'required',
@@ -126,7 +136,9 @@ class DestinationController extends Controller
 
         $destination->update([
             'wisata'     => $request->wisata,
+            'deskripsi'     => $request->wisata,
             'price'     => $request->price,
+            'penginapan'     => $request->price,
             'openTime'     => $request->openTime,
             'closeTime'     => $request->closeTime,
             'access'     => $request->access,
@@ -141,26 +153,32 @@ class DestinationController extends Controller
             'category_id'     => $request->category_id
         ]);
 
-        return new ApiResource(true, 'Data destination Berhasil Di Update!', $destination);
+        if ($destination) {
+
+            return new ApiResource(true, 'Data destination Berhasil Di Update!', $destination);
+        }
+
+        return new ApiResource(false, 'Data destination Gagal Di Update!', null);
     }
 
-    public function updateStatus($destination){
+    public function updateStatus($destination)
+    {
         try {
             $status = request('status');
-    
+
             if (!in_array($status, ['Validasi', 'Blm Validasi'])) {
                 throw new \Exception("Status not found", 400);
             }
-    
+
             $product = Destination::find($destination);
-    
+
             if (!$product) {
                 throw new \Exception("404 Data Not Found", 404);
             }
-    
+
             $product->status = $status;
             $product->save();
-    
+
             return response()->json([
                 'message' => "Product $product->name with id $product->id has been updated from $product->status to $status",
             ], 200);
@@ -176,8 +194,24 @@ class DestinationController extends Controller
 
     public function destroy(Destination $destination)
     {
-        $destination->delete();
 
-        return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
+        if ($destination->hasFile('img')) {
+            Storage::disk('public')->delete($destination->img);
+            $imgPath = $destination->file('img')->store('images', 'public');
+            $destination->img = $imgPath;
+        }
+
+        if ($destination->hasFile('img_lokasi')) {
+            Storage::disk('public')->delete($destination->img_lokasi);
+            $imgLokasiPath = $destination->file('img_lokasi')->store('images', 'public');
+            $destination->img_lokasi = $imgLokasiPath;
+        }
+
+        if ($destination->delete()) {
+
+            return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
+        }
+
+        return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
     }
 }

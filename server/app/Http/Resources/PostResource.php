@@ -17,6 +17,8 @@ class PostResource extends JsonResource
         return [
             'id' => $this->id,
             'wisata' => $this->wisata,
+            'deskripsi' => $this->deskripsi,
+            'penginapan' => $this->penginapan,
             'price' => $this->price,
             'openTime' => $this->openTime,
             'closeTime' => $this->closeTime,
@@ -30,8 +32,8 @@ class PostResource extends JsonResource
             'region_id' => $this->region_id,
             'business_id' => $this->business_id,
             'category_id' => $this->category_id,
-            'user_id' => $this->user_id,
-            'user' => $this->user,
+            // 'user_id' => $this->user_id,
+            // 'user' => $this->user,
             
         ];
     }
