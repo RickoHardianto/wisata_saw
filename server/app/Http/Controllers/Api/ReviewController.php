@@ -13,10 +13,8 @@ class ReviewController extends Controller
     {
 
         //check review already
-        $check_review = Review::where('destination_id', $request->destination_id);
-        if ($check_review) {
-            return response()->json($check_review, 409);
-        }
+        $review = Review::where('destination_id', $request->destination_id);
+        
         $review = Review::create([
             'destination_id' => $request->destination_id,
             'nama' => $request->nama,

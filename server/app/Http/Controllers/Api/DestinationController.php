@@ -24,15 +24,17 @@ class DestinationController extends Controller
         return new ApiResource(true, 'List Data Destination', $destination);
     }
 
-    public function show()
+    public function show($id)
     {
 
         $destination = Destination::with('category')
         //count and average
         ->withAvg('reviews', 'rating')
-        ->withCount('reviews')->first();
+        ->withCount('reviews')
+        ->find($id);
         
         if($destination) {
+            $reviews = $destination->reviews;
             //return success with Api Resource
             return new ApiResource(true, 'Detail Data Destinasi!', $destination);
         }

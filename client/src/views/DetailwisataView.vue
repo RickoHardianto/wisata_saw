@@ -11,8 +11,7 @@ export default {
   data() {
     return {
       userReview: {
-        id: null,
-        rating: null,
+        star: 4,
         review: "",
         nama: "",
       },
@@ -39,25 +38,29 @@ export default {
       }
       return this.destination.access;
     },
-    async submitReview() {
-      const newReview = {
-        destination_id: this.destination.id,
-        nama: this.userReview.nama,
-        rating: this.userReview.rating,
-        review: this.userReview.review,
-      };
+    async submitReview(destination_id) {
+
+      let formData = new FormData();
+
+      formData.append('nama', this.userReview.nama)
+      formData.append('rating', this.userReview.star)
+      formData.append('review', this.userReview.review)
+      formData.append('destination_id', destination_id)
+
 
       try {
         const response = await axios.post(
           "http://localhost:8000/api/reviews",
-          newReview
+          formData
         );
         // Lakukan sesuatu dengan respons dari permintaan POST, jika diperlukan
         console.log("Review submitted:", response.data);
         // Setelah berhasil, kosongkan input ulasan
-        this.userReview.rating = null;
+        this.userReview.star = 4;
         this.userReview.review = "";
         this.userReview.nama = "";
+
+        await this.fetchById(this.$route.params.id);
       } catch (error) {
         console.error("Error submitting review:", error);
       }
@@ -151,7 +154,7 @@ export default {
               <div class="card border-0 rounded shadow-sm">
                 <div class="card-body">
                   <h5>
-                    <i class="fa fa-comments"></i> ULASAN PRODUK (
+                    <i class="fa fa-comments"></i> Review (
                     <strong>{{ destination.reviews_count }}</strong> ulasan )
                   </h5>
                   <hr />
@@ -167,7 +170,6 @@ export default {
                         </div>
                         <div class="col-md-11">
                           <StarRating
-                          v-if="review.rating !== undefined"
                             class="mb-2"
                             :rating="review.rating"
                             :star-size="20"
@@ -192,6 +194,38 @@ export default {
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- Form untuk menambahkan ulasan baru -->
+                  <div class="mt-4">
+                    <form @submit.prevent="submitReview(destination.id)">
+                      <h5>Submit Ulasan Baru</h5>
+
+                      <div class="mb-3">
+                        <label for="rating">Rating</label>
+                        <StarRating class="mb-2" :star-size="20" :show-rating="false" v-model="userReview.star "></StarRating>
+                      </div>
+                      <div class="mb-3">
+                        <label for="nama">Nama</label>
+                        <input
+                          type="text"
+                          id="nama"
+                          v-model="userReview.nama"
+                          class="form-control"
+                        />
+                      </div>
+                      <div class="mb-3">
+                        <label for="review">Ulasan</label>
+                        <textarea
+                          id="review"
+                          v-model="userReview.review"
+                          class="form-control"
+                        ></textarea>
+                      </div>
+                      <button  type="submit" class="btn btn-primary">
+                        Kirim Ulasan
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -225,114 +259,5 @@ export default {
 <style>
 .bg-hefo {
   background-color: #86b817;
-}
-
-.rate {
-  float: left;
-  height: 46px;
-  padding: 0 10px;
-}
-
-.rate:not(:checked) > input {
-  position: absolute;
-  display: none;
-}
-
-.rate:not(:checked) > label {
-  float: right;
-  width: 1em;
-  overflow: hidden;
-  white-space: nowrap;
-  cursor: pointer;
-  font-size: 30px;
-  color: #ccc;
-}
-
-.rated:not(:checked) > label {
-  float: right;
-  width: 1em;
-  overflow: hidden;
-  white-space: nowrap;
-  cursor: pointer;
-  font-size: 30px;
-  color: #ccc;
-}
-
-.rate:not(:checked) > label:before {
-  content: "★ ";
-}
-
-.rate > input:checked ~ label {
-  color: #ffc700;
-}
-
-.rate:not(:checked) > label:hover,
-.rate:not(:checked) > label:hover ~ label {
-  color: #deb217;
-}
-
-.rate > input:checked + label:hover,
-.rate > input:checked + label:hover ~ label,
-.rate > input:checked ~ label:hover,
-.rate > input:checked ~ label:hover ~ label,
-.rate > label:hover ~ input:checked ~ label {
-  color: #c59b08;
-}
-
-.star-rating-complete {
-  color: #c59b08;
-}
-
-.rating-container .form-control:hover,
-.rating-container .form-control:focus {
-  background: #fff;
-  border: 1px solid #ced4da;
-}
-
-.rating-container textarea:focus,
-.rating-container input:focus {
-  color: #000;
-}
-
-.rated {
-  float: left;
-  height: 46px;
-  padding: 0 10px;
-}
-
-.rated:not(:checked) > input {
-  position: absolute;
-  display: none;
-}
-
-.rated:not(:checked) > label {
-  float: right;
-  width: 1em;
-  overflow: hidden;
-  white-space: nowrap;
-  cursor: pointer;
-  font-size: 30px;
-  color: #ffc700;
-}
-
-.rated:not(:checked) > label:before {
-  content: "★ ";
-}
-
-.rated > input:checked ~ label {
-  color: #ffc700;
-}
-
-.rated:not(:checked) > label:hover,
-.rated:not(:checked) > label:hover ~ label {
-  color: #deb217;
-}
-
-.rated > input:checked + label:hover,
-.rated > input:checked + label:hover ~ label,
-.rated > input:checked ~ label:hover,
-.rated > input:checked ~ label:hover ~ label,
-.rated > label:hover ~ input:checked ~ label {
-  color: #c59b08;
 }
 </style>
