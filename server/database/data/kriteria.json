@@ -1,0 +1,32 @@
+[
+    {
+        "kode":"C1",
+        "nama":"Keunikan dan Daya Tarik",
+        "bobot":"5",
+        "atribut":"benefit"
+    },
+    {
+        "kode":"C2",
+        "nama":"Harga Tiket Masuk",
+        "bobot":"5",
+        "atribut":"cost"
+    },
+    {
+        "kode":"C3",
+        "nama":"Aksesibilitas Wisata",
+        "bobot":"5",
+        "atribut":"benefit"
+    },
+    {
+        "kode":"C4",
+        "nama":"Jumlah Penginapan",
+        "bobot":"5",
+        "atribut":"benefit"
+    },
+    {
+        "kode":"C1",
+        "nama":"Keunikan dan Daya Tarik",
+        "bobot":"5",
+        "atribut":"cost"
+    }
+]

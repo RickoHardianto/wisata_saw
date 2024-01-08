@@ -16,6 +16,7 @@ php artisan make:model Review -mcr
 
 
 php artisan make:model Region -m
+php artisan make:model Kriteria -m
 setelah membuat model , lalu tambahkan column pada file migrate
 
 php artisan make:model Role -m
@@ -42,6 +43,9 @@ php artisan make:controller Api/DesKatController
 php artisan make:controller Api/JamBukaController
 php artisan make:controller Api/Controller
 php artisan make:controller Api/ReviewController
+php artisan make:controller Api/KriteriaController
+php artisan make:controller Api/AlternatifController
+php artisan make:controller Api/HitungController
 
 
 

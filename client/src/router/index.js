@@ -31,6 +31,18 @@ import editmanajemenWilayah from "../views/admin/wilayah/edit.vue";
 
 import rekomendasiWIsata from "../views/admin/RekomendasiWisata.vue";
 
+import kriteria from "../views/admin/kriteria/kriteria.vue";
+import addkriteria from "../views/admin/kriteria/create.vue";
+import editkriteria from "../views/admin/kriteria/edit.vue";
+
+import alternatif from "../views/admin/alternatif/alternatif.vue";
+import addalternatif from "../views/admin/alternatif/create.vue";
+import editalternatif from "../views/admin/alternatif/edit.vue";
+
+import hitung from "../views/admin/hitung/hitung.vue";
+
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -130,6 +142,34 @@ const router = createRouter({
     {
       path: "/rekomendasi-wisata",
       component: rekomendasiWIsata,
+    },
+    {
+      path: "/kriteria",
+      component: kriteria,
+    },
+    {
+      path: "/addkriteria",
+      component: addkriteria,
+    },
+    {
+      path: "/editkriteria/:id",
+      component: editkriteria,
+    },
+    {
+      path: "/alternatif",
+      component: alternatif,
+    },
+    {
+      path: "/addalternatif",
+      component: addalternatif,
+    },
+    {
+      path: "/editalternatif/:id",
+      component: editalternatif,
+    },
+    {
+      path: "/hitung",
+      component: hitung,
     },
   ],
 });

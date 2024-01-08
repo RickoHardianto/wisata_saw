@@ -232,9 +232,8 @@ export default {
             </div>
           </div>
         </div>
-
         <div class="col-lg-4">
-          <div class="card shadow-sm mt-5">
+          <div class="card shadow-sm">
             <div class="card-body">
               <img
                 :src="`http://localhost:8000/storage/${destination.img_lokasi}`"
@@ -244,6 +243,7 @@ export default {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </section>

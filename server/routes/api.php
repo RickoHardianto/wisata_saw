@@ -23,7 +23,11 @@ Route::resource('/business', App\Http\Controllers\Api\BusinessController::class)
 Route::resource('/categories', App\Http\Controllers\Api\CategoryController::class);
 Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
-Route::resource('/roles',App\Http\Controllers\Api\RoleController::class);
+Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
+
+Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
+Route::resource('/alternatif', App\Http\Controllers\Api\KriteriaController::class);
+Route::get('/hitung', [App\Http\Controllers\Api\KriteriaController::class, 'hitung'])->name('hitung');
 
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);
 Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'store']);
@@ -32,9 +36,9 @@ Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'stor
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
- });
+});
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('users',App\Http\Controllers\Api\UserController::class);
+    Route::resource('users', App\Http\Controllers\Api\UserController::class);
     // Route::apiResource('roles',App\Http\Controllers\Api\RoleController::class);
- });
+});

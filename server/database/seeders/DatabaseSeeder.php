@@ -24,6 +24,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(BusinessSeeder::class);
         $this->call(RegionSeeder::class);
+        $this->call(KriteriaSeeder::class);
+        $this->call(AlternatifSeeder::class);
         // $this->call(DestinationSeeder::class);
     }
 }
