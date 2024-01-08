@@ -148,7 +148,7 @@ const router = createRouter({
       component: kriteria,
     },
     {
-      path: "/addkriteria",
+      path: "/kriteria/create",
       component: addkriteria,
     },
     {

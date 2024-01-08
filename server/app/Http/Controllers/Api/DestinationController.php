@@ -216,4 +216,7 @@ class DestinationController extends Controller
 
         return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
     }
+
+
+    
 }

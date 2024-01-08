@@ -21,7 +21,6 @@ class KriteriaSeeder extends Seeder
         $data = json_decode($json);
         foreach ($data as $obj){
             Kriteria::create(array(
-                'kode' => $obj->kode,
                 'nama' => $obj->nama,
                 'bobot' => $obj->bobot,
                 'atribut' => $obj->atribut,

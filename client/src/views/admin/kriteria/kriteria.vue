@@ -9,6 +9,41 @@ export default{
     SidebarComponent,
     TopbarComponent,
   },
+  name: "Kriteria",
+  data() {
+    return {
+      kriterias: [],
+    };
+  },
+  mounted() {
+    this.fetchKriteria();
+  },
+  methods: {
+    async fetchKriteria() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/kriteria",
+        });
+
+        console.log(data);
+        this.kriterias = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteKriteria(id){
+      console.log(id);
+      axios.delete(`http://localhost:8000/api/kriteria/${id}`)
+      .then(res => {
+        console.log(res);
+        this.fetchKriteria()
+      })
+      .catch(function(error){
+        console.log(error);
+      })
+    } 
+  },
 }
 </script>
 
@@ -31,15 +66,15 @@ export default{
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <!-- <router-link
-                to="/tempat-wisata-&-usaha/create"
+              <router-link
+                to="/kriteria/create"
                 class="btn btn-primary btn-sm"
               >
-                Tambah Tempat Wisata & Usaha
-              </router-link> -->
+                Tambah Kriteria
+              </router-link>
             </div>
             <div class="card-body">
-              <!-- <div class="table-responsive">
+              <div class="table-responsive">
                 <table
                   class="table table-bordered"
                   id="dataTable"
@@ -49,34 +84,40 @@ export default{
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Kategori Usaha & Wisata</th>
+                      <th>Nama</th>
+                      <th>Bobot</th>
+                      <th>Atribut</th>
                       <th>action</th>
                     </tr>
                   </thead>
                   <tfoot>
                     <tr>
                       <th>#</th>
-                      <th>Kategori Usaha & Wisata</th>
+                      <th>Nama</th>
+                      <th>Bobot</th>
+                      <th>Atribut</th>
                       <th>action</th>
                     </tr>
                   </tfoot>
                   <tbody>
                     <tr
-                      v-for="(business, index) in businesses"
-                      :key="business.id"
-                      :business="business"
+                      v-for="(kriteria, index) in kriterias"
+                      :key="kriteria.id"
+                      :kriteria="kriteria"
                     >
                       <td>{{ index + 1 }}</td>
-                      <td>{{ business.business }}</td>
+                      <td>{{ kriteria.nama }}</td>
+                      <td>{{ kriteria.bobot }}</td>
+                      <td>{{ kriteria.atribut }}</td>
                       <td>
                         <router-link
-                          :to="{path: '/tempat-wisata-&-usaha/'+ business.id}"
+                          :to="{path: '/editkriteria/'+ kriteria.id}"
                           class="btn btn-warning btn-sm"
                         >
                         <i class="fa fa-pen"></i>
                         </router-link>
                         <button
-                          @click="deleteBusiness(business.id)"
+                          @click="deleteKriteria(kriteria.id)"
                           class="btn btn-sm btn-danger m-1"
                         >
                           <i class="fa fa-trash"></i>
@@ -85,7 +126,7 @@ export default{
                     </tr>
                   </tbody>
                 </table>
-              </div> -->
+              </div>
             </div>
           </div>
         </div>

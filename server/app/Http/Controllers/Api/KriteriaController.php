@@ -1,9 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Controller;
 use App\Models\Kriteria;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Resources\ApiResource;
 use Illuminate\Support\Facades\Validator;
@@ -18,7 +17,7 @@ class KriteriaController extends Controller
      */
     public function index()
     {
-        $kriteria = Kriteria::orderby('kode', 'asc')->get();
+        $kriteria = Kriteria::get();
 
         return new ApiResource(true, 'List Data Kriteria', $kriteria);
     }
@@ -34,7 +33,6 @@ class KriteriaController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'kode' => 'required',
             'nama' => 'required',
             'bobot' => 'required',
             'atribut' => 'required'
@@ -45,7 +43,6 @@ class KriteriaController extends Controller
         }
 
         $kriteria = Kriteria::create([
-            'kode' => $request->kode,
             'nama' => $request->nama,
             'bobot' => $request->bobot,
             'atribut' => $request->atribut,

@@ -25,9 +25,10 @@ Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
 Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
 
+
 Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
-Route::resource('/alternatif', App\Http\Controllers\Api\KriteriaController::class);
-Route::get('/hitung', [App\Http\Controllers\Api\KriteriaController::class, 'hitung'])->name('hitung');
+Route::resource('/alternatif', App\Http\Controllers\Api\AlternatifController::class);
+Route::get('/hitung', [App\Http\Controllers\Api\HitungController::class, 'hitung'])->name('hitung');
 
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);
 Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'store']);

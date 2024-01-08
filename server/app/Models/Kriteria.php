@@ -9,9 +9,7 @@ class Kriteria extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['kode','nama','bobot','atribut'];
+    protected $fillable = ['nama','bobot','atribut'];
 
-    public function alternatif(){
-        return $this->hasMany(alternatif::class, 'kriteria_id', 'id');
-    }
 }
+    
