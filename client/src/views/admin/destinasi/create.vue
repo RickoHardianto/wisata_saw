@@ -204,18 +204,26 @@ export default {
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value="Kendaraan Roda 4"
+                  value=" Kendaraan Roda 4"
                   checked
                 />
-                <label for="mobil">Kendaraan Roda 4</label>
+                <label for="mobil"> Kendaraan Roda 4</label>
                 <br /><br />
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value="Kendaraan Roda 2"
+                  value=" Kendaraan Roda 2"
                   checked
                 />
-                <label for="motor">Kendaraan Roda 2</label>
+                <label for="motor"> Kendaraan Roda 2</label>
+                <br /><br />
+                <input
+                  type="checkbox"
+                  v-model="model.formInput.access"
+                  value=" Kendaraan Roda 2"
+                  checked
+                />
+                <label for="motor"> Kendaraan Umum</label>
               </div>
               <div class="mb-3">
                 <label for="">Alamat</label>
