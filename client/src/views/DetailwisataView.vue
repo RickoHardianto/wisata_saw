@@ -11,7 +11,7 @@ export default {
   data() {
     return {
       userReview: {
-        star: 4,
+        star: 0,
         review: "",
         nama: "",
       },
@@ -39,14 +39,18 @@ export default {
       return this.destination.access;
     },
     async submitReview(destination_id) {
-
       let formData = new FormData();
 
-      formData.append('nama', this.userReview.nama)
-      formData.append('rating', this.userReview.star)
-      formData.append('review', this.userReview.review)
-      formData.append('destination_id', destination_id)
+      let ratingValue = this.userReview.star;
 
+      if (typeof ratingValue === "string") {
+        // Jika nilai rating bertipe string, ubah menjadi angka
+        ratingValue = parseFloat(ratingValue);
+      }
+      formData.append("nama", this.userReview.nama);
+      formData.append("rating", ratingValue);
+      formData.append("review", this.userReview.review);
+      formData.append("destination_id", destination_id);
 
       try {
         const response = await axios.post(
@@ -56,7 +60,7 @@ export default {
         // Lakukan sesuatu dengan respons dari permintaan POST, jika diperlukan
         console.log("Review submitted:", response.data);
         // Setelah berhasil, kosongkan input ulasan
-        this.userReview.star = 4;
+        this.userReview.star = 0;
         this.userReview.review = "";
         this.userReview.nama = "";
 
@@ -139,6 +143,12 @@ export default {
           <h1 class="mb-3 mt-3" style="color: black">
             {{ destination.wisata }}
           </h1>
+          <div class="card-header">
+            <h5>Deskripsi</h5>
+          </div>
+          <div class="card-body">
+            <p>{{ destination.deskripsi }}</p>
+          </div>
           <p>Harga Tiket Masuk : {{ destination.price }}</p>
           <p>Jumlah Penginapan : {{ destination.penginapan }}</p>
           <p>Jam Buka : {{ destination.openTime }}</p>
@@ -171,7 +181,7 @@ export default {
                         <div class="col-md-11">
                           <StarRating
                             class="mb-2"
-                            :rating="review.rating"
+                            v-model="userReview.star"
                             :star-size="20"
                             :read-only="true"
                             :show-rating="false"
@@ -203,7 +213,10 @@ export default {
 
                       <div class="mb-3">
                         <label for="rating">Rating</label>
-                        <StarRating class="mb-2" :star-size="20" :show-rating="false" v-model="userReview.star "></StarRating>
+                        <StarRating
+                          class="mb-2"
+                          v-model="userReview.star"
+                        ></StarRating>
                       </div>
                       <div class="mb-3">
                         <label for="nama">Nama</label>
@@ -222,7 +235,7 @@ export default {
                           class="form-control"
                         ></textarea>
                       </div>
-                      <button  type="submit" class="btn btn-primary">
+                      <button type="submit" class="btn btn-primary">
                         Kirim Ulasan
                       </button>
                     </form>
@@ -243,7 +256,6 @@ export default {
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </section>

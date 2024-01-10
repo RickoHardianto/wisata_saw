@@ -174,7 +174,7 @@ export default {
               <div class="mb-3">
                 <label for="">Jumlah Penginapan</label>
                 <input
-                  type="text"
+                  type="number"
                   v-model="model.formInput.penginapan"
                   class="form-control"
                 />
@@ -220,7 +220,7 @@ export default {
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value=" Kendaraan Roda 2"
+                  value=" Kendaraan umum"
                   checked
                 />
                 <label for="motor"> Kendaraan Umum</label>

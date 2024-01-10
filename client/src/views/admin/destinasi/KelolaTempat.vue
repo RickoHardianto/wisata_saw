@@ -2,6 +2,7 @@
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   components: {
@@ -12,6 +13,8 @@ export default {
   data() {
     return {
       destinations: [],
+      isLoading: false,
+      error: null,
     };
   },
   mounted() {
@@ -19,6 +22,7 @@ export default {
   },
   methods: {
     async fetchDestinations() {
+      this.isLoading = true;
       try {
         const { data } = await axios({
           method: "GET",
@@ -30,6 +34,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.isLoading = false;
     },
     async setStatus(id, status) {
       try {
@@ -47,16 +52,30 @@ export default {
       }
     },
     deleteDestination(id) {
-      console.log(id);
-      axios
-        .delete(`http://localhost:8000/api/destination/${id}`)
-        .then((res) => {
-          console.log(res);
-          this.fetchDestinations();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      Swal.fire({
+        title: "Anda yakin?",
+        text: "Anda tidak dapat mengembalikan data yang sudah dihapus!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:8000/api/destination/${id}`)
+            .then(() => {
+              this.fetchDestinations();
+              Swal.fire("Terhapus!", "Destinasi telah dihapus.", "success");
+            })
+            .catch((error) => {
+              this.error = "Gagal menghapus destinasi.";
+              console.error(error);
+              Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus.", "error");
+            });
+        }
+      });
     },
   },
 };
@@ -109,7 +128,7 @@ export default {
                     <th>Status</th>
                     <th>Action</th>
                   </tfoot>
-                  <tbody>
+                  <tbody v-if="destinations.length > 0">
                     <tr
                       v-for="(destination, index) in destinations"
                       key="destination.id"
@@ -121,51 +140,56 @@ export default {
                       <td class="d-flex align-items-center">
                         <div class="col-md-4">
                           <select
-                        class="form-select"
-                          @change="
-                            setStatus(destination.id, $event.target.value)
-                          "
-                        >
-                          <option
-                            :value="'Validasi'"
-                            :selected="destination.status === 'Validasi'"
+                            class="form-select"
+                            @change="
+                              setStatus(destination.id, $event.target.value)
+                            "
                           >
-                            Validasi
-                          </option>
-                          <option
-                            :value="'Blm Validasi'"
-                            :selected="destination.status === 'Blm Validasi'"
-                          >
-                            Blm Validasi
-                          </option>
-                        </select>
+                            <option
+                              :value="'Validasi'"
+                              :selected="destination.status === 'Validasi'"
+                            >
+                              Validasi
+                            </option>
+                            <option
+                              :value="'Blm Validasi'"
+                              :selected="destination.status === 'Blm Validasi'"
+                            >
+                              Blm Validasi
+                            </option>
+                          </select>
                         </div>
                         <div class="d-flex">
                           <router-link
-                          :to="{
-                            path:
-                              '/kelola-tempat-wisata/' +
-                              destination.id +
-                              '/detail',
-                          }"
-                          class="btn btn-sm btn-info m-1"
-                          ><i class="fa fa-eye"></i
-                        ></router-link>
-                        <router-link
-                          :to="{
-                            path: '/kelola-tempat-wisata/' + destination.id,
-                          }"
-                          class="btn btn-sm btn-warning m-1"
-                          ><i class="fa fa-pen"></i
-                        ></router-link>
-                        <button
-                          @click="deleteDestination(destination.id)"
-                          class="btn btn-sm btn-danger m-1"
-                        >
-                          <i class="fa fa-trash"></i>
-                        </button>
+                            :to="{
+                              path:
+                                '/kelola-tempat-wisata/' +
+                                destination.id +
+                                '/detail',
+                            }"
+                            class="btn btn-sm btn-info m-1"
+                            ><i class="fa fa-eye"></i
+                          ></router-link>
+                          <router-link
+                            :to="{
+                              path: '/kelola-tempat-wisata/' + destination.id,
+                            }"
+                            class="btn btn-sm btn-warning m-1"
+                            ><i class="fa fa-pen"></i
+                          ></router-link>
+                          <button
+                            @click="deleteDestination(destination.id)"
+                            class="btn btn-sm btn-danger m-1"
+                          >
+                            <i class="fa fa-trash"></i>
+                          </button>
                         </div>
                       </td>
+                    </tr>
+                  </tbody>
+                  <tbody v-else>
+                    <tr>
+                      <td colspan="4" class="text-center">Tidak ada data</td>
                     </tr>
                   </tbody>
                 </table>
@@ -186,39 +210,4 @@ export default {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div
-    class="modal fade"
-    id="logoutModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button
-            class="close"
-            type="button"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Select "Logout" below if you are ready to end your current session.
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            Cancel
-          </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>

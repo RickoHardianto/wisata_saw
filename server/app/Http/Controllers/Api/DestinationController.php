@@ -17,10 +17,10 @@ class DestinationController extends Controller
     public function index(Request $request)
     {
         $destination = Destination::with('category')
-        ->withAvg('reviews','rating')
-        ->withCount('reviews')
-        ->latest()->get();
-        
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->latest()->get();
+
         return new ApiResource(true, 'List Data Destination', $destination);
     }
 
@@ -28,17 +28,17 @@ class DestinationController extends Controller
     {
 
         $destination = Destination::with('category')
-        //count and average
-        ->withAvg('reviews', 'rating')
-        ->withCount('reviews')
-        ->find($id);
-        
-        if($destination) {
+            //count and average
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->find($id);
+
+        if ($destination) {
             $reviews = $destination->reviews;
             //return success with Api Resource
             return new ApiResource(true, 'Detail Data Destinasi!', $destination);
         }
-        
+
         return new ApiResource(true, 'Detail Data Destination Tidak Ditemukan!', null);
     }
 
@@ -123,6 +123,8 @@ class DestinationController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
+        $imgPath = $destination->img; 
+        $imgLokasiPath = $destination->img_lokasi; 
 
         if ($request->hasFile('img')) {
             Storage::disk('public')->delete($destination->img);
@@ -138,7 +140,7 @@ class DestinationController extends Controller
 
         $destination->update([
             'wisata'     => $request->wisata,
-            'deskripsi'     => $request->wisata,
+            'deskripsi'     => $request->deskripsi,
             'price'     => $request->price,
             'penginapan'     => $request->price,
             'openTime'     => $request->openTime,
@@ -196,27 +198,17 @@ class DestinationController extends Controller
 
     public function destroy(Destination $destination)
     {
-
-        if ($destination->hasFile('img')) {
-            Storage::disk('public')->delete($destination->img);
-            $imgPath = $destination->file('img')->store('images', 'public');
-            $destination->img = $imgPath;
-        }
-
-        if ($destination->hasFile('img_lokasi')) {
-            Storage::disk('public')->delete($destination->img_lokasi);
-            $imgLokasiPath = $destination->file('img_lokasi')->store('images', 'public');
-            $destination->img_lokasi = $imgLokasiPath;
-        }
-
-        if ($destination->delete()) {
-
-            return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
-        }
-
-        return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
-    }
-
-
+        try {
+            // Menghapus file gambar
+            Storage::delete('public/' . $destination->img);
+            Storage::delete('public/' . $destination->img_lokasi);
     
+            // Menghapus entitas data (Destination)
+            $destination->delete();
+    
+            return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
+        } catch (\Exception $e) {
+            return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
+        }
+    }
 }
