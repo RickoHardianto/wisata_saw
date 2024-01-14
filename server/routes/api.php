@@ -25,6 +25,8 @@ Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
 Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
 
+Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calculateSAW']);
+
 
 Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
 Route::resource('/alternatif', App\Http\Controllers\Api\AlternatifController::class);

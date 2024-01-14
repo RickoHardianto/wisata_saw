@@ -147,31 +147,6 @@ export default {
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
-      <div class="sidebar-heading">SPK</div>
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <router-link class="nav-link" to="/kriteria">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>Kriteria</span></router-link>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <router-link class="nav-link" to="/alternatif">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Alternatif</span></router-link
-        >
-      </li>
-
-      <li class="nav-item">
-        <router-link class="nav-link" to="/hitung">
-          <i class="fas fa-fw fa-table"></i>
-          <span>Hitung</span></router-link>
-      </li>
-      <!-- Divider -->
-      <hr class="sidebar-divider" />
-
       <!-- Heading -->
       <div class="sidebar-heading">Manager</div>
 

@@ -8,6 +8,7 @@ use App\Http\Resources\ApiResource;
 use App\Http\Resources\PostResource;
 use App\Models\Destination;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -123,8 +124,8 @@ class DestinationController extends Controller
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }
-        $imgPath = $destination->img; 
-        $imgLokasiPath = $destination->img_lokasi; 
+        $imgPath = $destination->img;
+        $imgLokasiPath = $destination->img_lokasi;
 
         if ($request->hasFile('img')) {
             Storage::disk('public')->delete($destination->img);
@@ -202,13 +203,70 @@ class DestinationController extends Controller
             // Menghapus file gambar
             Storage::delete('public/' . $destination->img);
             Storage::delete('public/' . $destination->img_lokasi);
-    
+
             // Menghapus entitas data (Destination)
             $destination->delete();
-    
+
             return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
         } catch (\Exception $e) {
             return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
         }
+    }
+
+    public function calculateSAW()
+    {
+        // Data kriteria bobot
+        $weights = [
+            'rating' => 5,
+            'price' => 5,
+            'penginapan' => 1,
+            // 'jarak' => 3,
+        ];
+
+        // Fetch data alternatif dan nilai kriteria dari database
+        $alternatives = Destination::select('id', 'wisata', 'price', 'penginapan')
+            ->addSelect(DB::raw('(SELECT avg("reviews"."rating") FROM "reviews" WHERE "destinations"."id" = "reviews"."destination_id") AS reviews_avg_rating'))
+            ->get();
+
+        // Normalisasi matriks R
+        $normalizedMatrix = [];
+        foreach ($alternatives as $alternative) {
+            $normalizedRating = $alternative->reviews_avg_rating / $weights['rating'];
+
+            $row = [
+                'id' => $alternative->id,
+                'wisata' => $alternative->wisata,
+                'rating' => $normalizedRating,
+                'price' => $alternative->price / $weights['price'],
+                'penginapan' => $alternative->penginapan / $weights['penginapan'],
+            ];
+
+            $normalizedMatrix[] = $row;
+        }
+
+        // Hitung nilai preferensi (V) dan rangking
+        $rankings = [];
+        foreach ($normalizedMatrix as $row) {
+            $v = array_reduce($row, function ($carry, $value) {
+                return $carry + (float)$value;
+            }, 0);
+
+            $rankings[] = [
+                'id' => $row['id'],
+                'wisata' => $row['wisata'],
+                'V' => $v,
+            ];
+        }
+
+        // Urutkan berdasarkan nilai preferensi (V) secara descending
+        usort($rankings, function ($a, $b) {
+            return $b['V'] <=> $a['V'];
+        });
+
+        $conclusion = "Berdasarkan dari hasil perhitungan kriteria diatas, maka \"" . $rankings[0]['wisata'] . "\" adalah rekomendasi wisata yang paling sesuai untuk dikunjungi dari kriteria wisatawan.";
+
+        return new ApiResource(true, 'Hasil Perhitungan SAW', ['rankings' => $rankings, 'conclusion' => $conclusion]);
+
+        // Tampilkan hasil rangking
     }
 }

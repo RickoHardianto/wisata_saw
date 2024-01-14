@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
-import LandingView from "../views/landingView.vue";
+import HomeView from "../views/HomeView.vue";
 import DetailwisataView from "../views/DetailwisataView.vue";
+import RekomendasiView from "../views/RekomendasiView.vue";
 
 
 import LoginView from "../views/admin/login.vue";
@@ -31,16 +32,6 @@ import editmanajemenWilayah from "../views/admin/wilayah/edit.vue";
 
 import rekomendasiWIsata from "../views/admin/RekomendasiWisata.vue";
 
-import kriteria from "../views/admin/kriteria/kriteria.vue";
-import addkriteria from "../views/admin/kriteria/create.vue";
-import editkriteria from "../views/admin/kriteria/edit.vue";
-
-import alternatif from "../views/admin/alternatif/alternatif.vue";
-import addalternatif from "../views/admin/alternatif/create.vue";
-import editalternatif from "../views/admin/alternatif/edit.vue";
-
-import hitung from "../views/admin/hitung/hitung.vue";
-
 
 
 const router = createRouter({
@@ -48,8 +39,13 @@ const router = createRouter({
   routes: [
     {
       path: "/",
-      name: "landing",
-      component: LandingView,
+      name: "home",
+      component: HomeView,
+    },
+    {
+      path: "/rekomendasi",
+      name: "rekomendasi",
+      component: RekomendasiView,
     },
     {
       path: "/detail/:id",
@@ -143,34 +139,7 @@ const router = createRouter({
       path: "/rekomendasi-wisata",
       component: rekomendasiWIsata,
     },
-    {
-      path: "/kriteria",
-      component: kriteria,
-    },
-    {
-      path: "/kriteria/create",
-      component: addkriteria,
-    },
-    {
-      path: "/editkriteria/:id",
-      component: editkriteria,
-    },
-    {
-      path: "/alternatif",
-      component: alternatif,
-    },
-    {
-      path: "/addalternatif",
-      component: addalternatif,
-    },
-    {
-      path: "/editalternatif/:id",
-      component: editalternatif,
-    },
-    {
-      path: "/hitung",
-      component: hitung,
-    },
+    
   ],
 });
 

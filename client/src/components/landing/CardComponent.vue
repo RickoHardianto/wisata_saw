@@ -1,7 +1,6 @@
 <script>
 import StarRating from "vue-star-rating";
 
-
 export default {
   components: {
     StarRating,
@@ -11,26 +10,50 @@ export default {
 </script>
 
 <template>
-  <div class="col mb-5">
-    <div class="card h-100">
+  <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="package-item">
       <!-- Product image-->
-      <img :src="`http://localhost:8000/storage/${destination.img}`" class="card-img-top" />
-      <!-- Product details-->
-      <div class="card-body p-4">
-        <div class="text-center">
-          <!-- Product name-->
-          <h5 class="fw-bolder">{{ destination.wisata }}</h5>
-          <!-- Product price-->
-          HTM {{ destination.price }}
-        </div>
-        <hr>
-        <StarRating :rating="parseFloat(destination.reviews_avg_rating)" :increment="0.5" :star-size="20" :read-only="true" :show-rating="false" :inline="true"></StarRating> 
-                  (<strong>{{ destination.reviews_count }}</strong> ulasan)
+      <div class="overflow-hidden">
+        <img
+          :src="`http://localhost:8000/storage/${destination.img}`"
+          class="img-fluid"
+        />
       </div>
-      <!-- Product actions-->
-      <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-        <div class="text-center">
-          <router-link :to="/detail/+ destination.id" class="btn btn-outline-success mt-auto">detail</router-link>
+      <div class="d-flex border-bottom">
+        <small class="flex-fill text-center border-end py-2"
+          ><i class="fa fa-map-marker-alt text-primary me-2"></i
+          >{{ destination.kecamatan }}</small
+        >
+        <small class="flex-fill text-center border-end py-2"
+          ><i class="fa fa-calendar-alt text-primary me-2"></i
+          >{{ destination.penginapan }}</small
+        >
+        <small class="flex-fill text-center py-2"
+          ><i class="fa fa-user text-primary me-2"></i
+          >{{ destination.category_id }}</small
+        >
+      </div>
+      <div class="text-center p-4">
+        <h3 class="mb-2">{{ destination.wisata }}</h3>
+        <h3 class="mb-0">Rp {{ destination.price }}</h3>
+        <div class="mb-3">
+          <StarRating
+            :rating="parseFloat(destination.reviews_avg_rating)"
+            :increment="0.5"
+            :star-size="20"
+            :read-only="true"
+            :show-rating="false"
+            :inline="true"
+          ></StarRating>
+          (<strong>{{ destination.reviews_count }}</strong> ulasan)
+        </div>
+        <div class="d-flex justify-content-center mb-2">
+          <router-link
+          :to="/detail/ + destination.id"
+            class="btn btn-sm btn-primary px-3 border-end"
+            style="border-radius: 30px 30px 30px 30px"
+            >Detail</router-link
+          >
         </div>
       </div>
     </div>
@@ -39,8 +62,6 @@ export default {
 
 <style>
 .bg-hefo {
-  background-color: #86B817;
+  background-color: #86b817;
 }
-
-
 </style>
