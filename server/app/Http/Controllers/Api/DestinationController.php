@@ -225,8 +225,8 @@ class DestinationController extends Controller
 
         // Fetch data alternatif dan nilai kriteria dari database
         $alternatives = Destination::select('id', 'wisata', 'price', 'penginapan')
-            ->addSelect(DB::raw('(SELECT avg("reviews"."rating") FROM "reviews" WHERE "destinations"."id" = "reviews"."destination_id") AS reviews_avg_rating'))
-            ->get();
+        ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
+        ->get();
 
         // Normalisasi matriks R
         $normalizedMatrix = [];
