@@ -95,23 +95,33 @@ export default {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="login"
-              >Login</router-link
+            <router-link class="nav-link active" aria-current="page" to="/"
+              >Home</router-link
             >
           </li>
           <li class="nav-item">
+            <router-link class="nav-link active" aria-current="page" to="/rekomendasi"
+              >Rekomendasi Wisata</router-link
+            >
+          </li>
+          <!-- <li class="nav-item">
+            <router-link class="nav-link active" aria-current="page" to="login"
+              >Login</router-link
+            >
+          </li> -->
+          <!-- <li class="nav-item">
             <router-link
               class="nav-link active"
               aria-current="page"
               to="register"
               >Register</router-link
             >
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <router-link class="nav-link active" aria-current="page" to="#"
               >Logout</router-link
             >
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>
@@ -154,6 +164,7 @@ export default {
           <p>Jam Buka : {{ destination.openTime }}</p>
           <p>Jam Tutup : {{ destination.closeTime }}</p>
           <p>Access Kendaraan: {{ displayAccess() }}</p>
+          <p>Nomor Telepon: {{ destination.numberPhone }}</p>
           <p>Alamat : {{ destination.address }}</p>
           <p>Kecamatan : {{ destination.kecamatan }}</p>
 
