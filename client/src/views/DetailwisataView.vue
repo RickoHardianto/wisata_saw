@@ -274,7 +274,7 @@ export default {
   <footer class="py-5 bg-hefo">
     <div class="container">
       <p class="m-0 text-center text-white">
-        Copyright &copy; Your Website 2023
+        Rekomendasi Destinasi Wisata Malang
       </p>
     </div>
   </footer>
