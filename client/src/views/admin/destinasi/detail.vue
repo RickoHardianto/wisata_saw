@@ -19,6 +19,7 @@ export default {
           deskripsi: "",
           price: "",
           penginapan: "",
+          jarak: "",
           openTime: "",
           closeTime: "",
           access: [],
@@ -142,6 +143,15 @@ export default {
                 <input
                   type="text"
                   v-model="model.formInput.penginapan"
+                  class="form-control"
+                  readonly
+                />
+              </div>
+              <div class="mb-3">
+                <label for="">Jumlah Jarak Wisata Terdekat</label>
+                <input
+                  type="text"
+                  v-model="model.formInput.jarak"
                   class="form-control"
                   readonly
                 />

@@ -18,6 +18,7 @@ export default {
           deskripsi: "",
           price: "",
           penginapan: "",
+          jarak: "",
           openTime: "",
           closeTime: "",
           access: [],
@@ -87,6 +88,7 @@ export default {
       formData.append("deskripsi", this.model.formInput.deskripsi);
       formData.append("price", this.model.formInput.price);
       formData.append("penginapan", this.model.formInput.penginapan);
+      formData.append("jarak", this.model.formInput.jarak);
       formData.append("openTime", this.model.formInput.openTime);
       formData.append("closeTime", this.model.formInput.closeTime);
       formData.append("access", JSON.stringify(this.model.formInput.access));
@@ -105,6 +107,7 @@ export default {
             deskripsi: "",
             price: "",
             penginapan: "",
+            jarak: "",
             openTime: "",
             closeTime: "",
             access: [],
@@ -180,6 +183,14 @@ export default {
                 />
               </div>
               <div class="mb-3">
+                <label for="">Jumlah jarak Wisata Terdekat</label>
+                <input
+                  type="number"
+                  v-model="model.formInput.jarak"
+                  class="form-control"
+                />
+              </div>
+              <div class="mb-3">
                 <div class="row">
                   <div class="col-6">
                     <label for="">Jam Buka</label>
@@ -204,7 +215,7 @@ export default {
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value=" Kendaraan Roda 4"
+                  value="1"
                   checked
                 />
                 <label for="mobil"> Kendaraan Roda 4</label>
@@ -212,7 +223,7 @@ export default {
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value=" Kendaraan Roda 2"
+                  value="2"
                   checked
                 />
                 <label for="motor"> Kendaraan Roda 2</label>
@@ -220,7 +231,7 @@ export default {
                 <input
                   type="checkbox"
                   v-model="model.formInput.access"
-                  value=" Kendaraan umum"
+                  value="3"
                   checked
                 />
                 <label for="motor"> Kendaraan Umum</label>

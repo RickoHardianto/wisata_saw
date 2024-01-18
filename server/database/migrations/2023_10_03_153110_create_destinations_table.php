@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('deskripsi');
             $table->integer('price');
             $table->integer('penginapan');
+            $table->integer('jarak');
             $table->time('openTime');
             $table->time('closeTime');
             $table->string('access');

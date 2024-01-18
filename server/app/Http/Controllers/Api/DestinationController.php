@@ -78,6 +78,7 @@ class DestinationController extends Controller
             'wisata'     => $request->wisata,
             'deskripsi'     => $request->deskripsi,
             'penginapan'     => $request->penginapan,
+            'jarak'     => $request->jarak,
             'price'     => $request->price,
             'openTime'     => $request->openTime,
             'closeTime'     => $request->closeTime,
@@ -143,7 +144,8 @@ class DestinationController extends Controller
             'wisata'     => $request->wisata,
             'deskripsi'     => $request->deskripsi,
             'price'     => $request->price,
-            'penginapan'     => $request->price,
+            'penginapan'     => $request->penginapan,
+            'jarak'     => $request->jarak,
             'openTime'     => $request->openTime,
             'closeTime'     => $request->closeTime,
             'access'     => $request->access,
@@ -219,13 +221,14 @@ class DestinationController extends Controller
         $weights = [
             'rating' => 5,
             'price' => 5,
+            'access' => 5,
             'penginapan' => 1,
-            // 'jarak' => 3,
+            'jarak' => 3,
         ];
 
         //code yang error
         // Fetch data alternatif dan nilai kriteria dari database
-        $alternatives = Destination::select('id', 'wisata', 'price', 'penginapan')
+        $alternatives = Destination::select('id', 'wisata', 'price','access', 'penginapan','jarak')
             ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
             ->get();
 
@@ -233,13 +236,16 @@ class DestinationController extends Controller
         $normalizedMatrix = [];
         foreach ($alternatives as $alternative) {
             $normalizedRating = $alternative->reviews_avg_rating / $weights['rating'];
+            $accessArray = json_decode($alternative->access);
 
             $row = [
                 'id' => $alternative->id,
                 'wisata' => $alternative->wisata,
                 'rating' => $normalizedRating,
                 'price' => $alternative->price / $weights['price'],
+                'access' => is_array($accessArray) ? array_sum($accessArray) / $weights['access'] : 0,
                 'penginapan' => $alternative->penginapan / $weights['penginapan'],
+                'jarak' => $alternative->jarak / $weights['jarak'],
             ];
 
             $normalizedMatrix[] = $row;

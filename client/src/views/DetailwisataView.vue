@@ -22,6 +22,16 @@ export default {
   },
   methods: {
     ...mapActions(useUserStore, ["fetchById"]),
+    displayAccessLabel(accessValue) {
+      const accessMapping = {
+        1: "Kendaraan Roda 4",
+        2: "Kendaraan Roda 2",
+        3: "Kendaraan Umum",
+        // Sesuaikan dengan pilihan yang Anda miliki
+      };
+
+      return accessMapping[accessValue] || accessValue;
+    },
     displayAccess() {
       if (Array.isArray(this.destination.access)) {
         return this.destination.access.join(", ");
@@ -32,7 +42,6 @@ export default {
             return accessArray.join(", ");
           }
         } catch (error) {
-          // Handle JSON parsing error, if any
           console.error("Error parsing 'access' JSON string:", error);
         }
       }
@@ -157,10 +166,11 @@ export default {
           <p>Jumlah Penginapan : {{ destination.penginapan }}</p>
           <p>Jam Buka : {{ destination.openTime }}</p>
           <p>Jam Tutup : {{ destination.closeTime }}</p>
-          <p>Access Kendaraan: {{ displayAccess() }}</p>
+          <p>Access Kendaraan: {{ displayAccess().split(',').map(value => displayAccessLabel(Number(value))).join(', ') }}</p>
           <p>Nomor Telepon: {{ destination.numberPhone }}</p>
           <p>Alamat : {{ destination.address }}</p>
           <p>Kecamatan : {{ destination.kecamatan }}</p>
+          <p>Jarak Wisata Terdekat : {{ destination.jarak }}</p>
 
           <!-- data detail end  -->
 

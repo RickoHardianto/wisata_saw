@@ -15,6 +15,7 @@ class Destination extends Model
         "deskripsi",
         "price",
         "penginapan",
+        "jarak",
         "openTime",
         "closeTime",
         "access",
