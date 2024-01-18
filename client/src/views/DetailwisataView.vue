@@ -1,7 +1,7 @@
 <script>
 import { mapActions, mapState } from "pinia";
 import { useUserStore } from "../stores/wisata";
-import StarRating from "vue-star-rating";
+import StarRating from 'vue-star-rating'
 import axios from "axios";
 
 export default {
@@ -40,15 +40,9 @@ export default {
     },
     async submitReview(destination_id) {
       let formData = new FormData();
-
-      let ratingValue = this.userReview.star;
-
-      if (typeof ratingValue === "string") {
-        // Jika nilai rating bertipe string, ubah menjadi angka
-        ratingValue = parseFloat(ratingValue);
-      }
+    
       formData.append("nama", this.userReview.nama);
-      formData.append("rating", ratingValue);
+      formData.append("rating",  this.userReview.star);
       formData.append("review", this.userReview.review);
       formData.append("destination_id", destination_id);
 
@@ -190,14 +184,14 @@ export default {
                           <div class="review-avatar avatar-sm"></div>
                         </div>
                         <div class="col-md-11">
-                          <StarRating
+                          <star-rating
                             class="mb-2"
-                            v-model="userReview.star"
+                            :rating="review.rating"
                             :star-size="20"
                             :read-only="true"
                             :show-rating="false"
                           >
-                          </StarRating>
+                          </star-rating>
                           <strong>
                             <span class="text-dark">{{ review.nama }}</span>
                           </strong>
@@ -224,10 +218,7 @@ export default {
 
                       <div class="mb-3">
                         <label for="rating">Rating</label>
-                        <StarRating
-                          class="mb-2"
-                          v-model="userReview.star"
-                        ></StarRating>
+                        <star-rating v-model:rating="userReview.star"></star-rating>
                       </div>
                       <div class="mb-3">
                         <label for="nama">Nama</label>

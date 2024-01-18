@@ -9,8 +9,15 @@ export default {
   data() {
     return {
       selectedCategory: "",
+      criteriaSelection: {
+        rating: true,
+        price: true,
+        penginapan: true,
+      },
       sawResults: [],
       conclusion: "",
+      loading: false,
+      error: null,
     };
   },
   computed: {
@@ -38,12 +45,28 @@ export default {
     },
     async calculateSAW() {
       try {
-        const response = await axios.get("http://localhost:8000/api/saw");
+        this.loading = true;
+        const selectedCriteria = Object.keys(this.criteriaSelection).filter(
+          (criteria) => this.criteriaSelection[criteria]
+        );
+        const response = await axios.get("http://localhost:8000/api/saw", {
+          params: {
+            category: this.selectedCategory,
+            criteria: selectedCriteria.join(","),
+          },
+        });
+
         this.sawResults = response.data.data.rankings;
         this.conclusion = response.data.data.conclusion;
+        this.error = null;
       } catch (error) {
         console.error("Error fetching SAW results:", error);
+      }finally{
+        this.loading = false;
       }
+    },
+    onCriteriaChange(criteria) {
+      this.calculateSAW();
     },
   },
   created() {
@@ -159,6 +182,24 @@ export default {
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
         <h4>Tidak ada destinasi yang tersedia.</h4>
+      </div>
+    </div>
+    <!-- Add checkboxes for criteria -->
+    <div class="container my-4">
+      <div class="row">
+        <div
+          class="col-md-4"
+          v-for="(isChecked, criteria) in criteriaSelection"
+          :key="criteria"
+        >
+          <input
+            type="checkbox"
+            v-model="criteriaSelection[criteria]"
+            @change="onCriteriaChange(criteria)"
+            :id="`criteriaCheckbox_${criteria}`"
+          />
+          <label :for="`criteriaCheckbox_${criteria}`">{{ criteria }}</label>
+        </div>
       </div>
     </div>
     <div class="container">
