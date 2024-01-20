@@ -20,8 +20,8 @@
         "atribut":"benefit"
     },
     {
-        "nama":"Keunikan dan Daya Tarik",
+        "nama":"Jumlah Wisata terdekat",
         "bobot":"5",
-        "atribut":"cost"
+        "atribut":"benefit"
     }
 ]

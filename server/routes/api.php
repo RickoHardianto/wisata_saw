@@ -29,7 +29,6 @@ Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calc
 
 
 Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
-Route::resource('/alternatif', App\Http\Controllers\Api\AlternatifController::class);
 Route::get('/hitung', [App\Http\Controllers\Api\HitungController::class, 'hitung'])->name('hitung');
 
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);

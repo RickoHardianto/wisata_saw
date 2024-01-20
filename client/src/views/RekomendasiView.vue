@@ -9,11 +9,6 @@ export default {
   data() {
     return {
       selectedCategory: "",
-      criteriaSelection: {
-        rating: true,
-        price: true,
-        penginapan: true,
-      },
       sawResults: [],
       conclusion: "",
       loading: false,
@@ -21,7 +16,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(useUserStore, ["destinations", "categories"]),
+    ...mapState(useUserStore, ["destinations", "categories", "kriterias"]),
     filteredDestinations() {
       if (this.selectedCategory === "") {
         return this.destinations.filter(
@@ -37,7 +32,11 @@ export default {
     },
   },
   methods: {
-    ...mapActions(useUserStore, ["fetchDestination", "fetchCategories"]),
+    ...mapActions(useUserStore, [
+      "fetchDestination",
+      "fetchCategories",
+      "fetchKriteria",
+    ]),
     filterDestinations() {
       this.fetchDestination({
         filter: { category: this.selectedCategory },
@@ -46,14 +45,35 @@ export default {
     async calculateSAW() {
       try {
         this.loading = true;
-        const selectedCriteria = Object.keys(this.criteriaSelection).filter(
-          (criteria) => this.criteriaSelection[criteria]
-        );
+
+        // Ambil kriteria yang dipilih
+        const selectedCriteria = this.kriterias
+          .filter((kriteria) => kriteria.selected)
+          .map((kriteria) => kriteria.id);
+
+        // Ambil destinasi yang dipilih
+        const selectedDestinations = this.filteredDestinations
+          .filter((destination) => destination.selected)
+          .map((destination) => destination.id);
+
+        // Pastikan ada destinasi dan kriteria yang dipilih
+        if (
+          selectedDestinations.length === 0 ||
+          selectedCriteria.length === 0
+        ) {
+          this.error =
+            "Pilih Kriteria dan Destinasi Wisata";
+          return;
+        }
+
+        // Buat objek payload untuk dikirim ke server
+        const payload = {
+          criteria: selectedCriteria.join(","),
+          destinations: selectedDestinations.join(","),
+        };
+
         const response = await axios.get("http://localhost:8000/api/saw", {
-          params: {
-            category: this.selectedCategory,
-            criteria: selectedCriteria.join(","),
-          },
+          params: payload,
         });
 
         this.sawResults = response.data.data.rankings;
@@ -61,16 +81,14 @@ export default {
         this.error = null;
       } catch (error) {
         console.error("Error fetching SAW results:", error);
-      }finally{
+      } finally {
         this.loading = false;
       }
-    },
-    onCriteriaChange(criteria) {
-      this.calculateSAW();
     },
   },
   created() {
     this.fetchDestination();
+    this.fetchKriteria();
     this.fetchCategories();
     this.calculateSAW();
   },
@@ -163,6 +181,7 @@ export default {
         </div>
       </div>
     </div>
+
     <div
       class="container px-4 px-lg-5 mt-5"
       v-if="filteredDestinations.length > 0"
@@ -170,11 +189,17 @@ export default {
       <div
         class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
       >
-        <CardComponent
+        <label
           v-for="destination in filteredDestinations"
           :key="destination.id"
-          :destination="destination"
-        />
+        >
+          <input
+            type="checkbox"
+            v-model="destination.selected"
+            :value="destination.id"
+          />
+          {{ destination.wisata }}
+        </label>
       </div>
     </div>
     <div class="container px-4 px-lg-5 mt-5" v-else>
@@ -185,29 +210,33 @@ export default {
       </div>
     </div>
     <!-- Add checkboxes for criteria -->
-    <div class="container my-4">
-      <div class="row">
-        <div
-          class="col-md-4"
-          v-for="(isChecked, criteria) in criteriaSelection"
-          :key="criteria"
-        >
+    <div class="container px-4 px-lg-5 mt-5">
+      <div
+        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      >
+        <label v-for="kriteria in kriterias" :key="kriteria.id">
           <input
             type="checkbox"
-            v-model="criteriaSelection[criteria]"
-            @change="onCriteriaChange(criteria)"
-            :id="`criteriaCheckbox_${criteria}`"
+            v-model="kriteria.selected"
+            :value="kriteria.id"
           />
-          <label :for="`criteriaCheckbox_${criteria}`">{{ criteria }}</label>
-        </div>
+          {{ kriteria.nama }}
+        </label>
       </div>
     </div>
+
+    <!-- Tombol Hitung SAW -->
+    <div class="container mt-3">
+      <button class="btn btn-primary" @click="calculateSAW" :disabled="loading">
+        {{ loading ? "Loading..." : "Hitung SAW" }}
+      </button>
+    </div>
+
+    <div v-if="error" class="container py-4">
+      <p style="color: red">{{ error }}</p>
+    </div>
+
     <div class="container">
-      <!-- tabel normalisasi -->
-
-      <!-- list Hasil rangking -->
-
-      <!-- hasil rekomendasi  -->
       <section class="py-5" v-if="sawResults && sawResults.length > 0">
         <div class="container">
           <h2 class="mb-4">Hasil Perhitungan SAW</h2>

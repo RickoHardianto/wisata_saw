@@ -5,6 +5,7 @@ import axios from "axios";
 export const useUserStore = defineStore("user", {
   state: () => ({
     destinations: [],
+    kriterias: [],
     destination: {},
     categories: [],
     regions: [],
@@ -57,6 +58,19 @@ export const useUserStore = defineStore("user", {
 
         console.log(data);
         this.destinations = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async fetchKriteria() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/kriteria",
+        });
+
+        console.log(data);
+        this.kriterias = data.data;
       } catch (error) {
         console.log(error);
       }

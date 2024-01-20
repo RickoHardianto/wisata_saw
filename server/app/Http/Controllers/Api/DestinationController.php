@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Resources\ApiResource;
 use App\Http\Resources\PostResource;
 use App\Models\Destination;
+use App\Models\Kriteria;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -215,65 +216,78 @@ class DestinationController extends Controller
         }
     }
 
-    public function calculateSAW()
+    public function calculateSAW(Request $request)
     {
-        // Data kriteria bobot
-        $weights = [
-            'rating' => 5,
-            'price' => 5,
-            'access' => 5,
-            'penginapan' => 1,
-            'jarak' => 3,
-        ];
+        try {
+            // Ambil data kriteria dari request
+            $selectedCriteria = explode(",", $request->input('criteria'));
+            $selectedDestinations = explode(",", $request->input('destinations'));
 
-        //code yang error
-        // Fetch data alternatif dan nilai kriteria dari database
-        $alternatives = Destination::select('id', 'wisata', 'price','access', 'penginapan','jarak')
-            ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
-            ->get();
+            // Ambil data kriteria yang dipilih
+            $criteria = Kriteria::whereIn('id', $selectedCriteria)->get();
 
-        // Normalisasi matriks R
-        $normalizedMatrix = [];
-        foreach ($alternatives as $alternative) {
-            $normalizedRating = $alternative->reviews_avg_rating / $weights['rating'];
-            $accessArray = json_decode($alternative->access);
+            // Data kriteria bobot
+            $weights = [];
+            foreach ($criteria as $criterion) {
+                $weights[$criterion->nama] = $criterion->bobot;
+            }
 
-            $row = [
-                'id' => $alternative->id,
-                'wisata' => $alternative->wisata,
-                'rating' => $normalizedRating,
-                'price' => $alternative->price / $weights['price'],
-                'access' => is_array($accessArray) ? array_sum($accessArray) / $weights['access'] : 0,
-                'penginapan' => $alternative->penginapan / $weights['penginapan'],
-                'jarak' => $alternative->jarak / $weights['jarak'],
-            ];
+            // Fetch data destinasi berdasarkan id yang dipilih
+            $alternatives = Destination::whereIn('id', $selectedDestinations)
+                ->select('id', 'wisata', 'price', 'access', 'penginapan', 'jarak')
+                ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
+                ->get();
 
-            $normalizedMatrix[] = $row;
+            // Normalisasi matriks R
+            $normalizedMatrix = [];
+            foreach ($alternatives as $alternative) {
+                $normalizedRating = $alternative->reviews_avg_rating / ($weights['Keunikan dan Daya Tarik'] ?? 1); // Bobot default adalah 1 jika tidak ada
+                $accessArray = json_decode($alternative->access);
+
+                $row = [
+                    'id' => $alternative->id,
+                    'wisata' => $alternative->wisata,
+                    'Keunikan dan Daya Tarik' => $normalizedRating,
+                    'Harga Tiket Masuk' => $alternative->price / ($weights['Harga Tiket Masuk'] ?? 1),
+                    'Aksesibilitas Wisata' => is_array($accessArray) ? array_sum($accessArray) / ($weights['Aksesibilitas Wisata'] ?? 1) : 0,
+                    'Jumlah Penginapan' => $alternative->penginapan / ($weights['Jumlah Penginapan'] ?? 1),
+                    'Jumlah Wisata terdekat' => $alternative->jarak / ($weights['Jumlah Wisata terdekat'] ?? 1),
+                ];
+
+                $normalizedMatrix[] = $row;
+            }
+
+            // Hitung nilai preferensi (V) dan rangking
+            $rankings = [];
+            foreach ($normalizedMatrix as $row) {
+                $v = array_reduce($row, function ($carry, $value) {
+                    return $carry + (float)$value;
+                }, 0);
+
+                $rankings[] = [
+                    'id' => $row['id'],
+                    'wisata' => $row['wisata'],
+                    'V' => $v,
+                ];
+            }
+
+            // Urutkan berdasarkan nilai preferensi (V) secara descending
+            usort($rankings, function ($a, $b) {
+                return $b['V'] <=> $a['V'];
+            });
+
+            $conclusion = "Berdasarkan dari hasil perhitungan kriteria di atas, maka \"" . $rankings[0]['wisata'] . "\" adalah rekomendasi wisata yang paling sesuai untuk dikunjungi dari kriteria wisatawan.";
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Hasil Perhitungan SAW',
+                'data' => ['rankings' => $rankings, 'conclusion' => $conclusion],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error calculating SAW results: ' . $e->getMessage(),
+            ], 500);
         }
-
-        // Hitung nilai preferensi (V) dan rangking
-        $rankings = [];
-        foreach ($normalizedMatrix as $row) {
-            $v = array_reduce($row, function ($carry, $value) {
-                return $carry + (float)$value;
-            }, 0);
-
-            $rankings[] = [
-                'id' => $row['id'],
-                'wisata' => $row['wisata'],
-                'V' => $v,
-            ];
-        }
-
-        // Urutkan berdasarkan nilai preferensi (V) secara descending
-        usort($rankings, function ($a, $b) {
-            return $b['V'] <=> $a['V'];
-        });
-
-        $conclusion = "Berdasarkan dari hasil perhitungan kriteria diatas, maka \"" . $rankings[0]['wisata'] . "\" adalah rekomendasi wisata yang paling sesuai untuk dikunjungi dari kriteria wisatawan.";
-
-        return new ApiResource(true, 'Hasil Perhitungan SAW', ['rankings' => $rankings, 'conclusion' => $conclusion]);
-
-        // Tampilkan hasil rangking
     }
 }
