@@ -15,10 +15,14 @@ export default {
     ...mapState(useUserStore, ["destinations", "categories"]),
     filteredDestinations() {
       if (this.selectedCategory === "") {
-        return this.destinations.filter(destination => destination.status === 'Validasi');
+        return this.destinations.filter(
+          (destination) => destination.status === "Validasi"
+        );
       } else {
         return this.destinations.filter(
-          destination => destination.category_id === this.selectedCategory && destination.status === 'Validasi'
+          (destination) =>
+            destination.category_id === this.selectedCategory &&
+            destination.status === "Validasi"
         );
       }
     },
@@ -63,7 +67,10 @@ export default {
             >
           </li>
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/rekomendasi"
+            <router-link
+              class="nav-link active"
+              aria-current="page"
+              to="/rekomendasi"
               >Rekomendasi Wisata</router-link
             >
           </li>
@@ -90,14 +97,20 @@ export default {
     </div>
   </nav>
   <!-- Header-->
-  <header class="bg-hefo py-5">
-    <div class="container px-4 px-lg-5 my-5">
-      <div class="text-center text-white">
-        <h1 class="display-4 fw-bolder">Destinasi Wisata</h1>
-        <p class="lead fw-normal text-white-50 mb-0"></p>
+  <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+    <div class="container py-5">
+      <div class="row justify-content-center py-5">
+        <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+          <h1 class="display-3 text-white mb-3 animated slideInDown">
+            Destinasi Wisata Kota Malang
+          </h1>
+          <h1 class="fs-4 text-white mb-4 animated slideInDown">
+            Panduan Wisata Terbaik Untuk Menikmati Petualangan Tak Terlupakan
+          </h1>
+        </div>
       </div>
     </div>
-  </header>
+  </div>
   <!-- Section-->
   <section class="py-5">
     <div class="container">
@@ -108,7 +121,7 @@ export default {
             class="form-control"
             v-model="selectedCategory"
             @change="filterDestinations"
-          > 
+          >
             <option value="" selected>All Category</option>
             <option
               v-for="category in categories"
@@ -121,27 +134,30 @@ export default {
         </div>
       </div>
     </div>
-    <div class="container px-4 px-lg-5 mt-5" v-if="filteredDestinations.length > 0">
     <div
-      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      class="container px-4 px-lg-5 mt-5"
+      v-if="filteredDestinations.length > 0"
     >
-      <CardComponent
-        v-for="destination in filteredDestinations"
-        :key="destination.id"
-        :destination="destination"
-      />
+      <div
+        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      >
+        <CardComponent
+          v-for="destination in filteredDestinations"
+          :key="destination.id"
+          :destination="destination"
+        />
+      </div>
     </div>
-  </div>
-  <div class="container px-4 px-lg-5 mt-5" v-else>
-    <div
-      class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-    >
-    <h4>Tidak ada destinasi yang tersedia.</h4>
+    <div class="container px-4 px-lg-5 mt-5" v-else>
+      <div
+        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+      >
+        <h4>Tidak ada destinasi yang tersedia.</h4>
+      </div>
     </div>
-  </div>
   </section>
   <!-- Footer-->
-  <footer class="py-5 bg-hefo">
+  <footer class="py-5 bg-primary">
     <div class="container">
       <p class="m-0 text-center text-white">
         Rekomendasi Destinasi Wisata Malang
@@ -150,6 +166,12 @@ export default {
   </footer>
 </template>
 <style>
+.hero-header {
+    background: linear-gradient(rgba(20, 20, 31, .7), rgba(20, 20, 31, .7)), url(../assets/landing/bg-hero.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
 .bg-hefo {
   background-color: #86b817;
 }
