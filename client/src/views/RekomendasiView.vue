@@ -61,8 +61,7 @@ export default {
           selectedDestinations.length === 0 ||
           selectedCriteria.length === 0
         ) {
-          this.error =
-            "Pilih Kriteria dan Destinasi Wisata";
+          this.error = "Pilih Kriteria dan Destinasi Wisata";
           return;
         }
 
@@ -150,7 +149,7 @@ export default {
     </div>
   </nav>
   <!-- Header-->
-  <header class="bg-hefo py-5">
+  <header class="bg-primary py-5">
     <div class="container px-4 px-lg-5 my-5">
       <div class="text-center text-white">
         <h1 class="display-4 fw-bolder">Destinasi Wisata</h1>
@@ -182,92 +181,136 @@ export default {
       </div>
     </div>
 
-    <div
-      class="container px-4 px-lg-5 mt-5"
-      v-if="filteredDestinations.length > 0"
-    >
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <label
-          v-for="destination in filteredDestinations"
-          :key="destination.id"
-        >
-          <input
-            type="checkbox"
-            v-model="destination.selected"
-            :value="destination.id"
-          />
-          {{ destination.wisata }}
-        </label>
-      </div>
-    </div>
-    <div class="container px-4 px-lg-5 mt-5" v-else>
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <h4>Tidak ada destinasi yang tersedia.</h4>
-      </div>
-    </div>
-    <!-- Add checkboxes for criteria -->
-    <div class="container px-4 px-lg-5 mt-5">
-      <div
-        class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
-      >
-        <label v-for="kriteria in kriterias" :key="kriteria.id">
-          <input
-            type="checkbox"
-            v-model="kriteria.selected"
-            :value="kriteria.id"
-          />
-          {{ kriteria.nama }}
-        </label>
-      </div>
-    </div>
+    <div class="container mt-5">
+      <div class="card bg-primary rounded">
+        <div class="card-body text-white">
+          <div class="container" v-if="filteredDestinations.length > 0">
+            <label for="">Pilih Wisata</label>
+            <div class="row">
+              <label
+                v-for="destination in filteredDestinations"
+                :key="destination.id" class="col-md-3"
+              >
+                <input
+                  type="checkbox"
+                  v-model="destination.selected"
+                  :value="destination.id"
+                />
+                {{ destination.wisata }}
+              </label>
+            </div>
+          </div>
+          <div class="container px-4 px-lg-5 mt-5" v-else>
+            <div
+              class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"
+            >
+              <h4>Tidak ada destinasi yang tersedia.</h4>
+            </div>
+          </div>
+          <!-- Add checkboxes for criteria -->
+          <div class="container">
+            <div class="card shadow mb-4">
+              <div class="card-header">
+                <h5 class="card-title text-black">Pilih Kriteria</h5>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="tabel-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Kriteria</th>
+                          <th>Type</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="kriteria in kriterias" :key="kriteria.id">
+                          <td></td>
+                          <td>{{ kriteria.nama }}</td>
+                          <td>{{ kriteria.atribut }}</td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              v-model="kriteria.selected"
+                              :value="kriteria.id"
+                            />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- Tombol Hitung SAW -->
+                  <div class="container mt-3">
+                    <button
+                      class="btn btn-primary"
+                      @click="calculateSAW"
+                      :disabled="loading"
+                    >
+                      {{ loading ? "Loading..." : "Hitung SAW" }}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
-    <!-- Tombol Hitung SAW -->
-    <div class="container mt-3">
-      <button class="btn btn-primary" @click="calculateSAW" :disabled="loading">
-        {{ loading ? "Loading..." : "Hitung SAW" }}
-      </button>
-    </div>
+          <div v-if="error" class="container py-4">
+            <div class="card">
+              <div class="card-body text-center">
+                <p style="color: red">{{ error }}</p>
+              </div>
+            </div>
+          </div>
 
-    <div v-if="error" class="container py-4">
-      <p style="color: red">{{ error }}</p>
-    </div>
+          <div class="container">
+            <section class="py-5" v-if="sawResults && sawResults.length > 0">
+              <div class="container text-black">
+                <div class="card shadow">
+                  <div class="card-header">
+                    <h5>Hasil Perhitungan SAW</h5>
+                  </div>
+                  <div class="card-body">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Wisata</th>
+                          <th>Nilai Preferensi (V)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(result, index) in sawResults" :key="index">
+                          <td>{{ result.id }}</td>
+                          <td>{{ result.wisata }}</td>
+                          <td>{{ result.V }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </section>
 
-    <div class="container">
-      <section class="py-5" v-if="sawResults && sawResults.length > 0">
-        <div class="container">
-          <h2 class="mb-4">Hasil Perhitungan SAW</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Wisata</th>
-                <th>Nilai Preferensi (V)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(result, index) in sawResults" :key="index">
-                <td>{{ result.id }}</td>
-                <td>{{ result.wisata }}</td>
-                <td>{{ result.V }}</td>
-              </tr>
-            </tbody>
-          </table>
+            <!-- Tampilkan pesan kesimpulan -->
+            <div class="container py-4 text-black" v-if="conclusion">
+              <div class="card shadow">
+                <div class="card-header">
+                  <h5>Kesimpulan</h5>
+                </div>
+                <div class="card-body">
+                  <p>{{ conclusion }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
-
-      <!-- Tampilkan pesan kesimpulan -->
-      <div class="container py-4" v-if="conclusion">
-        <h2>Kesimpulan:</h2>
-        <p>{{ conclusion }}</p>
       </div>
     </div>
   </section>
   <!-- Footer-->
-  <footer class="py-5 bg-hefo">
+  <footer class="py-5 bg-primary">
     <div class="container">
       <p class="m-0 text-center text-white">
         Copyright &copy; Your Website 2023
