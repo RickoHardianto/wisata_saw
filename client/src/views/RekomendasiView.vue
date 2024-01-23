@@ -189,7 +189,8 @@ export default {
             <div class="row">
               <label
                 v-for="destination in filteredDestinations"
-                :key="destination.id" class="col-md-3"
+                :key="destination.id"
+                class="col-md-3"
               >
                 <input
                   type="checkbox"
@@ -241,15 +242,21 @@ export default {
                       </tbody>
                     </table>
                   </div>
-                  <!-- Tombol Hitung SAW -->
-                  <div class="container mt-3">
-                    <button
-                      class="btn btn-primary"
-                      @click="calculateSAW"
-                      :disabled="loading"
-                    >
-                      {{ loading ? "Loading..." : "Hitung SAW" }}
-                    </button>
+                  <div class="d-flex justify-content-between">
+                    <div class="container py-4 text-black">
+                      <h5>Catatan</h5>
+                      <p>- Benefit adalah Nilai Terbesar dari Kriteria</p>
+                      <p>- Cost adalah Nilai Terkecil dari kriteria</p>
+                    </div>
+                    <div class="py-4">
+                      <button
+                        class="btn btn-primary"
+                        @click="calculateSAW"
+                        :disabled="loading"
+                      >
+                        {{ loading ? "Loading..." : "Hitung" }}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
