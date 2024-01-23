@@ -130,7 +130,7 @@ export default {
     </div>
   </nav>
   <!-- Header-->
-  <header class="bg-hefo py-5">
+  <header class="bg-primary py-5">
     <div class="container px-4 px-lg-5 my-5">
       <div class="text-center text-white">
         <h1 class="display-4 fw-bolder">Destinasi Wisata</h1>
@@ -272,7 +272,7 @@ export default {
     </div>
   </section>
 
-  <footer class="py-5 bg-hefo">
+  <footer class="py-5 bg-primary">
     <div class="container">
       <p class="m-0 text-center text-white">
         Rekomendasi Destinasi Wisata Malang
