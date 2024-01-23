@@ -240,15 +240,17 @@ class DestinationController extends Controller
 
             // Normalisasi matriks R
             $normalizedMatrix = [];
+            $maxTicketPrice = Destination::max('price');
             foreach ($alternatives as $alternative) {
                 $normalizedRating = $alternative->reviews_avg_rating / ($weights['Keunikan dan Daya Tarik'] ?? 1); // Bobot default adalah 1 jika tidak ada
                 $accessArray = json_decode($alternative->access);
+                $normalizedTicketPrice = ($weights['Harga Tiket Masuk'] ?? 1) * ($maxTicketPrice - $alternative->price);
 
                 $row = [
                     'id' => $alternative->id,
                     'wisata' => $alternative->wisata,
                     'Keunikan dan Daya Tarik' => $normalizedRating,
-                    'Harga Tiket Masuk' => $alternative->price / ($weights['Harga Tiket Masuk'] ?? 1),
+                    'Harga Tiket Masuk' => $normalizedTicketPrice,
                     'Aksesibilitas Wisata' => is_array($accessArray) ? array_sum($accessArray) / ($weights['Aksesibilitas Wisata'] ?? 1) : 0,
                     'Jumlah Penginapan' => $alternative->penginapan / ($weights['Jumlah Penginapan'] ?? 1),
                     'Jumlah Wisata terdekat' => $alternative->jarak / ($weights['Jumlah Wisata terdekat'] ?? 1),
@@ -259,17 +261,17 @@ class DestinationController extends Controller
 
             // Hitung nilai preferensi (V) dan rangking
             $rankings = [];
-            foreach ($normalizedMatrix as $row) {
-                $v = array_reduce($row, function ($carry, $value) {
-                    return $carry + (float)$value;
-                }, 0);
+        foreach ($normalizedMatrix as $row) {
+            $v = array_reduce($row, function ($carry, $value) {
+                return $carry + (float)$value;
+            }, 0);
 
-                $rankings[] = [
-                    'id' => $row['id'],
-                    'wisata' => $row['wisata'],
-                    'V' => $v,
-                ];
-            }
+            $rankings[] = [
+                'id' => $row['id'],
+                'wisata' => $row['wisata'],
+                'V' => $v,
+            ];
+        }
 
             // Urutkan berdasarkan nilai preferensi (V) secara descending
             usort($rankings, function ($a, $b) {
