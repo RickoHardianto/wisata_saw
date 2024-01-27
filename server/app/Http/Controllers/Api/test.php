@@ -238,64 +238,55 @@ class DestinationController extends Controller
                 ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
                 ->get();
 
-            // 1. Menentukan Matriks Keputusan (X)
-            $decisionMatrix = [];
-            foreach ($alternatives as $alternative) {
-                $decisionMatrix[$alternative->id] = [
-                    'wisata' => $alternative->wisata,
-                    'Keunikan dan Daya Tarik' => $alternative->reviews_avg_rating,
-                    'Harga Tiket Masuk' => $alternative->price,
-                    'Aksesibilitas Wisata' => $alternative->access,
-                    'Jumlah Penginapan' => $alternative->penginapan,
-                    'Jumlah Wisata terdekat' => $alternative->jarak,
-                ];
-            }
-
-            // 2. Menentukan Matriks Normalisasi (R)
+            // Normalisasi matriks R
             $normalizedMatrix = [];
-            foreach ($decisionMatrix as $alternativeId => $criteriaValues) {
-                $row = [];
-                foreach ($criteriaValues as $criterion => $value) {
-                    // Normalisasi masing-masing kriteria
-                    $maxValue = floatval(max(array_column($decisionMatrix, $criterion)));
-                    $minValue = floatval(min(array_column($decisionMatrix, $criterion)));
-                    // Konversi nilai ke tipe data numerik
-                    $value = floatval($value);
+            $maxTicketPrice = Destination::max('price');
+            foreach ($alternatives as $alternative) {
+                $normalizedRating = $alternative->reviews_avg_rating / ($weights['Keunikan dan Daya Tarik'] ?? 1); // Bobot default adalah 1 jika tidak ada
+                $accessArray = json_decode($alternative->access);
+                $normalizedTicketPrice = ($weights['Harga Tiket Masuk'] ?? 1) * ($maxTicketPrice - $alternative->price);
 
-                    // Handle jika $maxValue sama dengan $minValue
-                    if ($maxValue - $minValue == 0) {
-                        // Tindakan penanganan di sini, misalnya, set nilai default atau keluar dari perulangan.
-                        // Di sini saya set nilai default menjadi 1, namun Anda bisa menyesuaikan sesuai kebutuhan.
-                        $row[$criterion] = 1; // Nilai default
-                    } else {
-                        $row[$criterion] = ($maxValue - $value) / ($maxValue - $minValue);
-                    }
-                }
-                $normalizedMatrix[$alternativeId] = $row;
-            }
-
-            // 3. Perhitungan Nilai Preferensi (P)
-            $preferences = [];
-            foreach ($normalizedMatrix as $alternativeId => $normalizedValues) {
-                $v = 0;
-                foreach ($normalizedValues as $criterion => $value) {
-                    $v += $value * ($weights[$criterion] ?? 1);
-                }
-                $preferences[$alternativeId] = $v;
-            }
-
-            // 4. Perankingan mengambil index Alternatif tertinggi
-            arsort($preferences);
-
-            $rankings = [];
-            foreach ($preferences as $alternativeId => $preference) {
-                $alternative = $alternatives->where('id', $alternativeId)->first();
-                $rankings[] = [
+                $row = [
                     'id' => $alternative->id,
                     'wisata' => $alternative->wisata,
-                    'V' => $preference,
+                    'Keunikan dan Daya Tarik' => $normalizedRating,
+                    'Harga Tiket Masuk' => $normalizedTicketPrice,
+                    'Aksesibilitas Wisata' => is_array($accessArray) ? array_sum($accessArray) / ($weights['Aksesibilitas Wisata'] ?? 1) : 0,
+                    'Jumlah Penginapan' => $alternative->penginapan / ($weights['Jumlah Penginapan'] ?? 1),
+                    'Jumlah Wisata terdekat' => $alternative->jarak / ($weights['Jumlah Wisata terdekat'] ?? 1),
+                ];
+
+                $normalizedMatrix[] = $row;
+            }
+
+            // Hitung nilai preferensi (V) dan rangking
+            $rankings = [];
+            $calculationDetails = [];
+
+            foreach ($normalizedMatrix as $row) {
+                $v = array_reduce($row, function ($carry, $value) {
+                    return $carry + (float)$value;
+                }, 0);
+
+                $calculationDetails[] = [
+                    'id' => $row['id'],
+                    'wisata' => $row['wisata'],
+                    'details' => $row, // Menyimpan detail perhitungan setiap kriteria
+                    'V' => $v,
+                ];
+
+
+                $rankings[] = [
+                    'id' => $row['id'],
+                    'wisata' => $row['wisata'],
+                    'V' => $v,
                 ];
             }
+
+            // Urutkan berdasarkan nilai preferensi (V) secara descending
+            usort($rankings, function ($a, $b) {
+                return $b['V'] <=> $a['V'];
+            });
 
             $conclusion = "Berdasarkan dari hasil perhitungan kriteria di atas, maka \"" . $rankings[0]['wisata'] . "\" adalah rekomendasi wisata yang paling sesuai untuk dikunjungi dari kriteria wisatawan.";
 
@@ -303,10 +294,8 @@ class DestinationController extends Controller
                 'success' => true,
                 'message' => 'Hasil Perhitungan SAW',
                 'data' => [
-                    'decision_matrix' => $decisionMatrix,
-                    'normalized_matrix' => $normalizedMatrix,
-                    'preferences' => $preferences,
                     'rankings' => $rankings,
+                    'calculation_details' => $calculationDetails, // Tambahkan detail perhitungan
                     'conclusion' => $conclusion,
                 ],
             ]);

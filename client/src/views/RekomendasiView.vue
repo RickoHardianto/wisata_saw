@@ -9,7 +9,9 @@ export default {
   data() {
     return {
       selectedCategory: "",
-      sawResults: [],
+      decision_matrix: [],
+      normalized_matrix: [],
+      rankings: [],
       conclusion: "",
       loading: false,
       error: null,
@@ -65,6 +67,11 @@ export default {
           return;
         }
 
+        // if (selectedCriteria.length < 2) {
+        //   this.error = "Pilih minimal dua kriteria";
+        //   return;
+        // }
+
         // Buat objek payload untuk dikirim ke server
         const payload = {
           criteria: selectedCriteria.join(","),
@@ -74,8 +81,9 @@ export default {
         const response = await axios.get("http://localhost:8000/api/saw", {
           params: payload,
         });
-
-        this.sawResults = response.data.data.rankings;
+        this.decision_matrix = response.data.data.decision_matrix;
+        this.normalized_matrix = response.data.data.normalized_matrix;
+        this.rankings = response.data.data.rankings;
         this.conclusion = response.data.data.conclusion;
         this.error = null;
       } catch (error) {
@@ -271,44 +279,123 @@ export default {
             </div>
           </div>
 
-          <div class="container">
-            <section class="py-5" v-if="sawResults && sawResults.length > 0">
-              <div class="container text-black">
-                <div class="card shadow">
-                  <div class="card-header">
-                    <h5>Hasil Perhitungan SAW</h5>
-                  </div>
-                  <div class="card-body">
+          <!-- Tampilkan tabel detail perhitungan jika ada -->
+          <section class="py-5">
+            <div class="container text-black">
+              <div class="card shadow">
+                <div class="card-header">
+                  <h2>Matrix Keputusan</h2>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>ID</th>
                           <th>Wisata</th>
-                          <th>Nilai Preferensi (V)</th>
+                          <th>Keunikan dan Daya Tarik</th>
+                          <th>Harga Tiket Masuk</th>
+                          <th>Aksesibilitas Wisata</th>
+                          <th>Jumlah Penginapan</th>
+                          <th>Jumlah Wisata Terdekat</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr v-for="(result, index) in sawResults" :key="index">
-                          <td>{{ result.id }}</td>
-                          <td>{{ result.wisata }}</td>
-                          <td>{{ result.V }}</td>
+                        <!-- Loop melalui setiap detail perhitungan -->
+                        <tr
+                          v-for="(detail, index) in decision_matrix"
+                          :key="index"
+                        >
+                          <td>{{ detail.wisata }}</td>
+                          <td>{{ detail["Keunikan dan Daya Tarik"] }}</td>
+                          <td>{{ detail["Harga Tiket Masuk"] }}</td>
+                          <td>{{ detail["Aksesibilitas Wisata"] }}</td>
+                          <td>{{ detail["Jumlah Penginapan"] }}</td>
+                          <td>{{ detail["Jumlah Wisata terdekat"] }}</td>
                         </tr>
                       </tbody>
                     </table>
                   </div>
                 </div>
               </div>
-            </section>
+            </div>
+          </section>
 
-            <!-- Tampilkan pesan kesimpulan -->
-            <div class="container py-4 text-black" v-if="conclusion">
+          <section class="py-5" >
+            <div class="container text-black">
               <div class="card shadow">
                 <div class="card-header">
-                  <h5>Kesimpulan</h5>
+                  <h2>Matrix Normalisasi</h2>
                 </div>
                 <div class="card-body">
-                  <p>{{ conclusion }}</p>
+                  <div class="table-responsive">
+                    <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Wisata</th>
+                          <th>Keunikan dan Daya Tarik</th>
+                          <th>Harga Tiket Masuk</th>
+                          <th>Aksesibilitas Wisata</th>
+                          <th>Jumlah Penginapan</th>
+                          <th>Jumlah Wisata Terdekat</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <!-- Loop melalui setiap detail perhitungan -->
+                        <tr
+                          v-for="(detail, index) in normalized_matrix"
+                          :key="index"
+                        >
+                          <td>{{ detail.wisata }}</td>
+                          <td>{{ detail["Keunikan dan Daya Tarik"] }}</td>
+                          <td>{{ detail["Harga Tiket Masuk"] }}</td>
+                          <td>{{ detail["Aksesibilitas Wisata"] }}</td>
+                          <td>{{ detail["Jumlah Penginapan"] }}</td>
+                          <td>{{ detail["Jumlah Wisata terdekat"] }}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="py-5" v-if="rankings && rankings.length > 0">
+            <div class="container text-black">
+              <div class="card shadow">
+                <div class="card-header">
+                  <h5>Hasil Perhitungan SAW</h5>
+                </div>
+                <div class="card-body">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Wisata</th>
+                        <th>Nilai Preferensi (V)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="(result, index) in rankings" :key="index">
+                        <td>{{ result.id }}</td>
+                        <td>{{ result.wisata }}</td>
+                        <td>{{ result.V }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Tampilkan pesan kesimpulan -->
+          <div class="container py-4 text-black" v-if="conclusion">
+            <div class="card shadow">
+              <div class="card-header">
+                <h5>Kesimpulan</h5>
+              </div>
+              <div class="card-body">
+                <p>{{ conclusion }}</p>
               </div>
             </div>
           </div>
