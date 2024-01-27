@@ -17,7 +17,6 @@ export default {
         <img
           :src="`http://localhost:8000/storage/${destination.img}`"
           class="img-fluid"
-          style="max-width: 100%; max-height: 100%"
         />
       </div>
       <div class="d-flex border-bottom">
