@@ -11,12 +11,13 @@ export default {
 
 <template>
   <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="package-item">
+    <div class="card shadow" style="width: 100%; height: 100%;">
       <!-- Product image-->
-      <div class="overflow-hidden">
+      <div class="card-img-top">
         <img
           :src="`http://localhost:8000/storage/${destination.img}`"
           class="img-fluid"
+          style="max-width: 100%; max-height: 100%"
         />
       </div>
       <div class="d-flex border-bottom">
@@ -33,7 +34,7 @@ export default {
           >{{ destination.category_id }}</small
         >
       </div>
-      <div class="text-center p-4">
+      <div class="card-body text-center">
         <h3 class="mb-2">{{ destination.wisata }}</h3>
         <h3 class="mb-0">Rp {{ destination.price }}</h3>
         <div class="mb-3">
@@ -49,7 +50,7 @@ export default {
         </div>
         <div class="d-flex justify-content-center mb-2">
           <router-link
-          :to="/detail/ + destination.id"
+            :to="/detail/ + destination.id"
             class="btn btn-sm btn-primary px-3 border-end"
             style="border-radius: 30px 30px 30px 30px"
             >Detail</router-link
