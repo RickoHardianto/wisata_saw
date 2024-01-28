@@ -10,8 +10,8 @@ export default {
 </script>
 
 <template>
-  <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-    <div class="card shadow" style="width: 100%; height: 100%;">
+  <div class="col-md-3 mt-1 mb-4" data-wow-delay="0.1s">
+    <div class="card h-100 border-0 rounded shadow-sm">
       <!-- Product image-->
       <div class="card-img-top">
         <img
@@ -28,10 +28,10 @@ export default {
           ><i class="fa fa-calendar-alt text-primary me-2"></i
           >{{ destination.penginapan }}</small
         >
-        <small class="flex-fill text-center py-2"
+        <!-- <small class="flex-fill text-center py-2"
           ><i class="fa fa-user text-primary me-2"></i
           >{{ destination.category_id }}</small
-        >
+        > -->
       </div>
       <div class="card-body text-center">
         <h3 class="mb-2">{{ destination.wisata }}</h3>
@@ -40,9 +40,9 @@ export default {
           <StarRating
             :rating="parseFloat(destination.reviews_avg_rating)"
             :increment="0.5"
-            :star-size="20"
+            :star-size="18"
             :read-only="true"
-            :show-rating="false"
+            :show-rating="true"
             :inline="true"
           ></StarRating>
           (<strong>{{ destination.reviews_count }}</strong> ulasan)

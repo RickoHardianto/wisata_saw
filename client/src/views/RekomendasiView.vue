@@ -67,10 +67,10 @@ export default {
           return;
         }
 
-        // if (selectedCriteria.length < 2) {
-        //   this.error = "Pilih minimal dua kriteria";
-        //   return;
-        // }
+        if (selectedCriteria.length < 2 ||  selectedDestinations.length < 2) {
+          this.error = "Pilih Minimal 2 Kriteria dan Destinasi Wisata ";
+          return;
+        }
 
         // Buat objek payload untuk dikirim ke server
         const payload = {
