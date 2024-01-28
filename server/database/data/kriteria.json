@@ -1,27 +1,27 @@
 [
     {
         "nama":"Keunikan dan Daya Tarik",
-        "bobot":"5",
+        "bobot":"30",
         "atribut":"benefit"
     },
     {
         "nama":"Harga Tiket Masuk",
-        "bobot":"3",
+        "bobot":"30",
         "atribut":"cost"
     },
     {
         "nama":"Aksesibilitas Wisata",
-        "bobot":"5",
+        "bobot":"20",
         "atribut":"benefit"
     },
     {
         "nama":"Jumlah Penginapan",
-        "bobot":"5",
+        "bobot":"10",
         "atribut":"benefit"
     },
     {
         "nama":"Jumlah Wisata terdekat",
-        "bobot":"5",
+        "bobot":"10",
         "atribut":"benefit"
     }
 ]

@@ -241,15 +241,33 @@ class DestinationController extends Controller
             // 1. Menentukan Matriks Keputusan (X)
             $decisionMatrix = [];
             foreach ($alternatives as $alternative) {
+                // Mengambil nilai access sebagai array dengan json_decode
+                $accessArray = json_decode($alternative->access, true);
+
+                // Mengambil nilai terakhir dari array access
+                $lastAccess = end($accessArray);
+
+                // Mengupdate nilai access di dalam objek alternative
+                $alternative->access = $lastAccess;
                 $decisionMatrix[$alternative->id] = [
                     'wisata' => $alternative->wisata,
                     'Keunikan dan Daya Tarik' => $alternative->reviews_avg_rating,
                     'Harga Tiket Masuk' => $alternative->price,
-                    'Aksesibilitas Wisata' => $alternative->access,
+                    'Aksesibilitas Wisata' => $lastAccess,
                     'Jumlah Penginapan' => $alternative->penginapan,
                     'Jumlah Wisata terdekat' => $alternative->jarak,
                 ];
             }
+
+            // dd($alternatives);
+
+            // 1. Menentukan Tipe Kriteria
+            $criteriaType = []; // Array untuk menyimpan tipe kriteria
+            foreach ($criteria as $criterion) {
+                // Contoh logika sederhana: jika harganya rendah lebih baik, itu cost; jika harganya tinggi lebih baik, itu benefit
+                $criteriaType[$criterion->nama] = ($criterion->tipe == 'cost') ? 'cost' : 'benefit';
+            }
+
 
             // 2. Menentukan Matriks Normalisasi (R)
             $normalizedMatrix = [];
@@ -268,7 +286,12 @@ class DestinationController extends Controller
                         // Di sini saya set nilai default menjadi 1, namun Anda bisa menyesuaikan sesuai kebutuhan.
                         $row[$criterion] = 1; // Nilai default
                     } else {
-                        $row[$criterion] = ($maxValue - $value) / ($maxValue - $minValue);
+                        // Normalisasi berdasarkan tipe kriteria (cost atau benefit)
+                        if ($criteriaType[$criterion] == 'cost') {
+                            $row[$criterion] = $minValue / $value;
+                        } else { // Tipe kriteria adalah 'benefit'
+                            $row[$criterion] = $value / $maxValue;
+                        }
                     }
                 }
                 $normalizedMatrix[$alternativeId] = $row;
