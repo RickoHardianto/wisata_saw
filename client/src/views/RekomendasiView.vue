@@ -67,7 +67,7 @@ export default {
           return;
         }
 
-        if (selectedCriteria.length < 2 ||  selectedDestinations.length < 2) {
+        if (selectedCriteria.length < 2 || selectedDestinations.length < 2) {
           this.error = "Pilih Minimal 2 Kriteria dan Destinasi Wisata ";
           return;
         }
@@ -313,6 +313,16 @@ export default {
                           <td>{{ detail["Jumlah Wisata terdekat"] }}</td>
                         </tr>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td></td>
+                          <td>Benefit</td>
+                          <td>Cost</td>
+                          <td>Benefit</td>
+                          <td>Benefit</td>
+                          <td>Benefit</td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>
@@ -320,7 +330,7 @@ export default {
             </div>
           </section>
 
-          <section class="py-5" >
+          <section class="py-5">
             <div class="container text-black">
               <div class="card shadow">
                 <div class="card-header">
@@ -353,6 +363,16 @@ export default {
                           <td>{{ detail["Jumlah Wisata terdekat"] }}</td>
                         </tr>
                       </tbody>
+                      <tfoot>
+                        <tr>
+                          <td>Bobot</td>
+                          <td>30</td>
+                          <td>30</td>
+                          <td>20</td>
+                          <td>10</td>
+                          <td>10</td>
+                        </tr>
+                      </tfoot>
                     </table>
                   </div>
                 </div>

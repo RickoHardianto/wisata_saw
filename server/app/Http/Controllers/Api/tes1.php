@@ -237,8 +237,6 @@ class DestinationController extends Controller
                 ->select('id', 'wisata', 'price', 'access', 'penginapan', 'jarak')
                 ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
                 ->get();
-                
-                
 
             // 1. Menentukan Matriks Keputusan (X)
             $decisionMatrix = [];
@@ -252,6 +250,7 @@ class DestinationController extends Controller
                 // Mengupdate nilai access di dalam objek alternative
                 $alternative->access = $lastAccess;
                 $decisionMatrix[$alternative->id] = [
+                    'wisata' => $alternative->wisata,
                     'Keunikan dan Daya Tarik' => $alternative->reviews_avg_rating,
                     'Harga Tiket Masuk' => $alternative->price,
                     'Aksesibilitas Wisata' => $lastAccess,
@@ -266,38 +265,44 @@ class DestinationController extends Controller
             $criteriaType = []; // Array untuk menyimpan tipe kriteria
             foreach ($criteria as $criterion) {
                 // Contoh logika sederhana: jika harganya rendah lebih baik, itu cost; jika harganya tinggi lebih baik, itu benefit
-                $criteriaType[$criterion->nama] = ($criterion->atribut == 'cost') ? 'cost' : 'benefit';
+                $criteriaType[$criterion->nama] = ($criterion->tipe == 'cost') ? 'cost' : 'benefit';
             }
 
 
             // 2. Menentukan Matriks Normalisasi (R)
-            // Inisialisasi matriks normalisasi
             $normalizedMatrix = [];
-
-            // Iterasi melalui matriks keputusan
             foreach ($decisionMatrix as $alternativeId => $criteriaValues) {
                 $row = [];
                 foreach ($criteriaValues as $criterion => $value) {
-                    // Mendapatkan nilai maksimum atau minimum sesuai tipe kriteria
-                    if ($criteriaType[$criterion] == 'cost') {
-                        $minValue = min(array_column($decisionMatrix, $criterion));
-                        $row[$criterion] = $minValue / $value;
-                    } else { // Kriteria adalah 'benefit'
-                        $maxValue = max(array_column($decisionMatrix, $criterion));
-                        $row[$criterion] = $value / $maxValue;
+                    // Normalisasi masing-masing kriteria
+                    $maxValue = floatval(max(array_column($decisionMatrix, $criterion)));
+                    $minValue = floatval(min(array_column($decisionMatrix, $criterion)));
+                    // Konversi nilai ke tipe data numerik
+                    $value = floatval($value);
+
+                    // Handle jika $maxValue sama dengan $minValue
+                    if ($maxValue - $minValue == 0) {
+                        // Tindakan penanganan di sini, misalnya, set nilai default atau keluar dari perulangan.
+                        // Di sini saya set nilai default menjadi 1, namun Anda bisa menyesuaikan sesuai kebutuhan.
+                        $row[$criterion] = 1; // Nilai default
+                    } else {
+                        // Normalisasi berdasarkan tipe kriteria (cost atau benefit)
+                        if ($criteriaType[$criterion] == 'cost') {
+                            $row[$criterion] = $minValue / $value;
+                        } else { // Tipe kriteria adalah 'benefit'
+                            $row[$criterion] = $value / $maxValue;
+                        }
                     }
                 }
-                // Menambahkan baris normalisasi ke dalam matriks normalisasi
                 $normalizedMatrix[$alternativeId] = $row;
             }
-
 
             // 3. Perhitungan Nilai Preferensi (P)
             $preferences = [];
             foreach ($normalizedMatrix as $alternativeId => $normalizedValues) {
                 $v = 0;
                 foreach ($normalizedValues as $criterion => $value) {
-                    $v += $value * ($weights[$criterion]);
+                    $v += $value * ($weights[$criterion] ?? 1);
                 }
                 $preferences[$alternativeId] = $v;
             }
