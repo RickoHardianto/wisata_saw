@@ -1,27 +1,32 @@
 [
     {
-        "nama":"Keunikan dan Daya Tarik",
-        "bobot":"30",
-        "atribut":"benefit"
+        "nama": "Keunikan dan Daya Tarik",
+        "bobot": "30",
+        "atribut": "benefit",
+        "keterangan": "- Semakin unik, semankin diinginkan\n- Jika tidak di checklis maka tidak di pertimbangkan keunikannya"
     },
     {
-        "nama":"Harga Tiket Masuk",
-        "bobot":"30",
-        "atribut":"cost"
+        "nama": "Harga Tiket Masuk",
+        "bobot": "30",
+        "atribut": "cost",
+        "keterangan": "- Harga tiket yang terjangkau/ murah\n- Jika tidak di checklis maka tidak di pertimbangkan"
     },
     {
-        "nama":"Aksesibilitas Wisata",
-        "bobot":"20",
-        "atribut":"benefit"
+        "nama": "Aksesibilitas Wisata",
+        "bobot": "20",
+        "atribut": "benefit",
+        "keterangan": "- Semakin banyak aksesibilitas, semankin diinginkan\n- Jika tidak di checklis maka tidak di pertimbangkan akses kendaraanya"
     },
     {
-        "nama":"Jumlah Penginapan",
-        "bobot":"10",
-        "atribut":"benefit"
+        "nama": "Jumlah Penginapan",
+        "bobot": "10",
+        "atribut": "benefit",
+        "keterangan": "- Banyak jumlah penginapan semakin di inginkan\n- Jika tidak di checklis maka tidak di pertimbangkan"
     },
     {
-        "nama":"Jumlah Wisata terdekat",
-        "bobot":"10",
-        "atribut":"benefit"
+        "nama": "Jumlah Wisata terdekat",
+        "bobot": "10",
+        "atribut": "benefit",
+        "keterangan": "- Jumlah Wisata terdekat menjadi pertimbangan wisata terdekat\n- Jika tidak di checklis maka tidak di pertimbangkan wisata terdekatnya"
     }
 ]

@@ -237,43 +237,29 @@ class DestinationController extends Controller
                 ->select('id', 'wisata', 'price', 'access', 'penginapan', 'jarak')
                 ->addSelect(DB::raw('(SELECT AVG(reviews.rating) FROM reviews WHERE destinations.id = reviews.destination_id) AS reviews_avg_rating'))
                 ->get();
+                
 
             // 1. Menentukan Matriks Keputusan (X)
             $decisionMatrix = [];
             foreach ($alternatives as $alternative) {
-                $criteriaValues = [];
-                foreach ($criteria as $criterion) {
-                    $criterionName = $criterion->nama;
-                    if (in_array($criterion->id, $selectedCriteria)) {
-                        // Jika dipilih, masukkan nilai yang sesuai
-                        switch ($criterion->nama) {
-                            case 'Keunikan dan Daya Tarik':
-                                $criteriaValues[$criterionName] = $alternative->reviews_avg_rating ?? 0; // Gunakan null coalescing operator untuk menetapkan nilai default 0 jika tidak ada nilai
-                                break;
-                            case 'Harga Tiket Masuk':
-                                $criteriaValues[$criterionName] = $alternative->price ?? 0; // Gunakan null coalescing operator untuk menetapkan nilai default 0 jika tidak ada nilai
-                                break;
-                            case 'Aksesibilitas Wisata':
-                                $accessArray = json_decode($alternative->access, true);
-                                $lastAccess = end($accessArray);
-                                $criteriaValues[$criterionName] = $lastAccess ?? 0; // Gunakan null coalescing operator untuk menetapkan nilai default 0 jika tidak ada nilai
-                                break;
-                            case 'Jumlah Penginapan':
-                                $criteriaValues[$criterionName] = $alternative->penginapan ?? 0; // Gunakan null coalescing operator untuk menetapkan nilai default 0 jika tidak ada nilai
-                                break;
-                            case 'Jumlah Wisata terdekat':
-                                $criteriaValues[$criterionName] = $alternative->jarak ?? 0; // Gunakan null coalescing operator untuk menetapkan nilai default 0 jika tidak ada nilai
-                                break;
-                            default:
-                                break;
-                        }
-                    } else {
-                        // Jika tidak dipilih, tetapkan nilai 0
-                        $criteriaValues[$criterionName] = 0;
-                    }
-                }
-                $decisionMatrix[$alternative->id] = $criteriaValues;
+                // Mengambil nilai access sebagai array dengan json_decode
+                $accessArray = json_decode($alternative->access, true);
+
+                // Mengambil nilai terakhir dari array access
+                $lastAccess = end($accessArray);
+
+                // Mengupdate nilai access di dalam objek alternative
+                $alternative->access = $lastAccess;
+                $decisionMatrix[$alternative->id] = [
+                    'Keunikan dan Daya Tarik' => $alternative->reviews_avg_rating,
+                    'Harga Tiket Masuk' => $alternative->price,
+                    'Aksesibilitas Wisata' => $lastAccess,
+                    'Jumlah Penginapan' => $alternative->penginapan,
+                    'Jumlah Wisata terdekat' => $alternative->jarak,
+                ];
             }
+
+            // dd($alternatives);
 
             // 1. Menentukan Tipe Kriteria
             $criteriaType = []; // Array untuk menyimpan tipe kriteria

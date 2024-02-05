@@ -24,6 +24,7 @@ class KriteriaSeeder extends Seeder
                 'nama' => $obj->nama,
                 'bobot' => $obj->bobot,
                 'atribut' => $obj->atribut,
+                'keterangan' => $obj->keterangan,
             ));
         }
     }

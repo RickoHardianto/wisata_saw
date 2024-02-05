@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama');
             $table->float('bobot');
             $table->string('atribut');
+            $table->text('keterangan')->nullable();
             $table->timestamps();
         });
     }
