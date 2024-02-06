@@ -16,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login', 'App\Http\Controllers\Api\LoginController@index');
-Route::get('/logout', 'App\Http\Controllers\Api\LoginController@logout');
+Route::post('/login', 'App\Http\Controllers\Api\AuthController@login');
+Route::post('/register', 'App\Http\Controllers\Api\AuthController@register');
+Route::get('/logout', 'App\Http\Controllers\Api\AuthController@logout');
 
 Route::resource('/business', App\Http\Controllers\Api\BusinessController::class);
 Route::resource('/categories', App\Http\Controllers\Api\CategoryController::class);
@@ -29,7 +30,7 @@ Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calc
 
 
 Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
-Route::get('/hitung', [App\Http\Controllers\Api\HitungController::class, 'hitung'])->name('hitung');
+// Route::get('/hitung', [App\Http\Controllers\Api\HitungController::class, 'hitung'])->name('hitung');
 
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);
 Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'store']);
