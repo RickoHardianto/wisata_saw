@@ -9,7 +9,7 @@ export default {
     SidebarComponent,
     TopbarComponent,
   },
-  name: "categoryCreate",
+  name: "RoleUpdate",
   data() {
     return {
       model: {
@@ -18,12 +18,12 @@ export default {
           permission: [],
         },
       },
-      rolePermission:[],
+      rolePermission: [],
       permissions: [],
     };
   },
   mounted() {
-    this.roleId = this.$route.params.id
+    this.roleId = this.$route.params.id;
     this.editPermission(this.$route.params.id);
   },
   methods: {
@@ -31,25 +31,43 @@ export default {
       axios
         .get(`http://localhost:8000/api/roles/${this.roleId}/edit`)
         .then((res) => {
-          this.model.formInput.role = res.data.data.role.name
-          this.permissions = res.data.data.permission
-          this.rolePermission = res.data.data.rolePermission
-          console.log(res.data.data.role.name);
-          console.log(res.data.data.permission);
-          console.log(res.data.data.rolePermission);
+          console.log("=========== dari res", res.data.data);
+          if (res.status === 200) {
+            this.model.formInput.role = res.data.data.role.name;
+            this.permissions = res.data.data.permission;
+            this.rolePermission = res.data.data.rolePermission;
+          }
+          console.log(res.data.message);
         })
         .catch(function (error) {
           console.log(error);
         });
     },
+    isItemChecked(value, index) {
+      if (value == this.rolePermission.value[value]) {
+        formInput.value.permission[index] = value;
+      } else {
+        formInput.value.permission[index] = null;
+      }
+    },
+    toogleCheckbox(index) {
+      if (formInput.value.permission[index] != null) {
+        this.rolePermission.value[formInput.value.permission[index]] = null;
+        formInput.value.permission[index] = false;
+      } else {
+        this.rolePermission.value[formInput.value.permission[index]] =
+          formInput.value.permission[index];
+        formInput.value.permission[index] = formInput.value.permission[index];
+      }
+    },
     save() {
       axios
-        .post("http://localhost:8000/api/roles/", this.model.formInput)
+        .put("http://localhost:8000/api/roles/", this.model.formInput)
         .then((res) => {
           console.log(res);
           this.model.formInput = {
-            name: "",
-            permission: "",
+            name: formInput.value.name,
+            permission: formInput.value.permission,
           };
           return this.$router.push("/role");
         })
@@ -90,35 +108,21 @@ export default {
                 />
               </div>
               <div class="mb-3">
-                    <div class="table-responsive">
-                      <table
-                        class="table table-bordered"
-                        id="dataTable"
-                        width="100%"
-                        cellspacing="0"
-                      >
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Pilih Permission</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(item, index) in permissions" :key="index">
-                            <td>{{ index + 1 }}</td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                :value="item.id"
-                                :id="'permission_' + item.id"
-                                v-model="model.formInput.permission"
-                              />
-                              {{ item.name }}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+                <div class="col-md-6">
+                  <span v-for="(item, index) in permissions" :key="index">
+                    <label class="m-2">
+                      <input
+                        type="checkbox"
+                        class="form-checkbox"
+                        v-model="model.formInput.permission"
+                        :value="item.id"
+                        :checked="isItemChecked(item.id, index)"
+                        @change="toogleCheckbox(index)"
+                      />
+                      {{ item.name }}
+                    </label>
+                  </span>
+                </div>
               </div>
               <div class="mb-3">
                 <button

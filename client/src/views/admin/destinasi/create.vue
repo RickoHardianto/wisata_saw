@@ -76,7 +76,6 @@ export default {
     handleImgUpload(event) {
       this.model.formInput.img = event.target.files[0];
     },
-
     handleLokasiUpload(event) {
       this.model.formInput.img_lokasi = event.target.files[0];
     },

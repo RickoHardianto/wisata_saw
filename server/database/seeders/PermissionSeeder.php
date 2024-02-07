@@ -16,7 +16,10 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $permission = [
-            'modul-role',
+            'role-edit',
+            'role-delete',
+            'role-create',
+            'role-list',
             'user-edit',
             'user-delete',
             'user-create',
@@ -25,6 +28,7 @@ class PermissionSeeder extends Seeder
             'destination-delete',
             'destination-create',
             'destination-list',
+            'destination-status',
             'category-edit',
             'category-delete',
             'category-create',

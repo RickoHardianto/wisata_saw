@@ -74,7 +74,7 @@ class DestinationController extends Controller
 
         // $userid = Auth::user()->id;
         $access = is_array($request->access) ? json_encode($request->access) : $request->access;
-
+        $userId = Auth::user()->id;
         $destination = Destination::create([
             'wisata'     => $request->wisata,
             'deskripsi'     => $request->deskripsi,
@@ -93,7 +93,7 @@ class DestinationController extends Controller
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id,
-            // 'user_id'     => $userid,
+            'users_id' => $userId
         ]);
 
         if ($destination) {

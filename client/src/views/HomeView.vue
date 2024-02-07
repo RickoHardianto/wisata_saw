@@ -45,9 +45,9 @@ export default {
 
 <template>
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container px-4 px-lg-5">
-      <router-link class="navbar-brand" to="/">Destinasi Wisata</router-link>
+      <router-link class="navbar-brand text-white" to="/">Destinasi Wisata</router-link>
       <button
         class="navbar-toggler"
         type="button"
@@ -62,13 +62,13 @@ export default {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/"
+            <router-link class="nav-link active text-white" aria-current="page" to="/"
               >Home</router-link
             >
           </li>
           <li class="nav-item">
             <router-link
-              class="nav-link active"
+              class="nav-link active text-white"
               aria-current="page"
               to="/rekomendasi"
               >Rekomendasi Wisata</router-link
@@ -97,7 +97,7 @@ export default {
     </div>
   </nav>
   <!-- Header-->
-  <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+  <div class="container-fluid bg-light py-5 mb-5 hero-header">
     <div class="container py-5">
       <div class="row justify-content-center py-5">
         <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">

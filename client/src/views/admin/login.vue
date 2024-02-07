@@ -34,7 +34,10 @@ export default {
               .then((res) => {
                 //debug user login
                 console.log(res.data.message);
-                Toastify({text: 'berhasil login', duration: 3000}).showToast();
+                Toastify({
+                  text: "berhasil login",
+                  duration: 3000,
+                }).showToast();
 
                 if (res.data.success) {
                   //set localStorage
@@ -55,8 +58,11 @@ export default {
               })
               .catch((error) => {
                 console.log(error);
-            Toastify({text: 'login gagal', duration: 3000, style: { background: "red" }}).showToast();
-
+                Toastify({
+                  text: "login gagal",
+                  duration: 3000,
+                  style: { background: "red" },
+                }).showToast();
               });
           });
       }
@@ -113,21 +119,10 @@ export default {
               Login
             </button>
             <hr />
-            <!-- <a
-                          href="index.html"
-                          class="btn btn-google btn-user btn-block"
-                        >
-                          <i class="fab fa-google fa-fw"></i> Login with Google
-                        </a>
-                        <a
-                          href="index.html"
-                          class="btn btn-facebook btn-user btn-block"
-                        >
-                          <i class="fab fa-facebook-f fa-fw"></i> Login with
-                          Facebook
-                        </a> -->
           </form>
-          <hr />
+          <div class="text-center">
+            <router-link class="small" to="/register">Buat Akun!</router-link>
+          </div>
         </div>
       </div>
     </div>

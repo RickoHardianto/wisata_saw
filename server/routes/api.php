@@ -24,6 +24,7 @@ Route::resource('/business', App\Http\Controllers\Api\BusinessController::class)
 Route::resource('/categories', App\Http\Controllers\Api\CategoryController::class);
 Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
+Route::resource('/kelola-wisata', App\Http\Controllers\Api\KelolaDestinasiController::class);
 Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
 
 Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calculateSAW']);
@@ -43,5 +44,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('users', App\Http\Controllers\Api\UserController::class);
-    // Route::apiResource('roles',App\Http\Controllers\Api\RoleController::class);
+    Route::apiResource('roles',App\Http\Controllers\Api\RoleController::class);
 });

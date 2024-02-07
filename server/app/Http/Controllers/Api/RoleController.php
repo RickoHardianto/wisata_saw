@@ -11,7 +11,7 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +22,6 @@ class RoleController extends Controller
         //
         $roles = Role::latest()->get();
         return response()->json(['data' => $roles]);
-
     }
 
     /**
@@ -48,22 +47,20 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        
-            $request->validate([
-                'name' => 'required',
-                'permission' => 'required'
-            ]);
 
-            $role = Role::create(['name' => $request->name, 'guard_name'=> 'web']);
-            $role->syncPermissions($request->permission);
-            
-            return  response()->json([
-                'success' => true,
-                'message' => 'Success Create Role',
-                'data' => null
-            ], 200);
+        $request->validate([
+            'name' => 'required',
+            'permission' => 'required'
+        ]);
 
-        
+        $role = Role::create(['name' => $request->name, 'guard_name' => 'web']);
+        $role->syncPermissions($request->permission);
+
+        return  response()->json([
+            'success' => true,
+            'message' => 'Success Create Role',
+            'data' => null
+        ], 200);
     }
 
     /**
@@ -76,9 +73,9 @@ class RoleController extends Controller
     {
 
         $role = Role::find($id);
-        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
-        ->where("role_has_permissions.role_id",$id)
-        ->get();
+        $rolePermissions = Permission::join("role_has_permissions", "role_has_permissions.permission_id", "=", "permissions.id")
+            ->where("role_has_permissions.role_id", $id)
+            ->get();
 
         $data['roles'] = $role;
         $data['permissions'] = $rolePermissions;
@@ -98,13 +95,13 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
-       $role = Role::find($id);
+        $role = Role::find($id);
 
-       $permission = Permission::get();
+        $permission = Permission::get();
 
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
-        ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
-        ->all();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id", $id)
+            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
+            ->all();
 
         $data['role'] = $role;
         $data['permission'] = $permission;
@@ -153,7 +150,7 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::find($id);
-        if($role){
+        if ($role) {
             $role->delete();
             return  response()->json([
                 'success' => true,

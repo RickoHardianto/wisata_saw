@@ -5,6 +5,7 @@ import RekomendasiView from "../views/RekomendasiView.vue";
 
 
 import LoginView from "../views/admin/login.vue";
+import RegisterView from "../views/admin/register.vue";
 import DashboardView from "../views/DashboardView.vue";
 import UserView from "../views/admin/user/user.vue";
 
@@ -29,9 +30,6 @@ import editTempatWisata from "../views/admin/bisnis/edit.vue";
 import manajemenWilayah from "../views/admin/wilayah/KelolaWilayah.vue";
 import createmanajemenWilayah from "../views/admin/wilayah/create.vue";
 import editmanajemenWilayah from "../views/admin/wilayah/edit.vue";
-
-import rekomendasiWIsata from "../views/admin/RekomendasiWisata.vue";
-
 
 
 const router = createRouter({
@@ -60,7 +58,7 @@ const router = createRouter({
     {
       path: "/register",
       name: "register",
-      component: LoginView,
+      component: RegisterView,
     },
     {
       path: "/admin",
@@ -134,10 +132,6 @@ const router = createRouter({
     {
       path: "/manajemen-wilayah/:id",
       component:editmanajemenWilayah,
-    },
-    {
-      path: "/rekomendasi-wisata",
-      component: rekomendasiWIsata,
     },
     
   ],

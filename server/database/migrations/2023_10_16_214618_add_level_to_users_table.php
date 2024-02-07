@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->enum('level',['user','admin','manager'])->default('manager');
+            $table->enum('level',['user','admin'])->default('user');
         });
     }
 

@@ -105,9 +105,11 @@ export default {
 
 <template>
   <!-- Navigation-->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <nav class="navbar navbar-expand-lg navbar-light bg-primary">
     <div class="container px-4 px-lg-5">
-      <router-link class="navbar-brand" to="/">Destinasi Wisata</router-link>
+      <router-link class="navbar-brand text-white" to="/"
+        >Destinasi Wisata</router-link
+      >
       <button
         class="navbar-toggler"
         type="button"
@@ -122,13 +124,16 @@ export default {
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
           <li class="nav-item">
-            <router-link class="nav-link active" aria-current="page" to="/"
+            <router-link
+              class="nav-link active text-white"
+              aria-current="page"
+              to="/"
               >Home</router-link
             >
           </li>
           <li class="nav-item">
             <router-link
-              class="nav-link active"
+              class="nav-link active text-white"
               aria-current="page"
               to="/rekomendasi"
               >Rekomendasi Wisata</router-link
@@ -157,9 +162,9 @@ export default {
     </div>
   </nav>
   <!-- Header-->
-  <header class="bg-primary py-5">
+  <header class="bg-light py-5">
     <div class="container px-4 px-lg-5 my-5">
-      <div class="text-center text-white">
+      <div class="text-center text-black">
         <h1 class="display-4 fw-bolder">Destinasi Wisata</h1>
         <p class="lead fw-normal text-white-50 mb-0"></p>
       </div>
@@ -231,6 +236,7 @@ export default {
                           <th></th>
                           <th>Kriteria</th>
                           <th>Type</th>
+                          <th>Keterangan</th>
                           <th>Action</th>
                         </tr>
                       </thead>
@@ -240,12 +246,19 @@ export default {
                           <td>{{ kriteria.nama }}</td>
                           <td>{{ kriteria.atribut }}</td>
                           <td>
-                            <input
-                              type="checkbox"
-                              v-model="kriteria.selected"
-                              :value="kriteria.id"
-                            />
+                            <label
+                              class="btn btn-success"
+                              :class="{ active: kriteria.selected }"
+                            >
+                              <input
+                                type="checkbox"
+                                v-model="kriteria.selected"
+                                :value="kriteria.id"
+                              />
+                              Ceklis
+                            </label>
                           </td>
+                          <td>{{ kriteria.keterangan }}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -291,7 +304,6 @@ export default {
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>Wisata</th>
                           <th>Keunikan dan Daya Tarik</th>
                           <th>Harga Tiket Masuk</th>
                           <th>Aksesibilitas Wisata</th>
@@ -305,7 +317,6 @@ export default {
                           v-for="(detail, index) in decision_matrix"
                           :key="index"
                         >
-                          <td>{{ detail.wisata }}</td>
                           <td>{{ detail["Keunikan dan Daya Tarik"] }}</td>
                           <td>{{ detail["Harga Tiket Masuk"] }}</td>
                           <td>{{ detail["Aksesibilitas Wisata"] }}</td>
@@ -315,7 +326,6 @@ export default {
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td></td>
                           <td>Benefit</td>
                           <td>Cost</td>
                           <td>Benefit</td>
@@ -341,7 +351,7 @@ export default {
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>Wisata</th>
+                          <th>#</th>
                           <th>Keunikan dan Daya Tarik</th>
                           <th>Harga Tiket Masuk</th>
                           <th>Aksesibilitas Wisata</th>
@@ -355,7 +365,7 @@ export default {
                           v-for="(detail, index) in normalized_matrix"
                           :key="index"
                         >
-                          <td>{{ detail.wisata }}</td>
+                          <td></td>
                           <td>{{ detail["Keunikan dan Daya Tarik"] }}</td>
                           <td>{{ detail["Harga Tiket Masuk"] }}</td>
                           <td>{{ detail["Aksesibilitas Wisata"] }}</td>

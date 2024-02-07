@@ -85,7 +85,7 @@ export default {
           aria-controls="collapseOne"
         >
           <i class="fas fa-fw fa-cog"></i>
-          <span>Destination Management</span>
+          <span>Kelola Destinasi</span>
         </a>
         <div
           id="collapseOne"
@@ -94,7 +94,7 @@ export default {
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Management:</h6>
+            <h6 class="collapse-header">Pengaturan :</h6>
 
             <router-link to="/kelola-kategori" class="collapse-item"
               >Kelola Kategori</router-link
@@ -106,10 +106,7 @@ export default {
               >Tempat Wisata & Usaha</router-link
             >
             <router-link to="/manajemen-wilayah" class="collapse-item"
-              >Manajemen Wilayah</router-link
-            >
-            <router-link to="/rekomendasi-wisata" class="collapse-item" href="#"
-              >Rekomendasi Wisata</router-link
+              >Kelola Wilayah</router-link
             >
           </div>
         </div>
@@ -134,12 +131,12 @@ export default {
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Setting User:</h6>
+            <h6 class="collapse-header">Pengaturan User:</h6>
             <router-link to="/user" class="collapse-item"
-              >Management User</router-link
+              >Kelola User</router-link
             >
             <router-link to="/role" class="collapse-item"
-              >Role User</router-link
+              >Peran User</router-link
             >
           </div>
         </div>
@@ -147,8 +144,10 @@ export default {
       <!-- Divider -->
       <hr class="sidebar-divider" />
 
+      <!-- PENGGUNA DESTINASI WISATA -->
+
       <!-- Heading -->
-      <div class="sidebar-heading">Manager</div>
+      <div class="sidebar-heading">Manajemen</div>
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
@@ -161,7 +160,7 @@ export default {
           aria-controls="collapse"
         >
           <i class="fas fa-fw fa-cog"></i>
-          <span>Management Wisata</span>
+          <span>Kelola Wisata</span>
         </a>
         <div
           id="collapse"
@@ -170,17 +169,17 @@ export default {
           data-parent="#accordionSidebar"
         >
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Management:</h6>
-            <a class="collapse-item" href="#">Rating Average</a>
-            <a class="collapse-item" href="#">Count Like</a>
-            <a class="collapse-item" href="#">All Comment</a>
+            <h6 class="collapse-header">Pengaturan :</h6>
+            <a class="collapse-item" href="#">Dashboard</a>
+            <a class="collapse-item" href="#">Kelola Destinasi</a>
           </div>
         </div>
       </li>
+
       <li class="nav-item">
         <a @click.prevent="logout" class="nav-link">
           <i class="fas fa-fw fa-arrow-left"></i>
-          <span>Logout</span></a
+          <span>Keluar</span></a
         >
       </li>
       <!-- Divider -->

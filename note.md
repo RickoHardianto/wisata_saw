@@ -49,6 +49,7 @@ php artisan make:controller Api/AlternatifController -r
 php artisan make:controller Api/HitungController -r
 
 php artisan make:controller Api/RekomendasiController -r
+php artisan make:controller Api/KelolaDestinasiController -r
 
 
 
