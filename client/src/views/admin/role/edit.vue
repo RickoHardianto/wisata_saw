@@ -18,7 +18,7 @@ export default {
           permission: [],
         },
       },
-      rolePermission: [],
+      rolePermission: {},
       permissions: [],
     };
   },
@@ -43,21 +43,16 @@ export default {
           console.log(error);
         });
     },
-    isItemChecked(value, index) {
-      if (value == this.rolePermission.value[value]) {
-        formInput.value.permission[index] = value;
-      } else {
-        formInput.value.permission[index] = null;
-      }
+    isItemChecked(itemId) {
+      return this.model.formInput.permission.includes(itemId);
     },
-    toogleCheckbox(index) {
-      if (formInput.value.permission[index] != null) {
-        this.rolePermission.value[formInput.value.permission[index]] = null;
-        formInput.value.permission[index] = false;
+    toogleCheckbox(itemId) {
+      if (this.model.formInput.permission.includes(itemId)) {
+        this.model.formInput.permission = this.model.formInput.permission.filter(
+          (id) => id !== itemId
+        );
       } else {
-        this.rolePermission.value[formInput.value.permission[index]] =
-          formInput.value.permission[index];
-        formInput.value.permission[index] = formInput.value.permission[index];
+        this.model.formInput.permission.push(itemId);
       }
     },
     save() {
@@ -116,7 +111,7 @@ export default {
                         class="form-checkbox"
                         v-model="model.formInput.permission"
                         :value="item.id"
-                        :checked="isItemChecked(item.id, index)"
+                        :checked="isItemChecked(item.id)"
                         @change="toogleCheckbox(index)"
                       />
                       {{ item.name }}

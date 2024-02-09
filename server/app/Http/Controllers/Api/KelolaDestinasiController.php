@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
+
 class KelolaDestinasiController extends Controller
 {
     /**
@@ -21,19 +22,10 @@ class KelolaDestinasiController extends Controller
      */
     public function index()
     {
-        $destination = Destination::latest()->get();
+        $loggedInUserId = Auth::id();
+        $destination = Destination::where('user_id', $loggedInUserId)->latest()->get();
 
-    return new ApiResource(true, 'List Data Destination', $destination);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return new ApiResource(true, 'List Data Destination', $destination);
     }
 
     /**
@@ -65,6 +57,15 @@ class KelolaDestinasiController extends Controller
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
+        }
+
+        if (Auth::check()) {
+            $userId = Auth::user()->id;
+
+            // Your existing validation and data creation logic goes here
+        } else {
+            // Handle the case where the user is not authenticated
+            return response()->json(['error' => 'Unauthenticated'], 401);
         }
 
         $imgPath = $request->file('img')->store('images', 'public');
@@ -111,18 +112,19 @@ class KelolaDestinasiController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $destination = Destination::with('category')
+            //count and average
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        if ($destination) {
+            $reviews = $destination->reviews;
+            //return success with Api Resource
+            return new ApiResource(true, 'Detail Data Destinasi!', $destination);
+        }
+
+        return new ApiResource(true, 'Detail Data Destination Tidak Ditemukan!', null);
     }
 
     /**

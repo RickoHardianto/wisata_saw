@@ -26,6 +26,8 @@ Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
 Route::resource('/kelola-wisata', App\Http\Controllers\Api\KelolaDestinasiController::class);
 Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
+Route::resource('users', App\Http\Controllers\Api\UserController::class);
+
 
 Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calculateSAW']);
 
@@ -36,13 +38,16 @@ Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class)
 Route::patch('/destination/{destination}/status', [App\Http\Controllers\Api\DestinationController::class, 'updateStatus']);
 Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'store']);
 
-
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/destination', [App\Http\Controllers\Api\DestinationController::class, 'store']);
+    Route::post('/kelola-wisata', [App\Http\Controllers\Api\KelolaDestinasiController::class, 'store']);
+});
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::resource('users', App\Http\Controllers\Api\UserController::class);
-    Route::apiResource('roles',App\Http\Controllers\Api\RoleController::class);
-});
+// Route::middleware('auth:sanctum')->group(function () {
+//     Route::apiResource('users', App\Http\Controllers\Api\UserController::class);
+//     Route::apiResource('roles',App\Http\Controllers\Api\RoleController::class);
+// });

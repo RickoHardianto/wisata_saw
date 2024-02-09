@@ -7,7 +7,12 @@ import RekomendasiView from "../views/RekomendasiView.vue";
 import LoginView from "../views/admin/login.vue";
 import RegisterView from "../views/admin/register.vue";
 import DashboardView from "../views/DashboardView.vue";
+
+
+
 import UserView from "../views/admin/user/user.vue";
+import createUser from "../views/admin/user/create.vue";
+import editUser from "../views/admin/user/edit.vue";
 
 
 import RoleView from "../views/admin/role/role.vue";
@@ -30,6 +35,13 @@ import editTempatWisata from "../views/admin/bisnis/edit.vue";
 import manajemenWilayah from "../views/admin/wilayah/KelolaWilayah.vue";
 import createmanajemenWilayah from "../views/admin/wilayah/create.vue";
 import editmanajemenWilayah from "../views/admin/wilayah/edit.vue";
+
+import dashboardUser from "../views/user/DashboardUser.vue";
+import kelolawisata from "../views/user/wisata/wisataUser.vue";
+import kelolawisatacreate from "../views/user/wisata/create.vue";
+import kelolawisataedit from "../views/user/wisata/edit.vue";
+import kelolawisatadetail from "../views/user/wisata/detail.vue";
+
 
 
 const router = createRouter({
@@ -68,6 +80,14 @@ const router = createRouter({
     {
       path: "/user",
       component: UserView,
+    },
+    {
+      path: "/user/create",
+      component: createUser,
+    },
+    {
+      path: "/user/:id",
+      component: editUser,
     },
     {
       path: "/role",
@@ -133,7 +153,26 @@ const router = createRouter({
       path: "/manajemen-wilayah/:id",
       component:editmanajemenWilayah,
     },
-    
+    {
+      path: "/dashboard",
+      component:dashboardUser,
+    },
+    {
+      path: "/kelola-wisata",
+      component:kelolawisata,
+    },
+    {
+      path: "/kelola-wisata-create",
+      component:kelolawisatacreate,
+    },
+    {
+      path: "/kelola-wisata-edit",
+      component:kelolawisataedit,
+    },
+    {
+      path: "/kelola-wisata-detail",
+      component:kelolawisatadetail,
+    },
   ],
 });
 

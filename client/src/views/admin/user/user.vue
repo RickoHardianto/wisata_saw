@@ -1,15 +1,52 @@
 <script>
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
+import axios from "axios";
 
 export default {
   components: {
     SidebarComponent,
     TopbarComponent,
   },
+  data() {
+    return {
+      Users: [],
+    };
+  },
+  mounted() {
+    this.fetchUser();
+  },
+  methods: {
+    async fetchUser() {
+      try {
+        const { data } = await axios({
+          method: "GET",
+          url: "http://localhost:8000/api/users",
+          headers: {
+            Authorization: {},
+          },
+        });
+
+        console.log(data);
+        this.Users = data.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    deleteUser(id) {
+      console.log(id);
+      axios
+        .delete(`http://localhost:8000/api/Users/${id}`)
+        .then((res) => {
+          console.log(res);
+          this.fetchUser();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
 };
-
-
 </script>
 
 <template>
@@ -31,9 +68,7 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">
-                Data User
-              </h6>
+              <h6 class="m-0 font-weight-bold text-primary">Data User</h6>
             </div>
             <div class="card-body">
               <div class="table-responsive">
@@ -45,42 +80,51 @@ export default {
                 >
                   <thead>
                     <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
+                      <th>#</th>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Nomor Telepon</th>
+                      <th>Alamat</th>
+                      <th>Level</th>
+                      <th>Action</th>
                     </tr>
                   </thead>
-                  <tfoot>
-                    <tr>
-                      <th>Name</th>
-                      <th>Position</th>
-                      <th>Office</th>
-                      <th>Age</th>
-                      <th>Start date</th>
-                      <th>Salary</th>
-                    </tr>
-                  </tfoot>
                   <tbody>
-                    <tr>
-                      <td>Tiger Nixon</td>
-                      <td>System Architect</td>
-                      <td>Edinburgh</td>
-                      <td>61</td>
-                      <td>2011/04/25</td>
-                      <td>$320,800</td>
-                    </tr>
-                    <tr>
-                      <td>Garrett Winters</td>
-                      <td>Accountant</td>
-                      <td>Tokyo</td>
-                      <td>63</td>
-                      <td>2011/07/25</td>
-                      <td>$170,750</td>
+                    <tr v-for="(user, index) in Users"
+                      key="user.id">
+                      <td>{{ index+1}}</td>
+                      <td>{{user.name}}</td>
+                      <td>{{user.email}}</td>
+                      <td>{{ user.numberPhone }}</td>
+                      <td>{{ user.address }}</td>
+                      <td>{{ user.level }}</td>
+                      <td>
+                        <router-link
+                        :to="{path: '/user/'+ user.id}"
+                          class="btn btn-warning btn-sm"
+                        >
+                        <i class="fa fa-pen"></i>
+                        </router-link>
+                        <button
+                          class="btn btn-sm btn-danger m-1"
+                          @click="deleteUser(user.id)"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </td>
                     </tr>
                   </tbody>
+                  <tfoot>
+                    <tr>
+                      <th>#</th>
+                      <th>Nama</th>
+                      <th>Email</th>
+                      <th>Nomor Telepon</th>
+                      <th>Alamat</th>
+                      <th>Level</th>
+                      <th>Action</th>
+                    </tr>
+                  </tfoot>
                 </table>
               </div>
             </div>
@@ -99,39 +143,4 @@ export default {
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
   </a>
-
-  <!-- Logout Modal-->
-  <div
-    class="modal fade"
-    id="logoutModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="exampleModalLabel"
-    aria-hidden="true"
-  >
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-          <button
-            class="close"
-            type="button"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Select "Logout" below if you are ready to end your current session.
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            Cancel
-          </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
 </template>

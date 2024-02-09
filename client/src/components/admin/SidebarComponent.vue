@@ -170,8 +170,8 @@ export default {
         >
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Pengaturan :</h6>
-            <a class="collapse-item" href="#">Dashboard</a>
-            <a class="collapse-item" href="#">Kelola Destinasi</a>
+            <a class="collapse-item" href="/dashboard">Dashboard</a>
+            <a class="collapse-item" href="/kelola-wisata">Kelola Wisata</a>
           </div>
         </div>
       </li>
