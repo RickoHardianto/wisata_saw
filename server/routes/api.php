@@ -40,6 +40,7 @@ Route::post('/reviews', [App\Http\Controllers\Api\ReviewController::class, 'stor
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/destination', [App\Http\Controllers\Api\DestinationController::class, 'store']);
+    Route::get('/kelola-wisata', [App\Http\Controllers\Api\KelolaDestinasiController::class, 'index']);
     Route::post('/kelola-wisata', [App\Http\Controllers\Api\KelolaDestinasiController::class, 'store']);
 });
 

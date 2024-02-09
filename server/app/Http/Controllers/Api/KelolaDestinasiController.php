@@ -22,8 +22,7 @@ class KelolaDestinasiController extends Controller
      */
     public function index()
     {
-        $loggedInUserId = Auth::id();
-        $destination = Destination::where('user_id', $loggedInUserId)->latest()->get();
+        $destination = Destination::latest()->get();
 
         return new ApiResource(true, 'List Data Destination', $destination);
     }
@@ -59,21 +58,13 @@ class KelolaDestinasiController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-        if (Auth::check()) {
-            $userId = Auth::user()->id;
-
-            // Your existing validation and data creation logic goes here
-        } else {
-            // Handle the case where the user is not authenticated
-            return response()->json(['error' => 'Unauthenticated'], 401);
-        }
+      
 
         $imgPath = $request->file('img')->store('images', 'public');
         $imgLokasiPath = $request->file('img_lokasi')->store('images', 'public');
 
         // $userid = Auth::user()->id;
         $access = is_array($request->access) ? json_encode($request->access) : $request->access;
-        $userId = Auth::user()->id;
         $destination = Destination::create([
             'wisata'     => $request->wisata,
             'deskripsi'     => $request->deskripsi,
@@ -92,7 +83,7 @@ class KelolaDestinasiController extends Controller
             'region_id'     => $request->region_id,
             'business_id'     => $request->business_id,
             'category_id'     => $request->category_id,
-            'users_id' => $userId
+            'user_id' => $request->user_id
         ]);
 
         if ($destination) {

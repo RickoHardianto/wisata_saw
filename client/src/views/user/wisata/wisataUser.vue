@@ -15,6 +15,12 @@ export default {
       destinations: [],
       isLoading: false,
       error: null,
+      //state loggedIn with localStorage
+      loggedIn: localStorage.getItem("loggedIn"),
+      //state token
+      token: localStorage.getItem("token"),
+      //state user logged In
+      user: [],
     };
   },
   mounted() {
@@ -24,32 +30,19 @@ export default {
     async fetchDestinations() {
       this.isLoading = true;
       try {
+        const token = localStorage.getItem("token");
         const { data } = await axios({
           method: "GET",
-          url: "http://localhost:8000/api/destination",
+          url: "http://localhost:8000/api/kelola-wisata",
+          headers: { Authorization: "Bearer " + token },
         });
-
         console.log(data);
-        this.destinations = data.data;
+        this.destinations = data.data; // pastikan struktur data.data sesuai dengan respons dari backend
       } catch (error) {
-        console.log(error);
+        this.error = "Gagal memuat data destinasi."; // menangani kesalahan
+        console.error(error);
       }
       this.isLoading = false;
-    },
-    async setStatus(id, status) {
-      try {
-        const { data } = await axios.patch(
-          `http://localhost:8000/api/destination/${id}/status`,
-          {
-            status: status,
-          }
-        );
-
-        console.log(data);
-        this.fetchDestinations(); //
-      } catch (error) {
-        console.log(error);
-      }
     },
     deleteDestination(id) {
       Swal.fire({
@@ -64,7 +57,7 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://localhost:8000/api/destination/${id}`)
+            .delete(`http://localhost:8000/api/kelola-wisata/${id}`)
             .then(() => {
               this.fetchDestinations();
               Swal.fire("Terhapus!", "Destinasi telah dihapus.", "success");
@@ -100,7 +93,7 @@ export default {
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <router-link
-                to="/kelola-tempat-wisata/create"
+                to="/kelola-wisata-create"
                 class="btn btn-primary btn-sm"
               >
                 Tambah Tempat Wisata
@@ -138,52 +131,29 @@ export default {
                       <td>{{ destination.wisata }}</td>
                       <td>{{ destination.status }}</td>
                       <td class="d-flex align-items-center">
-                        <div class="col-md-4">
-                          <select
-                            class="form-select"
-                            @change="
-                              setStatus(destination.id, $event.target.value)
-                            "
-                          >
-                            <option
-                              :value="'Validasi'"
-                              :selected="destination.status === 'Validasi'"
-                            >
-                              Validasi
-                            </option>
-                            <option
-                              :value="'Blm Validasi'"
-                              :selected="destination.status === 'Blm Validasi'"
-                            >
-                              Blm Validasi
-                            </option>
-                          </select>
-                        </div>
-                        <div class="d-flex">
-                          <router-link
-                            :to="{
-                              path:
-                                '/kelola-tempat-wisata/' +
-                                destination.id +
-                                '/detail',
-                            }"
-                            class="btn btn-sm btn-info m-1"
-                            ><i class="fa fa-eye"></i
-                          ></router-link>
-                          <router-link
-                            :to="{
-                              path: '/kelola-tempat-wisata/' + destination.id,
-                            }"
-                            class="btn btn-sm btn-warning m-1"
-                            ><i class="fa fa-pen"></i
-                          ></router-link>
-                          <button
-                            @click="deleteDestination(destination.id)"
-                            class="btn btn-sm btn-danger m-1"
-                          >
-                            <i class="fa fa-trash"></i>
-                          </button>
-                        </div>
+                        <router-link
+                          :to="{
+                            path:
+                              '/kelola-tempat-wisata/' +
+                              destination.id +
+                              '/detail',
+                          }"
+                          class="btn btn-sm btn-info m-1"
+                          ><i class="fa fa-eye"></i
+                        ></router-link>
+                        <router-link
+                          :to="{
+                            path: '/kelola-tempat-wisata/' + destination.id,
+                          }"
+                          class="btn btn-sm btn-warning m-1"
+                          ><i class="fa fa-pen"></i
+                        ></router-link>
+                        <button
+                          @click="deleteDestination(destination.id)"
+                          class="btn btn-sm btn-danger m-1"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   </tbody>

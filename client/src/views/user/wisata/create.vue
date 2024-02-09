@@ -32,6 +32,12 @@ export default {
           category_id: "",
         },
       },
+      //state loggedIn with localStorage
+      loggedIn: localStorage.getItem("loggedIn"),
+      //state token
+      token: localStorage.getItem("token"),
+      //state user logged In
+      user: [],
       regions: [],
       businesses: [],
       categories: [],
@@ -41,8 +47,23 @@ export default {
     this.getBusines();
     this.getCategory();
     this.getRegion();
+    this.getUserLogin().then(() => {
+      console.log("User ID:", this.user.id); // Pastikan ID pengguna sudah tersedia sebelum menyimpan data
+    });
   },
   methods: {
+    getUserLogin() {
+      return axios
+        .get("http://localhost:8000/api/user", {
+          headers: { Authorization: "Bearer " + this.token },
+        })
+        .then((response) => {
+          this.user = response.data; // assign response to state user
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    },
     getRegion() {
       axios
         .get("http://localhost:8000/api/regions")
@@ -97,8 +118,15 @@ export default {
       formData.append("region_id", this.model.formInput.region_id);
       formData.append("business_id", this.model.formInput.business_id);
       formData.append("category_id", this.model.formInput.category_id);
+      // Add user_id to the form data
+      formData.append("user_id", this.user.id); // Assuming this.user contains the logged-in user's data
       axios
-        .post("http://localhost:8000/api/destination", formData)
+        .post("http://localhost:8000/api/kelola-wisata", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + this.token,
+          },
+        })
         .then((res) => {
           console.log(res);
           this.model.formInput = {
@@ -119,7 +147,7 @@ export default {
             business_id: "",
             category_id: "",
           };
-          return this.$router.push("/kelola-tempat-wisata");
+          return this.$router.push("/kelola-wisata");
         })
         .catch(function (error) {
           console.log(error.message);

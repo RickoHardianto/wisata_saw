@@ -1,17 +1,17 @@
 <script>
-import axios from 'axios'
+import axios from "axios";
 
-export default{
+export default {
   data() {
-        return {
-            //state loggedIn with localStorage
-            loggedIn: localStorage.getItem('loggedIn'),
-            //state token
-            token: localStorage.getItem('token'),
-            //state user logged In
-            user: []
-        }
-    },
+    return {
+      //state loggedIn with localStorage
+      loggedIn: localStorage.getItem("loggedIn"),
+      //state token
+      token: localStorage.getItem("token"),
+      //state user logged In
+      user: [],
+    };
+  },
   created() {
     axios
       .get("http://localhost:8000/api/user", {
@@ -39,7 +39,7 @@ export default{
       return this.$router.push({ name: "login" });
     }
   },
-}
+};
 </script>
 
 <template>
@@ -108,14 +108,13 @@ export default{
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <span class="mr-2 d-none d-lg-inline text-gray-600 small"
-              >{{user.name}}</span
-            >
+            <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{
+              user.name
+            }}</span>
           </a>
         </li>
       </ul>
     </nav>
     <!-- End of Topbar -->
   </div>
-
 </template>

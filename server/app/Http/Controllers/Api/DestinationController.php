@@ -47,64 +47,60 @@ class DestinationController extends Controller
     public function store(Request $request)
     {
         // Check if the user is authenticated
-        if (Auth::check()) {
-            $validator = Validator::make($request->all(), [
-                'wisata'     => 'required',
-                'deskripsi'     => 'required',
-                'price'     => 'required',
-                'penginapan'     => 'required',
-                'openTime'     => 'required',
-                'closeTime'     => 'required',
-                'access'     => 'required',
-                'address'     => 'required',
-                'kecamatan'     => 'required',
-                'numberPhone'     => 'required',
-                'img'     => 'required|image|mimes:jpeg,PNG,png,jpg,gif,svg|max:2048',
-                'img_lokasi'     => 'required|image|mimes:jpeg,PNG,png,jpg,gif,svg|max:2048',
-                'region_id'     => 'required',
-                'business_id'     => 'required',
-                'category_id'     => 'required'
-            ]);
+        $validator = Validator::make($request->all(), [
+            'wisata'     => 'required',
+            'deskripsi'     => 'required',
+            'price'     => 'required',
+            'penginapan'     => 'required',
+            'openTime'     => 'required',
+            'closeTime'     => 'required',
+            'access'     => 'required',
+            'address'     => 'required',
+            'kecamatan'     => 'required',
+            'numberPhone'     => 'required',
+            'img'     => 'required|image|mimes:jpeg,PNG,png,jpg,gif,svg|max:2048',
+            'img_lokasi'     => 'required|image|mimes:jpeg,PNG,png,jpg,gif,svg|max:2048',
+            'region_id'     => 'required',
+            'business_id'     => 'required',
+            'category_id'     => 'required'
+        ]);
 
-            if ($validator->fails()) {
-                return response()->json($validator->errors(), 422);
-            }
-
-            $imgPath = $request->file('img')->store('images', 'public');
-            $imgLokasiPath = $request->file('img_lokasi')->store('images', 'public');
-
-            // $userid = Auth::user()->id;
-            $access = is_array($request->access) ? json_encode($request->access) : $request->access;
-            $userId = Auth::id();
-            $destination = Destination::create([
-                'wisata'     => $request->wisata,
-                'deskripsi'     => $request->deskripsi,
-                'penginapan'     => $request->penginapan,
-                'jarak'     => $request->jarak,
-                'price'     => $request->price,
-                'openTime'     => $request->openTime,
-                'closeTime'     => $request->closeTime,
-                'access'     => $access,
-                'address'     => $request->address,
-                'kecamatan'     => $request->address,
-                'numberPhone'     => $request->numberPhone,
-                'img'     => $imgPath,
-                'img_lokasi'     => $imgLokasiPath,
-                'status'     => 'Blm Validasi',
-                'region_id'     => $request->region_id,
-                'business_id'     => $request->business_id,
-                'category_id'     => $request->category_id,
-                'users_id' => $userId
-            ]);
-
-            if ($destination) {
-                return new ApiResource(true, 'Data destination Berhasil Ditambahkan!', $destination);
-            }
-
-            return new ApiResource(false, 'Data destination Gagal Ditambahkan!', null);
-        } else {
-            return response()->json(['error' => 'Unauthenticated'], 401);
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
         }
+
+        $imgPath = $request->file('img')->store('images', 'public');
+        $imgLokasiPath = $request->file('img_lokasi')->store('images', 'public');
+
+        // $userid = Auth::user()->id;
+        $access = is_array($request->access) ? json_encode($request->access) : $request->access;
+        $userId = Auth::id();
+        $destination = Destination::create([
+            'wisata'     => $request->wisata,
+            'deskripsi'     => $request->deskripsi,
+            'penginapan'     => $request->penginapan,
+            'jarak'     => $request->jarak,
+            'price'     => $request->price,
+            'openTime'     => $request->openTime,
+            'closeTime'     => $request->closeTime,
+            'access'     => $access,
+            'address'     => $request->address,
+            'kecamatan'     => $request->address,
+            'numberPhone'     => $request->numberPhone,
+            'img'     => $imgPath,
+            'img_lokasi'     => $imgLokasiPath,
+            'status'     => 'Blm Validasi',
+            'region_id'     => $request->region_id,
+            'business_id'     => $request->business_id,
+            'category_id'     => $request->category_id,
+            'user_id' => $request->user_id
+        ]);
+
+        if ($destination) {
+            return new ApiResource(true, 'Data destination Berhasil Ditambahkan!', $destination);
+        }
+
+        return new ApiResource(false, 'Data destination Gagal Ditambahkan!', null);
     }
 
     public function update(Request $request, Destination $destination)

@@ -27,6 +27,7 @@ class Destination extends Model
         "region_id",
         "business_id",
         "category_id",
+        "user_id",
         "status"
     ];
 
