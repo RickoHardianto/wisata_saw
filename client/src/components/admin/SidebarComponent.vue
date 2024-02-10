@@ -63,7 +63,7 @@ export default {
       <hr class="sidebar-divider my-0" />
 
       <!-- Nav Item - Dashboard -->
-      <li class="nav-item">
+      <li class="nav-item" v-if="user.level === 'admin'">
         <router-link to="/admin" class="nav-link">
           <i class="fas fa-fw fa-tachometer-alt"></i>
           <span>Dashboard</span></router-link
@@ -74,10 +74,10 @@ export default {
       <hr class="sidebar-divider" />
 
       <!-- Heading -->
-      <div class="sidebar-heading">Admin</div>
+      <!-- <div class="sidebar-heading">Admin</div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item" v-if="user.level === 'admin'">
         <a
           class="nav-link collapsed"
           href="#"
@@ -114,7 +114,7 @@ export default {
         </div>
       </li>
 
-      <li class="nav-item">
+      <li class="nav-item" v-if="user.level === 'admin'">
         <a
           class="nav-link collapsed"
           href="#"
@@ -144,12 +144,12 @@ export default {
         </div>
       </li>
       <!-- Divider -->
-      <hr class="sidebar-divider" />
+      <!-- <hr class="sidebar-divider" /> -->
 
       <!-- PENGGUNA DESTINASI WISATA -->
 
       <!-- Heading -->
-      <div class="sidebar-heading">Manajemen</div>
+      <!-- <div class="sidebar-heading">Manajemen</div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
