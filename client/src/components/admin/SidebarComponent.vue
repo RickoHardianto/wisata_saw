@@ -26,8 +26,9 @@ export default {
     logout() {
       axios.get("http://localhost:8000/api/logout").then(() => {
         //remove localStorage
-        localStorage.removeItem("loggedIn");
-        localStorage.removeItem("token");
+        // localStorage.removeItem("loggedIn");
+        // localStorage.removeItem("token");
+        localStorage.clear();
 
         //redirect
         return this.$router.push({ name: "login" });

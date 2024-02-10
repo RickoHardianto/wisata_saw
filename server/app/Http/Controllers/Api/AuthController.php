@@ -58,11 +58,18 @@ class AuthController extends Controller
 
             $user = User::where('email', $request->email)->first();
 
-            if (!$user || !Hash::check($request->password, $user->password)) {
+            if (!$user) {
                 return response([
                     'success' => false,
-                    'message' => ['These credentials do not match our records.']
+                    'message' => 'Email tidak ditemukan.'
                 ], 404);
+            }
+    
+            if (!Hash::check($request->password, $user->password)) {
+                return response([
+                    'success' => false,
+                    'message' => 'Password salah.'
+                ], 401);
             }
 
             $token = $user->createToken('ApiToken')->plainTextToken;
@@ -71,7 +78,7 @@ class AuthController extends Controller
                 'success' => true,
                 'user' => $user,
                 'token' => $token,
-                'message' => 'Berhasil Login'
+                'message' => 'Selamat Berhasil Login'
             ];
 
             return response($response, 201);

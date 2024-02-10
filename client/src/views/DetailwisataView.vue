@@ -170,7 +170,7 @@ export default {
           <p>Nomor Telepon: {{ destination.numberPhone }}</p>
           <p>Alamat : {{ destination.address }}</p>
           <p>Kecamatan : {{ destination.kecamatan }}</p>
-          <p>Jarak Wisata Terdekat : {{ destination.jarak }}</p>
+          <p>Jumlah Wisata Terdekat : {{ destination.jarak }}</p>
 
           <!-- data detail end  -->
 

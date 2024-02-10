@@ -10,6 +10,8 @@ export default {
       loggedIn: localStorage.getItem("loggedIn"),
       //state token
       token: localStorage.getItem("token"),
+
+      user: localStorage.getItem("user"),
       //state user
       user: [],
       //state validation
@@ -32,37 +34,46 @@ export default {
                 password: this.user.password,
               })
               .then((res) => {
-                //debug user login
-                console.log(res.data.message);
+                // console.log(res.data.user);
                 Toastify({
-                  text: "berhasil login",
+                  text: res.data.message,
                   duration: 3000,
                 }).showToast();
 
                 if (res.data.success) {
-                  //set localStorage
                   localStorage.setItem("loggedIn", "true");
-
-                  //set localStorage Token
                   localStorage.setItem("token", res.data.token);
-
-                  //change state
+                  localStorage.setItem("user", JSON.stringify(res.data.user));
+                  let userData = JSON.parse(localStorage.getItem("user"));
+                  let userLevel = userData.level;
+                  console.log(userLevel);
                   this.loggedIn = true;
-
-                  //redirect dashboard
                   return this.$router.push({ name: "admin" });
                 } else {
-                  //set state login failed
                   this.loginFailed = true;
                 }
               })
               .catch((error) => {
-                console.log(error);
-                Toastify({
-                  text: "login gagal",
-                  duration: 3000,
-                  style: { background: "red" },
-                }).showToast();
+                // console.log(error);
+                if (error.response.status === 401) {
+                  Toastify({
+                    text: "Password salah.",
+                    duration: 3000,
+                    style: { background: "red" },
+                  }).showToast();
+                } else if (error.response.status === 404) {
+                  Toastify({
+                    text: "Email tidak ditemukan.",
+                    duration: 3000,
+                    style: { background: "red" },
+                  }).showToast();
+                } else {
+                  Toastify({
+                    text: "Terjadi kesalahan: " + error.response.data.message,
+                    duration: 3000,
+                    style: { background: "red" },
+                  }).showToast();
+                }
               });
           });
       }

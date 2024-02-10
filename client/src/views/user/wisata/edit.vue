@@ -95,7 +95,7 @@ export default {
         .then((res) => {
           console.log(res.data);
           alert(res.data.message);
-          return this.$router.push("/kelola-tempat-wisata");
+          return this.$router.push("/kelola-wisata");
         })
         .catch(function (error) {
           console.log(error);
