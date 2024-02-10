@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
+use Termwind\Components\Dd;
 
 class KelolaDestinasiController extends Controller
 {
@@ -20,11 +20,16 @@ class KelolaDestinasiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $destination = Destination::latest()->get();
+        $user_id = $request->input('user_id');
+        $destinations = Destination::where('user_id', $user_id)->get();
 
-        return new ApiResource(true, 'List Data Destination', $destination);
+        return response()->json([
+            'success' => true,
+            'message' => 'List Data Destination',
+            'data' => $destinations,
+        ]);
     }
 
     /**

@@ -24,19 +24,35 @@ export default {
     };
   },
   mounted() {
-    this.fetchDestinations();
+    this.getUserLogin().then(() => {
+      console.log("User ID:", this.user.id); // Pastikan ID pengguna sudah tersedia sebelum menyimpan data
+      this.fetchDestinations();
+    });
   },
   methods: {
+    getUserLogin() {
+      return axios
+        .get("http://localhost:8000/api/user", {
+          headers: { Authorization: "Bearer " + this.token },
+        })
+        .then((response) => {
+          this.user = response.data; // assign response to state user
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    },
     async fetchDestinations() {
       this.isLoading = true;
       try {
         const token = localStorage.getItem("token");
+        const user_id = this.user.id;
         const { data } = await axios({
           method: "GET",
-          url: "http://localhost:8000/api/kelola-wisata",
+          url: `http://localhost:8000/api/kelola-wisata?user_id=${user_id}`,
           headers: { Authorization: "Bearer " + token },
         });
-        console.log(data);
+        // console.log(data);
         this.destinations = data.data; // pastikan struktur data.data sesuai dengan respons dari backend
       } catch (error) {
         this.error = "Gagal memuat data destinasi."; // menangani kesalahan
