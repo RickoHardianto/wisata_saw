@@ -43,6 +43,7 @@ php artisan make:controller Api/DesKatController
 php artisan make:controller Api/JamBukaController
 php artisan make:controller Api/Controller
 php artisan make:controller Api/ReviewController
+php artisan make:controller Api/DashboardController
 
 php artisan make:controller Api/KriteriaController -r
 php artisan make:controller Api/AlternatifController -r

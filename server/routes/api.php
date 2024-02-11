@@ -30,6 +30,7 @@ Route::resource('users', App\Http\Controllers\Api\UserController::class);
 
 
 Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calculateSAW']);
+Route::get('/dashboard', [App\Http\Controllers\Api\DashboardController::class, 'index']);
 
 
 Route::resource('/kriteria', App\Http\Controllers\Api\KriteriaController::class);
