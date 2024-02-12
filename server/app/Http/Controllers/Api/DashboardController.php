@@ -36,4 +36,29 @@ class DashboardController extends Controller
             'kriteria' => $kriteria,
         ]);
     }
+
+
+    public function user(Request $request)
+    {
+        $user_id = $request->input('user_id');
+
+        $totalDestinations = Destination::where('user_id', $user_id)->count();
+
+        $validasiDestinations = Destination::where('user_id', $user_id)
+            ->where('status', 'Validasi')
+            ->count();
+
+        $businessDestination =  Business::select('business', DB::raw('COUNT(destinations.id) as total_destinations'))
+            ->leftJoin('destinations', 'businesses.id', '=', 'destinations.business_id')
+            ->where('destinations.user_id', $user_id)
+            ->groupBy('businesses.id', 'businesses.business')
+            ->get();
+
+
+        return response()->json([
+            'total_destinations' => $totalDestinations,
+            'validasi_destination' => $validasiDestinations,
+            'business_destination' => $businessDestination,
+        ]);
+    }
 }

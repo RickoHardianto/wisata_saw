@@ -48,7 +48,11 @@ export default {
                   let userLevel = userData.level;
                   console.log(userLevel);
                   this.loggedIn = true;
-                  return this.$router.push({ name: "admin" });
+                  if (userLevel === "admin") {
+                    this.$router.push({ name: "admin" });
+                  } else {
+                    this.$router.push({ name: "dashboard" });
+                  }
                 } else {
                   this.loginFailed = true;
                 }

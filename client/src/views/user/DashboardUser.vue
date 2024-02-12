@@ -15,34 +15,43 @@ export default {
       token: localStorage.getItem("token"),
       //state user logged In
       user: [],
+      businessDestination: [],
     };
   },
-  created() {
-    axios
-      .get("http://localhost:8000/api/user", {
-        headers: { Authorization: "Bearer " + this.token },
-      })
-      .then((response) => {
-        // console.log(response);
-        this.user = response.data; // assign response to state user
-      });
-  },
   methods: {
-    logout() {
-      axios.get("http://localhost:8000/api/logout").then(() => {
-        //remove localStorage
-        localStorage.removeItem("loggedIn");
-
-        //redirect
-        return this.$router.push({ name: "login" });
-      });
+    getUserLogin() {
+      return axios
+        .get("http://localhost:8000/api/user", {
+          headers: { Authorization: "Bearer " + this.token },
+        })
+        .then((response) => {
+          this.user = response.data; // assign response to state user
+        })
+        .catch((error) => {
+          console.error("Error fetching user data:", error);
+        });
+    },
+    fetchDashboard() {
+      const user_id = this.user.id;
+      return axios
+        .get(`http://localhost:8000/api/overview?user_id=${user_id}`)
+        .then((response) => {
+          // Set data from backend to Vue component
+          this.totalDestinations = response.data.total_destinations;
+          this.validasiDestinations = response.data.validasi_destination;
+          this.businessDestination = response.data.business_destination;
+        })
+        .catch((error) => {
+          console.error("Error fetching data: ", error);
+        });
     },
   },
   //check user logged in or not
   mounted() {
-    if (!this.loggedIn) {
-      return this.$router.push({ name: "login" });
-    }
+    this.getUserLogin().then(() => {
+      console.log("User ID:", this.user.id); // Pastikan ID pengguna sudah tersedia sebelum menyimpan data
+      this.fetchDashboard();
+    });
   },
 };
 </script>
@@ -61,7 +70,144 @@ export default {
         <!-- Begin Page Content -->
         <div class="container-fluid">
           <!-- Page Heading -->
-          <h1 class="h3 mb-4 text-gray-800">Dashboard</h1>
+          <div
+            class="d-sm-flex align-items-center justify-content-between mb-4"
+          >
+            <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+          </div>
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div
+                        class="text-xs font-weight-bold text-warning text-uppercase mb-1"
+                      >
+                        Validasi Destinasi wisata
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        {{ validasiDestinations }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div
+                        class="text-xs font-weight-bold text-info text-uppercase mb-1"
+                      >
+                        jumlah wisata
+                      </div>
+                    </div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      {{ totalDestinations }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Earnings (Monthly) Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div
+                        class="text-xs font-weight-bold text-success text-uppercase mb-1"
+                      >
+                        Jumlah Kategori
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ totalCategories }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+
+            <!-- Pending Requests Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+              <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div
+                        class="text-xs font-weight-bold text-danger text-uppercase mb-1"
+                      >
+                        Jumlah Wilayah
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          {{ totalRegions }}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+
+          <!-- Content Row -->
+          <div class="row">
+            <!-- Content Column -->
+            <div class="col-lg-6 mb-4">
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">
+                    Kategori Wisata & Usaha
+                  </h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div
+                        v-for="business in businessDestination"
+                        :key="business.business"
+                      >
+                        {{ business.business }}
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div
+                        v-for="business in businessDestination"
+                        :key="business.business"
+                      >
+                        <div v-if="business.total_destinations > 0">
+                          {{ business.total_destinations }}
+                        </div>
+                        <div v-else>0</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-6 mb-4">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">Kriteria</h6>
+                </div>
+                <div class="card-body">
+                  <div v-for="kriteria in kriterias" :key="kriteria.kriteria">
+                    {{ kriteria.nama }}
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
         </div>
 
         <!-- /.container-fluid -->
