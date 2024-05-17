@@ -63,7 +63,7 @@ class KelolaDestinasiController extends Controller
             return response()->json($validator->errors(), 422);
         }
 
-      
+
 
         $imgPath = $request->file('img')->store('images', 'public');
         $imgLokasiPath = $request->file('img_lokasi')->store('images', 'public');
@@ -212,7 +212,7 @@ class KelolaDestinasiController extends Controller
 
             return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
         } catch (\Exception $e) {
-            return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
+            return new ApiResource(false, 'Data destination Gagal Di Hapus! ' . $e->getMessage(), null);
         }
     }
 }

@@ -197,6 +197,9 @@ class DestinationController extends Controller
         }
     }
 
+
+
+
     public function destroy(Destination $destination)
     {
         try {
@@ -209,7 +212,7 @@ class DestinationController extends Controller
 
             return new ApiResource(true, 'Data destination Berhasil Di Hapus!', $destination);
         } catch (\Exception $e) {
-            return new ApiResource(false, 'Data destination Gagal Di Hapus!', null);
+            return new ApiResource(false, 'Data destination Gagal Di Hapus! ' . $e->getMessage(), null);
         }
     }
 

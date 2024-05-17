@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('rating');
             $table->text('review');
             $table->timestamps();
-            $table->foreign('destination_id')->references('id')->on('destinations');
+            $table->foreign('destination_id')->references('id')->on('destinations')->onDelete('cascade');;
         });
     }
 

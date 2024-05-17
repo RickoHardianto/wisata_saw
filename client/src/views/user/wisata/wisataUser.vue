@@ -73,7 +73,9 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://localhost:8000/api/kelola-wisata/${id}`)
+            .delete(`http://localhost:8000/api/destination/${id}`, {
+              headers: { Authorization: "Bearer " + this.token },
+            })
             .then(() => {
               this.fetchDestinations();
               Swal.fire("Terhapus!", "Destinasi telah dihapus.", "success");
