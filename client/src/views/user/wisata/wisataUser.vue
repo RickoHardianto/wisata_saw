@@ -150,7 +150,7 @@ export default {
                         <router-link
                           :to="{
                             path:
-                              '/kelola-tempat-wisata/' +
+                              '/kelola-wisata-detail/' +
                               destination.id +
                               '/detail',
                           }"
@@ -159,7 +159,7 @@ export default {
                         ></router-link>
                         <router-link
                           :to="{
-                            path: '/kelola-tempat-wisata/' + destination.id,
+                            path: '/kelola-wisata-edit/' + destination.id,
                           }"
                           class="btn btn-sm btn-warning m-1"
                           ><i class="fa fa-pen"></i

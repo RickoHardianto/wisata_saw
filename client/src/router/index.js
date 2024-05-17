@@ -167,14 +167,15 @@ const router = createRouter({
       component:kelolawisatacreate,
     },
     {
-      path: "/kelola-wisata-edit",
+      path: "/kelola-wisata-edit/:id",
       component:kelolawisataedit,
     },
     {
-      path: "/kelola-wisata-detail",
+      path: "/kelola-wisata-detail/:id/detail",
       component:kelolawisatadetail,
     },
   ],
 });
 
 export default router;
+  

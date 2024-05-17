@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class DestinationController extends Controller
 {
 
-    public function index(Request $request)
+    public function index()
     {
         $destination = Destination::with('category')
             ->withAvg('reviews', 'rating')
@@ -74,7 +74,6 @@ class DestinationController extends Controller
 
         // $userid = Auth::user()->id;
         $access = is_array($request->access) ? json_encode($request->access) : $request->access;
-        $userId = Auth::id();
         $destination = Destination::create([
             'wisata'     => $request->wisata,
             'deskripsi'     => $request->deskripsi,

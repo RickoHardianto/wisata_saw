@@ -35,7 +35,6 @@ export default {
       });
     },
   },
-  //check user logged in or not
   mounted() {
     if (!this.loggedIn) {
       return this.$router.push({ name: "login" });

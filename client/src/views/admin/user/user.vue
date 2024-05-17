@@ -21,7 +21,7 @@ export default {
       try {
         const { data } = await axios({
           method: "GET",
-          url: "http://localhost:8000/api/users",
+          url: "http://localhost:8000/api/user",
           headers: {
             Authorization: {},
           },
@@ -47,6 +47,7 @@ export default {
     },
   },
 };
+
 </script>
 
 <template>
