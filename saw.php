@@ -1,5 +1,5 @@
 <?php
-
+## perhitungan manual saw dengan php native
 $alternatif = array();
 $kriteria = array();
 $r = array();
