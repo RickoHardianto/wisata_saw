@@ -170,13 +170,7 @@ export default {
                             class="btn btn-sm btn-info m-1"
                             ><i class="fa fa-eye"></i
                           ></router-link>
-                          <router-link
-                            :to="{
-                              path: '/kelola-tempat-wisata/' + destination.id,
-                            }"
-                            class="btn btn-sm btn-warning m-1"
-                            ><i class="fa fa-pen"></i
-                          ></router-link>
+                          
                           <button
                             @click="deleteDestination(destination.id)"
                             class="btn btn-sm btn-danger m-1"

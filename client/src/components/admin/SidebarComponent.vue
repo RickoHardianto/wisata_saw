@@ -151,7 +151,7 @@ export default {
       <!-- <div class="sidebar-heading">Manajemen</div> -->
 
       <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
+      <li class="nav-item"  v-if="user.level === 'user'">
         <a
           class="nav-link collapsed"
           href="#"
