@@ -89,18 +89,18 @@ const router = createRouter({
       path: "/user/:id",
       component: editUser,
     },
-    {
-      path: "/role",
-      component: RoleView,
-    },
-    {
-      path: "/role/create",
-      component: createRole,
-    },
-    {
-      path: "/role/:id",
-      component: editRole,
-    },
+    // {
+    //   path: "/role",
+    //   component: RoleView,
+    // },
+    // {
+    //   path: "/role/create",
+    //   component: createRole,
+    // },
+    // {
+    //   path: "/role/:id",
+    //   component: editRole,
+    // },
     {
       path: "/kelola-kategori",
       component: kelolaKategori,

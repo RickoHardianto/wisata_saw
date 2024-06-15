@@ -136,9 +136,6 @@ export default {
             <router-link to="/user" class="collapse-item"
               >Kelola User</router-link
             >
-            <router-link to="/role" class="collapse-item"
-              >Peran User</router-link
-            >
           </div>
         </div>
       </li>

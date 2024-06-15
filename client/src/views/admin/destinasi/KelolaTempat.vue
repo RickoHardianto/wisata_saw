@@ -99,12 +99,7 @@ export default {
           <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
-              <router-link
-                to="/kelola-tempat-wisata/create"
-                class="btn btn-primary btn-sm"
-              >
-                Tambah Tempat Wisata
-              </router-link>
+             
             </div>
             <div class="card-body">
               <div class="table-responsive">

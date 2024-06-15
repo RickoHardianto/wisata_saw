@@ -245,7 +245,8 @@ export default {
                   value="1"
                   checked
                 />
-                <label for="mobil"> Kendaraan Roda 4</label>
+                &nbsp;
+                <label for="mobil"> Mobil</label>
                 <br /><br />
                 <input
                   type="checkbox"
@@ -253,7 +254,9 @@ export default {
                   value="2"
                   checked
                 />
-                <label for="motor"> Kendaraan Roda 2</label>
+                                &nbsp;
+
+                <label for="motor"> Sepeda Motor</label>
                 <br /><br />
                 <input
                   type="checkbox"
@@ -261,6 +264,27 @@ export default {
                   value="3"
                   checked
                 />
+                               &nbsp;
+
+                <label for="elf"> ELF</label>
+                <br /><br />
+                <input
+                  type="checkbox"
+                  v-model="model.formInput.access"
+                  value="4"
+                  checked
+                />
+                                &nbsp;
+
+                <label for="bus"> BUS</label>
+                <br /><br />
+                <input
+                  type="checkbox"
+                  v-model="model.formInput.access"
+                  value="5"
+                  checked
+                />
+                                &nbsp;
                 <label for="motor"> Kendaraan Umum</label>
               </div>
               <div class="mb-3">

@@ -26,7 +26,7 @@ Route::resource('/regions', App\Http\Controllers\Api\RegionController::class);
 Route::resource('/destination', App\Http\Controllers\Api\DestinationController::class);
 Route::resource('/kelola-wisata', App\Http\Controllers\Api\KelolaDestinasiController::class);
 Route::resource('/roles', App\Http\Controllers\Api\RoleController::class);
-Route::resource('users', App\Http\Controllers\Api\UserController::class);
+Route::resource('/users', App\Http\Controllers\Api\UserController::class);
 
 
 Route::get('/saw', [App\Http\Controllers\Api\DestinationController::class, 'calculateSAW']);

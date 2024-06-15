@@ -39,13 +39,6 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $data = $request->validated();
-        // if($request->profile_photo_path != null){
-        //     $fileName = time().'.'.$request->profile_photo_path->extension();
-
-        //     $request->profile_photo_path->move(public_path('uploads'), $fileName);
-
-        //     $data['profile_photo_path'] = $fileName;
-        // }
 
         $data['password'] = Hash::make('password');
 
@@ -94,29 +87,20 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'numberPhone' => 'nullable|string|max:15',
+            'address' => 'nullable|string|max:255',
+        ]);
 
-        $data = $request->validated();
-        // if($request->profile_photo_path != null){
-        //     $fileName = time().'.'.$request->profile_photo_path->extension();
-
-        //     $request->profile_photo_path->move(public_path('uploads'), $fileName);
-
-        //     $data['profile_photo_path'] = $fileName;
-        // }
-
-        if($request->password != null){
-            $data['password'] = Hash::make($request->password);
-        }
-
-        $user->update($data);
+        $user->update($request->all());
 
         return response()->json([
             'success' => true,
             'message' => 'Data User Berhasil Di update!',
             'data' => $user
         ], 200);
-
     }
 
     /**

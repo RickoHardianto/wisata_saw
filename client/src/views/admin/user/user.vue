@@ -2,6 +2,7 @@
 import SidebarComponent from "../../../components/admin/SidebarComponent.vue";
 import TopbarComponent from "../../../components/admin/TopbarComponent.vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default {
   components: {
@@ -21,9 +22,9 @@ export default {
       try {
         const { data } = await axios({
           method: "GET",
-          url: "http://localhost:8000/api/user",
+          url: "http://localhost:8000/api/users",
           headers: {
-            Authorization: {},
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         });
 
@@ -34,20 +35,33 @@ export default {
       }
     },
     deleteUser(id) {
-      console.log(id);
-      axios
-        .delete(`http://localhost:8000/api/Users/${id}`)
-        .then((res) => {
-          console.log(res);
-          this.fetchUser();
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      Swal.fire({
+        title: "Anda yakin?",
+        text: "Anda tidak dapat mengembalikan data yang sudah dihapus!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "Batal",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axios
+            .delete(`http://localhost:8000/api/users/${id}`)
+            .then(() => {
+              this.fetchUser();
+              Swal.fire("Terhapus!", "User telah dihapus.", "success");
+            })
+            .catch((error) => {
+              this.error = "Gagal menghapus user.";
+              console.error(error);
+              Swal.fire("Gagal!", "Terjadi kesalahan saat menghapus.", "error");
+            });
+        }
+      });
     },
   },
 };
-
 </script>
 
 <template>
@@ -91,20 +105,19 @@ export default {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="(user, index) in Users"
-                      key="user.id">
-                      <td>{{ index+1}}</td>
-                      <td>{{user.name}}</td>
-                      <td>{{user.email}}</td>
+                    <tr v-for="(user, index) in Users" key="user.id">
+                      <td>{{ index + 1 }}</td>
+                      <td>{{ user.name }}</td>
+                      <td>{{ user.email }}</td>
                       <td>{{ user.numberPhone }}</td>
                       <td>{{ user.address }}</td>
                       <td>{{ user.level }}</td>
                       <td>
                         <router-link
-                        :to="{path: '/user/'+ user.id}"
+                          :to="{ path: '/user/' + user.id }"
                           class="btn btn-warning btn-sm"
                         >
-                        <i class="fa fa-pen"></i>
+                          <i class="fa fa-pen"></i>
                         </router-link>
                         <button
                           class="btn btn-sm btn-danger m-1"
